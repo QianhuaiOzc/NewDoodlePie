@@ -1,0 +1,162 @@
+#slider{
+
+   	margin:auto;
+    padding: 61px 0px 0px 0px;
+     height:100%;
+    width:100%;
+}
+
+#slider .content{
+	position:relative;
+	width:800px;
+	height:600px;
+	margin: auto;
+}
+#slider .con-left{
+    position: relative;
+	width:500px;
+	height:600px;
+	float:left;
+
+}
+#slider .con-right{
+	
+	width:300px;
+	height:600px;
+    float:left;
+}
+#slider .con-right-top{
+	position: relative;
+	/*height:250px;*/
+}
+
+#slider .con-right-bottom{
+	
+    position: relative;
+}
+#slider table{
+    height:100%;
+    width:100%;
+}
+#slider table td{
+    vertical-align: middle;
+    text-align: center; 
+   
+
+}
+
+#slider .part3-option{
+	height:90px;
+    cursor: pointer;
+     list-style: none;
+}
+#slider .toNextButton{
+    position: absolute;
+    display: block;
+    background-image: url(../images/guess/next.png);
+    height:84px;
+    width:87px;
+    right:0;
+    bottom:0;
+    cursor: pointer;
+}
+#slider .toNextButton:hover{
+
+background-image: url(../images/guess/next_s.png);
+}
+
+#slider .score{
+    position: absolute;
+    bottom:0;
+    left:0;
+}
+#slider .wrong{
+    position: absolute;
+    background-image: url(../images/guess/wrong.png);
+    height:186px;
+    width:307px;
+    bottom:120px;
+    right:100px;
+
+}
+#slider .right{
+    position: absolute;
+    background-image: url(../images/guess/right.png);
+    height:186px;
+    width:307px;
+    bottom:140px;
+    right:100px;
+
+}
+.fromRight{
+    -webkit-transform-style: preserve-3d;
+    -webkit-animation-name: anim-fromRight;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: linear; 
+}
+@-webkit-keyframes anim-fromRight
+{
+    0%{
+    -webkit-transform: translate(500px, 0px); 
+
+} 
+100%{
+    -webkit-transform: translate(0px, 0px); 
+}
+}
+/*from left*/
+.fromLeft{
+    -webkit-transform-style: preserve-3d;
+    -webkit-animation-name: anim-fromLeft;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: linear; 
+}
+@-webkit-keyframes anim-fromLeft
+{
+    0%{
+    -webkit-transform: translate(-500px, 0px); 
+
+} 
+100%{
+    -webkit-transform: translate(0px, 0px); 
+}
+}
+/*from top*/
+.fromTop{
+    -webkit-transform-style: preserve-3d;
+    -webkit-animation-name: anim-fromTop;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: linear; 
+}
+@-webkit-keyframes anim-fromTop
+{
+    0%{
+    -webkit-transform: translate(0px, 500px); 
+
+} 
+100%{
+    -webkit-transform: translate(0px, 0px); 
+}
+}
+
+/*from bottom*/
+.fromBottom{
+    -webkit-transform-style: preserve-3d;
+    -webkit-animation-name: anim-fromBottom;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: linear; 
+}
+@-webkit-keyframes anim-fromBottom
+{
+    0%{
+    -webkit-transform: translate(0px, -500px); 
+
+} 
+100%{
+    -webkit-transform: translate(0px, 0px); 
+}
+}
