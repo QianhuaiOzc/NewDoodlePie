@@ -1,29 +1,13 @@
 (function () {
 
     var main;
-    var recognizer;
-    var shapeGroup = {
-        "triangle": "triangle",
-        "x": "triangle",
-        "check": "triangle",
-        "caret": "triangle",
-        "v": "triangle",
-        "delete": "triangle",
-        "circle":"circle",
-        "rectangle": "rectangle",
-        "left square bracket": "rectangle",
-        "right square bracket": "rectangle",
-        "star": "star",
-        "zig-zag": "spiral",
-        "arrow": "spiral",
-        "left curly brace": "spiral",
-        "right curly brace": "spiral",
-        "pigtail": "spiral"
-    };
+    var img;
 
     function init(options) {
         main = options.main;
-        recognizer = new DollarRecognizer();
+        //console.log(options.argument);
+        img = new Image();
+        img.src = options.argument + ".png";
         
         var frontCanvas = options.frontCanvas.get(0);
         var backCanvas = options.backCanvas.get(0);
@@ -37,6 +21,8 @@
         var pathes = [];
         var currPath;
 
+        var undo = function() {};
+        var reset = function() {};
         var sizeSelected = function(size) {
             currSize = size;
         }
@@ -46,37 +32,27 @@
         $.crayon({
             main: main,
             colorSelected: colorSelected,
-            sizeSelected: sizeSelected
+            sizeSelected: sizeSelected,
+            undo: undo,
+            reset: reset
         });
 
-        var isDone = false;
         var isDrawing = false;
-        var isPaint = false;
-        var result;
 
         $(frontCanvas).mousedown(function(e) {
-            if(isDone == false) {
-                isDrawing = true;
-                currPath = {
-                    color: currColor,
-                    size: currSize,
-                    points: [ {
-                        X: e.offsetX,
-                        Y: e.offsetY
-                    } ]
-                };
-            }
+            isDrawing = true;
+            currPath = {
+                color: currColor,
+                size: currSize,
+                points: [ {
+                    X: e.offsetX,
+                    Y: e.offsetY
+                } ]
+            };
         });
 
         $(frontCanvas).mouseup(function(e) {
-            isDone = true;
             isDrawing = false;
-            if(isPaint == false) {
-                pathes.push(currPath);
-                result = recognizer.Recognize(currPath.points, true);
-                currPath = null;
-                repaintBack();
-            }
         });
 
         $(frontCanvas).mousemove(function(e) {
@@ -90,14 +66,6 @@
         });
 
         $(frontCanvas).mouseleave(function(e) {
-            if(isPaint === false && isDrawing === true) {
-                isDone = true;
-                isDrawing = false;
-                pathes.push(currPath);
-                result = recognizer.Recognize(currPath.points, true);
-                currPath = null;
-                repaintBack();
-            }
         });
 
         var touchCanvas = $(frontCanvas).Touchable();
@@ -140,36 +108,22 @@
         };
 
         var repaintBack = function() {
-            if(isPaint == false && isDone == true) {
-                isPaint = true;
-                var num = Math.floor(Math.random() * 3);
-                var shape = shapeGroup[result.Name];
-                var img = new Image();
-                var src = "images/pictures/"+shape+"/"+num;
-                img.src = src+"-color.png";
-                backCtx.drawImage(img, 0, 0, img.width, img.height);
-                var id = setInterval(function() {
-                    if(img.complete) {
-                        backCtx.drawImage(img, 0, 0, img.width, img.height);
-                        
-                        clearInterval(id);
-
-                        setTimeout(function() {
-                            game.loadModule("drawPicture", src);
-                        }, 2000);
-                    }
-                }, 50);
-            }
+            backCtx.drawImage(img, 0, 0, img.width, img.height);
         };
+
+        setTimeout(function() {
+            frontCtx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);        
+        }, 50);
+        setTimeout(repaintBack, 100);
 
     }
 
     function dispose() {
         main = null;
-        recognizer = null;
+        img = null;
     }
 
-    modules["drawShape"] = {
+    modules["drawPicture"] = {
         init: init,
         dispose: dispose
     }

@@ -63,6 +63,8 @@ var game = {
             this._currModule.dispose();
         }
 
+        this.clearCanvas();
+
         this._currModule = modules[name];
         this._currModule.init({
             main: this._main,
@@ -70,6 +72,16 @@ var game = {
             backCanvas: this._backCanvas,
             argument: args
         });
+    },
+
+    clearCanvas: function() {
+
+        var frontCanvas = this._frontCanvas.get(0);
+        var backCanvas = this._backCanvas.get(0);
+        var frontCtx = frontCanvas.getContext("2d");
+        var backCtx = backCanvas.getContext("2d");
+        frontCtx.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
+        backCtx.clearRect(0, 0, backCanvas.width, backCanvas.height);
     },
 
     shapeUsed: function (name) {
