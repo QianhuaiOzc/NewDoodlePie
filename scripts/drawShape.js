@@ -5,27 +5,6 @@
 
     function init(options) {
         main = options.main;
-        /*
-        main = $("#main");
-        main.empty();
-
-        for(var i = 0; i < canvases.length; i++) {
-            canvases[i] = $("<canvas></canvas>").appendTo(main);
-            canvases[i].css({
-                position: "absolute",
-                left: 132,
-                top: 120,
-                "z-index": (i+1)
-            });
-            canvases[i].attr({
-                width: 800,
-                height: 600
-            });
-        }
-        
-        var frontCanvas = canvases[1].get(0);
-        var backCanvas = canvases[0].get(0);
-        */
         var frontCanvas = options.frontCanvas.get(0);
         var backCanvas = options.backCanvas.get(0);
         var frontCtx = frontCanvas.getContext("2d");
@@ -125,9 +104,6 @@
 
     function dispose() {
         main = null;
-        for(var i = 0; i < canvases.length; i++) {
-            canvases[i] = null;
-        }
     }
 
     modules["drawShape"] = {
