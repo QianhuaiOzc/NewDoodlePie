@@ -77,34 +77,38 @@
         selectSize(brushSizes[0]);
 
         // undo
-        var divUndo = $("<div></div>").appendTo(main);
-        divUndo.css({
-            position: "absolute",
-            width: 83,
-            height: 62,
-            // border: "1px solid red",
-            "background-image": "url(images/undo.png)",
-            top: 700,
-            left: 210,
-            "z-index": 3
-        });
+        if(options.undo) {
+            var divUndo = $("<div></div>").appendTo(main);
+            divUndo.css({
+                position: "absolute",
+                width: 83,
+                height: 62,
+                // border: "1px solid red",
+                "background-image": "url(images/undo.png)",
+                top: 700,
+                left: 210,
+                "z-index": 3
+            });
 
-        divUndo.click(options.undo);
+            divUndo.click(options.undo);
+        }
 
         // reset
-        var divReset = $("<div></div>").appendTo(main);
-        divReset.css({
-            position: "absolute",
-            width: 83,
-            height: 62,
-            // border: "1px solid red",
-            "background-image": "url(images/reset.png)",
-            top: 700,
-            left: 298,
-            "z-index": 3
-        });
+        if(options.reset) {
+            var divReset = $("<div></div>").appendTo(main);
+            divReset.css({
+                position: "absolute",
+                width: 83,
+                height: 62,
+                // border: "1px solid red",
+                "background-image": "url(images/reset.png)",
+                top: 700,
+                left: 298,
+                "z-index": 3
+            });
 
-        divReset.click(options.reset);
+            divReset.click(options.reset);
+        }
 
         // pens
         var divPenList = [];

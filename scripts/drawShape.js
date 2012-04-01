@@ -36,8 +36,6 @@
         var pathes = [];
         var currPath;
 
-        var undo = function() {}
-        var reset = function() {}
         var sizeSelected = function(size) {
             currSize = size;
         }
@@ -48,8 +46,6 @@
             main: main,
             colorSelected: colorSelected,
             sizeSelected: sizeSelected,
-            undo: undo,
-            reset: reset
         });
 
         var isDone = false;
@@ -74,10 +70,12 @@
         $(frontCanvas).mouseup(function(e) {
             isDone = true;
             isDrawing = false;
-            pathes.push(currPath);
-            result = recognizer.Recognize(currPath.points, true);
-            currPath = null;
-            repaintBack();
+            if(isPaint == false) {
+                pathes.push(currPath);
+                result = recognizer.Recognize(currPath.points, true);
+                currPath = null;
+                repaintBack();
+            }
         });
 
         $(frontCanvas).mousemove(function(e) {
@@ -92,8 +90,14 @@
         });
 
         $(frontCanvas).mouseleave(function(e) {
-            isDone = true;
-            repaintBack();
+            if(isPaint === false && isDrawing === true) {
+                isDone = true;
+                isDrawing = false;
+                pathes.push(currPath);
+                result = recognizer.Recognize(currPath.points, true);
+                currPath = null;
+                repaintBack();
+            }
         });
 
         var repaintFront = function() {
@@ -116,11 +120,10 @@
         };
 
         var repaintBack = function() {
-            if(isPaint == false) {
+            if(isPaint == false && isDone == true) {
                 isPaint = true;
                 var num = Math.floor(Math.random() * 3);
                 var shape = shapeGroup[result.Name];
-                var src = "images/pictures/"+shape+"/"+num+"-color.png";
                 var img = new Image();
                 img.src = "images/pictures/"+shape+"/"+num+"-color.png";
                 backCtx.drawImage(img, 0, 0, img.width, img.height);
