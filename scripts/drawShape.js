@@ -1,10 +1,29 @@
 (function () {
 
     var main;
-    var canvases = new Array(2);
+    var recognizer;
+    var shapeGroup = {
+        "triangle": "triangle",
+        "x": "triangle",
+        "check": "triangle",
+        "caret": "triangle",
+        "v": "triangle",
+        "delete": "triangle",
+        "circle":"circle",
+        "rectangle": "rectangle",
+        "left square bracket": "rectangle",
+        "right square bracket": "rectangle",
+        "star": "star",
+        "zig-zag": "spiral",
+        "arrow": "spiral",
+        "left curly brace": "spiral",
+        "right curly brace": "spiral",
+        "pigtail": "spiral"
+    };
 
     function init(options) {
         main = options.main;
+        recognizer = new DollarRecognizer();
         var frontCanvas = options.frontCanvas.get(0);
         var backCanvas = options.backCanvas.get(0);
         var frontCtx = frontCanvas.getContext("2d");
@@ -35,6 +54,8 @@
 
         var isDone = false;
         var isDrawing = false;
+        var isPaint = false;
+        var result;
 
         $(frontCanvas).mousedown(function(e) {
             if(isDone == false) {
@@ -43,8 +64,8 @@
                     color: currColor,
                     size: currSize,
                     points: [ {
-                        x: e.offsetX,
-                        y: e.offsetY
+                        X: e.offsetX,
+                        Y: e.offsetY
                     } ]
                 };
             }
@@ -54,6 +75,7 @@
             isDone = true;
             isDrawing = false;
             pathes.push(currPath);
+            result = recognizer.Recognize(currPath.points, true);
             currPath = null;
             repaintBack();
         });
@@ -62,8 +84,8 @@
             if(isDrawing == true) {
                 // push the point to the pathes
                 currPath.points.push( {
-                    x: e.offsetX,
-                    y: e.offsetY
+                    X: e.offsetX,
+                    Y: e.offsetY
                 } );
                 repaintFront();
             }
@@ -83,10 +105,10 @@
             frontCtx.lineWidth = currPath.size;
             frontCtx.lineJoin = "round";
 
-            frontCtx.moveTo(currPath.points[0].x, currPath.points[0].y);
+            frontCtx.moveTo(currPath.points[0].X, currPath.points[0].Y);
 
             for(var i = 0; i < currPath.points.length; i++) {
-                frontCtx.lineTo(currPath.points[i].x, currPath.points[i].y);
+                frontCtx.lineTo(currPath.points[i].X, currPath.points[i].Y);
             }
             frontCtx.stroke();
             frontCtx.closePath();
@@ -94,16 +116,22 @@
         };
 
         var repaintBack = function() {
-            
+            if(isPaint == false) {
+                isPaint = true;
+                var num = Math.floor(Math.random() * 3);
+                var shape = shapeGroup[result.Name];
+                var src = "images/pictures/"+shape+"/"+num+"-color.png";
+                var img = new Image();
+                img.src = "images/pictures/"+shape+"/"+num+"-color.png";
+                backCtx.drawImage(img, 0, 0, img.width, img.height);
+            }
         };
 
-        var reset = function() {
-            
-        }
     }
 
     function dispose() {
         main = null;
+        recognizer = null;
     }
 
     modules["drawShape"] = {
