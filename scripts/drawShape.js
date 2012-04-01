@@ -24,6 +24,7 @@
     function init(options) {
         main = options.main;
         recognizer = new DollarRecognizer();
+        
         var frontCanvas = options.frontCanvas.get(0);
         var backCanvas = options.backCanvas.get(0);
         var frontCtx = frontCanvas.getContext("2d");
@@ -80,7 +81,6 @@
 
         $(frontCanvas).mousemove(function(e) {
             if(isDrawing == true) {
-                // push the point to the pathes
                 currPath.points.push( {
                     X: e.offsetX,
                     Y: e.offsetY
@@ -99,6 +99,26 @@
                 repaintBack();
             }
         });
+
+        var touchCanvas = $(frontCanvas).Touchable();
+        touchCanvas.bind("touchablemove", function(e, touch) {
+            //console.log(touch);
+        });
+        touchCanvas.bind("touchableend", function(e, touch) {
+            //console.log(touch);
+        });
+        touchCanvas.bind("tap", function(e, touch) {
+            //console.log(touch);
+        });
+
+        frontCanvas.addEventListener("touchstart", function(e) {
+        });
+
+        frontCanvas.addEventListener("touchmove", function(e) {
+
+        });
+
+        frontCanvas.addEventListener("touchend", function(e) {});
 
         var repaintFront = function() {
             frontCtx.fillStyle = "rgba(255, 255, 255, 0)";
