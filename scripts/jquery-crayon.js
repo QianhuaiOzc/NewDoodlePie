@@ -16,6 +16,19 @@
         "ffffff"
     ];
 
+    var stampsList = [ "ball", "flower", "heart", "music", "star" ];
+
+    var stampTop = 35;
+    var stampFirstLeft = 65;
+    var stampSpacing = 10;
+    var stampHeight = 109;
+    var stampWidth = 106;
+
+    var bgLeft = 180;
+    var bgTop = -50;
+    var bgWidth = 736;
+    var bgHeight = 188;
+
     var penFirstTop = 4;
     var penHeight = 49;
     var penWidth = 238;
@@ -115,6 +128,10 @@
         var selectedDivPen;
 
         var select = function (divPen) {
+            if (selectedStampDiv) {
+                selectedStampDiv.css("top", stampTop);
+                options.stampSelected(null);
+            }
             if (selectedDivPen) {
                 selectedDivPen.css("left", penUnselectedLeft);
             }
@@ -134,7 +151,6 @@
             divPen.attr("color", color);
             divPen.css({
                 "position": "absolute",
-                // "background-color": "#" + color,
                 "background-image": "url(images/crayon-pens/" + i + "_" + color + ".png)",
                 "top": penFirstTop + i * ( penHeight + penSpacing),
                 "height": penHeight,
@@ -150,6 +166,62 @@
         }
 
         select(divPenList[0]);
+
+        // stamp
+        var stampDivList = [];
+        var selectedStamp;
+        var selectedStampDiv;
+        var stampSelect = function(stampDiv) {
+            if (selectedDivPen) {
+                selectedDivPen.css("left", penUnselectedLeft);
+            }
+            options.colorSelected(null);
+            for(var i = 0; i < stampDivList.length; i++) {
+                stampDivList[i].css({"top": stampTop});
+            }
+            selectedStampDiv = stampDiv;
+            var stamp = stampDiv.attr('stamp');
+            if (stamp != selectedStamp) {
+                stampDiv.css({"top": stampTop + 20});
+                selectedStamp = stamp;
+            } else {
+                stampDiv.css({"top": stampTop});
+                selectedStamp = null;
+            }
+            options.stampSelected(selectedStamp); 
+        }
+        if(options.stampSelected) {
+            var bgDiv = $("<div></div>").appendTo(main);
+            bgDiv.css({
+                "position": "absolute",
+                "background": "url('images/stamps/background.png') no-repeat",
+                "top": bgTop,
+                "height": bgHeight,
+                "width": bgWidth,
+                "left": bgLeft
+            });
+
+            for (var i = 0; i < stampsList.length; i++) {
+                var stamp = stampsList[i];
+
+                var stampDiv = $('<div></div>').appendTo(bgDiv);
+                stampDiv.attr('stamp', stamp);
+                stampDiv.css({
+                    "position": "absolute",
+                    "background": "url('images/stamps/"+stamp+".png') no-repeat",
+                    "top": stampTop,
+                    "height": stampHeight,
+                    "width": stampWidth,
+                    "left": stampFirstLeft + i * (stampWidth + stampSpacing)
+                });
+
+                stampDiv.click(function(e) {
+                    stampSelect($(this));
+                });
+    
+                stampDivList.push(stampDiv);
+            }
+        }
     }
 
 })(jQuery);

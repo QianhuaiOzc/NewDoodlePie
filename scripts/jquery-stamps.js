@@ -56,13 +56,13 @@
                 "left": stampFirstLeft + i * (stampWidth + stampSpacing)
             });
 
-            stampDiv.click(function() {
+            stampDiv.click(function(e) {
+                //console.log(obj);
                 select($(this));
             });
 
             stampDivList.push(stampDiv);
         }
-
     }
      
  

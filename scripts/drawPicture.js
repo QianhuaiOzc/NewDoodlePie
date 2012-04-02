@@ -2,12 +2,20 @@
 
     var main;
     var img;
+    var imgs = [];
+    var stampsList = [ "ball", "flower", "heart", "music", "star" ];
 
     function init(options) {
         main = options.main;
         //console.log(options.argument);
         img = new Image();
         img.src = options.argument + ".png";
+        for(var i = 0; i < stampsList.length; i++) {
+            var stampImage = new Image();
+            var imgPath = stampsList[i];
+            stampImage.src = "images/stamps/"+stampsList[i]+"1.png";
+            imgs[imgPath] = stampImage;
+        }
         
         var frontCanvas = options.frontCanvas.get(0);
         var backCanvas = options.backCanvas.get(0);
@@ -20,6 +28,7 @@
         var currSize;
         var pathes = [];
         var currPath;
+        var currStamp;
 
         var undo = function() {
             if(pathes.length > 0) {
@@ -37,26 +46,45 @@
         var colorSelected = function(color) {
             currColor = color;
         }
+        var stampSelected = function(stamp) {
+            currStamp = stamp;
+        }
         $.crayon({
             main: main,
             colorSelected: colorSelected,
             sizeSelected: sizeSelected,
             undo: undo,
-            reset: reset
+            reset: reset,
+            stampSelected: stampSelected
         });
+        /*
+        $.stamp({
+            main: main,
+            stampSelected: stampSelected
+        });
+        */
 
         var isDrawing = false;
 
         $(frontCanvas).mousedown(function(e) {
-            isDrawing = true;
-            currPath = {
-                color: currColor,
-                size: currSize,
-                points: [ {
+            if(currStamp) {
+                currPath = {
+                    stamp: currStamp,
                     X: e.offsetX,
                     Y: e.offsetY
-                } ]
-            };
+                };
+            } else {
+                isDrawing = true;
+                currPath = {
+                    color: currColor,
+                    size: currSize,
+                    points: [ {
+                        X: e.offsetX,
+                        Y: e.offsetY
+                    } ],
+                    stamp: null
+                };
+            }
         });
 
         $(frontCanvas).mouseup(function(e) {
@@ -128,19 +156,25 @@
             for(var i = 0; i < pathes.length; i++) {
                 var path = pathes[i];
                 
-                backCtx.beginPath();
-                backCtx.strokeStyle = "#" + path.color;
-                backCtx.lineWidth = path.size;
-                backCtx.lineCap = "round";
-                backCtx.lineJoin = "round";
-                backCtx.moveTo(path.points[0].X, path.points[0].Y);
+                if(path && path.stamp) {
+                    var stampImg = imgs[path.stamp];
+                    backCtx.drawImage(stampImg, path.X - stampImg.width/2, path.Y - stampImg.height/2);
+                } else if(path) {
+		    backCtx.beginPath();
+                    backCtx.strokeStyle = "#" + path.color;
+                    backCtx.lineWidth = path.size;
+                    backCtx.lineCap = "round";
+                    backCtx.lineJoin = "round";
+                    backCtx.moveTo(path.points[0].X, path.points[0].Y);
 
-                for(var j = 1; j < path.points.length; j++) {
-                    backCtx.lineTo(path.points[j].X, path.points[j].Y);
+                    for(var j = 1; j < path.points.length; j++) {
+            	        backCtx.lineTo(path.points[j].X, path.points[j].Y);
+                    }
+
+                    backCtx.stroke();
+                    backCtx.closePath();
+
                 }
-
-                backCtx.stroke();
-                backCtx.closePath();
             }
             backCtx.globalAlpha = 0.4;
             backCtx.drawImage(img, 0, 0, img.width, img.height);
@@ -157,6 +191,7 @@
     function dispose() {
         main = null;
         img = null;
+        imgs = null;
     }
 
     modules["drawPicture"] = {
