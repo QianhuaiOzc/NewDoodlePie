@@ -128,6 +128,7 @@
             frontCtx.strokeStyle = "#" + currPath.color;
             frontCtx.lineWidth = currPath.size;
             frontCtx.lineJoin = "round";
+            frontCtx.lineCap = "round";
 
             frontCtx.moveTo(currPath.points[0].X, currPath.points[0].Y);
 

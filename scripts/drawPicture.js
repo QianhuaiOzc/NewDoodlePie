@@ -21,8 +21,16 @@
         var pathes = [];
         var currPath;
 
-        var undo = function() {};
-        var reset = function() {};
+        var undo = function() {
+            if(pathes.length > 0) {
+                pathes.pop();
+            }
+            repaintBack();
+        };
+        var reset = function() {
+            pathes.length = 0;
+            repaintBack();
+        };
         var sizeSelected = function(size) {
             currSize = size;
         }
@@ -53,6 +61,8 @@
 
         $(frontCanvas).mouseup(function(e) {
             isDrawing = false;
+            pathes.push(currPath);
+            repaintBack();
         });
 
         $(frontCanvas).mousemove(function(e) {
@@ -66,6 +76,9 @@
         });
 
         $(frontCanvas).mouseleave(function(e) {
+            isDrawing = false;
+            pathes.push(currPath);
+            repaintBack();
         });
 
         var touchCanvas = $(frontCanvas).Touchable();
@@ -91,11 +104,13 @@
         var repaintFront = function() {
             frontCtx.fillStyle = "rgba(255, 255, 255, 0)";
             frontCtx.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
+            var lineImg = new Image();
 
             frontCtx.beginPath();
             frontCtx.strokeStyle = "#" + currPath.color;
             frontCtx.lineWidth = currPath.size;
             frontCtx.lineJoin = "round";
+            frontCtx.lineCap = "round";
 
             frontCtx.moveTo(currPath.points[0].X, currPath.points[0].Y);
 
@@ -108,7 +123,28 @@
         };
 
         var repaintBack = function() {
+            backCtx.clearRect(0, 0, backCanvas.width, backCanvas.height);
+
+            for(var i = 0; i < pathes.length; i++) {
+                var path = pathes[i];
+                
+                backCtx.beginPath();
+                backCtx.strokeStyle = "#" + path.color;
+                backCtx.lineWidth = path.size;
+                backCtx.lineCap = "round";
+                backCtx.lineJoin = "round";
+                backCtx.moveTo(path.points[0].X, path.points[0].Y);
+
+                for(var j = 1; j < path.points.length; j++) {
+                    backCtx.lineTo(path.points[j].X, path.points[j].Y);
+                }
+
+                backCtx.stroke();
+                backCtx.closePath();
+            }
+            backCtx.globalAlpha = 0.4;
             backCtx.drawImage(img, 0, 0, img.width, img.height);
+            backCtx.globalAlpha = 1;
         };
 
         setTimeout(function() {
