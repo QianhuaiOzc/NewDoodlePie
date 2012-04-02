@@ -7,7 +7,6 @@
 
     function init(options) {
         main = options.main;
-        //console.log(options.argument);
         img = new Image();
         img.src = options.argument + ".png";
         for(var i = 0; i < stampsList.length; i++) {
@@ -16,6 +15,7 @@
             stampImage.src = "images/stamps/"+stampsList[i]+"1.png";
             imgs[imgPath] = stampImage;
         }
+        $("#pieMenu").show();
         
         var frontCanvas = options.frontCanvas.get(0);
         var backCanvas = options.backCanvas.get(0);
@@ -57,12 +57,6 @@
             reset: reset,
             stampSelected: stampSelected
         });
-        /*
-        $.stamp({
-            main: main,
-            stampSelected: stampSelected
-        });
-        */
 
         var isDrawing = false;
 

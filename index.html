@@ -41,12 +41,12 @@ var toggleMenu = function () {
         <div id="pieMenu">
             <div id="save" onclick="toggleMenu()"></div>
             <div id="guess" onclick="toggleMenu(); game.loadModule('part3');"></div>
-            <div id="fill" class="disable"></div>
-            <div id="blackboard" class="disable" href="images/blackboard-next.png"></div>
+            <div id="fill" onclick="toggleMenu(); game.loadModule('fill');"></div>
+            <div id="blackboard" onclick="toggleMenu(); game.loadModule('backboard');"></div>
             <div id="magic" class="disable" href="images/magic-next.png"></div>
             <div id="pie" onclick="toggleMenu()"></div>
-            <div id="home" onclick="game.loadModule('drawShape');"></div>
         </div>
+        <div id="home" onclick="game.loadModule('drawShape');"></div>
     </div>
 
     <script src="scripts/jquery-crayon.js"></script>
@@ -56,5 +56,6 @@ var toggleMenu = function () {
     <script src="scripts/drawPicture.js"></script>
     <script src="scripts/part3.js"></script>
     <script src="scripts/fill.js"></script>
+    <script src="scripts/backboard.js"></script>
 </body>
 </html>

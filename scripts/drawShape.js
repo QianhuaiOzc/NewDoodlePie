@@ -24,6 +24,7 @@
     function init(options) {
         main = options.main;
         recognizer = new DollarRecognizer();
+        $("#pieMenu").hide();
         
         var frontCanvas = options.frontCanvas.get(0);
         var backCanvas = options.backCanvas.get(0);
