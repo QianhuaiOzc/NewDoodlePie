@@ -46,6 +46,12 @@ Core.registerModule("pieMenu", function(sandBox) {
 				sandBox.notify({
 					"type": "openPainting"
 				});
+			};
+
+			blackboardDiv.onclick = function() {
+				sandBox.notify({
+					"type": "openBlackboard"
+				});
 			}
 		},
 

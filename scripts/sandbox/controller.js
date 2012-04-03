@@ -4,7 +4,8 @@ Core.registerModule("controller", function(sandBox) {
 		"start": ["drawShape", "crayon", "brushSize", "home"],
 		"drawShape": ["drawShape", "crayon", "brushSize"],
 		"drawPicture": ["drawPicture", "crayon", "brushSize", "undo", "pieMenu", "stamp"],
-		"painting": ["painting", "crayon", "brushSize", "undo", "pieMenu"]
+		"painting": ["painting", "crayon", "brushSize", "undo", "pieMenu"],
+		"blackboard": ["blackboard", "chalk", "brushSize", "undo", "pieMenu"]
 	};
 	var currentModule = null;
 
@@ -19,6 +20,7 @@ Core.registerModule("controller", function(sandBox) {
 			sandBox.listen({"drawShapeFinish": this.drawShapeFinish});
 			sandBox.listen({"openPainting": this.openPainting});
 			sandBox.listen({"home": this.home});
+			sandBox.listen({"openBlackboard": this.openBlackboard});
 		},
 
 		drawShapeFinish: function(evtObj) {
@@ -59,6 +61,10 @@ Core.registerModule("controller", function(sandBox) {
 			currentModule = "drawShape";
 		}, 
 
+		openBlackboard: function() {
+			
+		},
+		
 		destroy: function() {}
 	};
 });
