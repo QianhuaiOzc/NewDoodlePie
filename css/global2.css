@@ -7,6 +7,8 @@
     overflow: hidden;
     top: 50%;
     left: 50%;
+    background-image: url(../images/bg.png);
+    cursor: crosshair;
 }
 
 #main {

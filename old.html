@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
 <link rel="stylesheet" type="text/css" href="css/part3.css" />
-<link rel="stylesheet" type="text/css" href="css/global2.css" />
+<link rel="stylesheet" type="text/css" href="css/global.css" />
 <link rel="stylesheet" type="text/css" href="css/jquery.lightbox-0.5.css" media="screen" />
 
 <script type="text/javascript" src="scripts/jquery-1.7.2.min.js"></script>
@@ -16,7 +16,7 @@
 <script type="text/javascript" src="scripts/game.js"></script>
 <script>
 $.extend($.support, { touch: "ontouchend" in document });
-/*
+
 $(document).ready(function () {
     if($.support.touch) {  // --> check the visitor's device touchable
         document.body.addEventListener("touchmove", function(e) {
@@ -25,7 +25,7 @@ $(document).ready(function () {
     }
     game.loadModule("drawShape");
 });
-*/
+
 var toggleMenu = function () {
     $("#save").toggle();
     $("#guess").toggle();
@@ -38,7 +38,7 @@ var toggleMenu = function () {
 </head>
 <body>
     <div id="container">
-        <!-- <div id="main"></div> -->
+        <div id="main"></div>
         <div id="drawShape"></div>
         <div id="drawPicture"></div>
         <div id="crayon"></div>
@@ -55,21 +55,6 @@ var toggleMenu = function () {
         <div id="home" onclick="game.loadModule('drawShape');"></div>
     </div>
 
-    <script type="text/javascript" src="scripts/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="scripts/sandbox/core.js"></script>
-    <script type="text/javascript" src="scripts/sandbox/sandbox.js"></script>
-    <script type="text/javascript" src="scripts/sandbox/drawShape.js"></script>
-    <script type="text/javascript" src="scripts/sandbox/drawPicture.js"></script>
-    <script type="text/javascript" src="scripts/sandbox/crayon.js"></script>
-    <script type="text/javascript" src="scripts/sandbox/stamp.js"></script>
-    <script type="text/javascript" src="scripts/sandbox/brushSize.js"></script>
-    <script type="text/javascript">
-        Core.stopAll();
-        Core.start("drawShape");
-        Core.start("crayon");
-        Core.start("brushSize");
-    </script>
-    <!--
     <script src="scripts/jquery-crayon.js"></script>
 
     <script src="scripts/menu.js"></script>
@@ -79,6 +64,5 @@ var toggleMenu = function () {
     <script src="scripts/fill.js"></script>
     <script src="scripts/paint.js"></script>
     <script src="scripts/backboard.js"></script>
-    -->
 </body>
 </html>
