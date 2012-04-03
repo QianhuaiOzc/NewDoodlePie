@@ -151,6 +151,8 @@ Core.registerModule("drawShape", function(sandBox) {
 
                         setTimeout(function() {
                             Core.stop("drawShape");
+                            Core.start("drawPicture");
+                            Core.start("stamp");
                         }, 2000);
                     }
                 }, 50);
@@ -160,6 +162,8 @@ Core.registerModule("drawShape", function(sandBox) {
 
 		destroy: function() {
 			sandBox.hide(container);
+			container.removeChild(frontCanvas);
+			container.removeChild(backCanvas);
 			// delete frontCanvas;
 			// delete backCanvas;
 			// delete frontCtx;

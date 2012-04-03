@@ -162,3 +162,26 @@
         height: 30px;
         top: 15px;
     }
+
+.stampList {
+    position: absolute;
+    background: url(../images/stamps/background.png) no-repeat;
+    top: -50px;
+    left: 180px;
+    height: 188px;
+    width: 736px;
+}
+
+    .stampList .stamp {
+        position: absolute;
+        height: 109px;
+        width: 106px;
+    }
+
+        .stampList .stamp.selected {
+            top: 55px;
+        }
+
+        .stampList .stamp.unselected {
+            top: 35px;
+        }

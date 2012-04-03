@@ -39,6 +39,8 @@ Core.registerModule("crayon", function(sandBox) {
 	            divPen.onclick = this.onclick();
 	        }
 	        selectedDivPen = divPenList[0];
+
+	        sandBox.listen( { "stampChange": this.clearColor } );
 	        sandBox.removeClass(selectedDivPen, "unselected");
 	        sandBox.addClass(selectedDivPen, "selected");
 	        sandBox.notify( {
@@ -66,6 +68,14 @@ Core.registerModule("crayon", function(sandBox) {
 		           	"data": selectedDiv.getAttribute("color")
 		        });	
 			};
+		},
+
+		clearColor: function(stamp) {
+			if(stamp != null) {
+				sandBox.removeClass(selectedDivPen, "selected");
+				sandBox.addClass(selectedDivPen, "unselected");
+				console.log("clear color");	
+			}
 		},
 
 		destroy: function() {
