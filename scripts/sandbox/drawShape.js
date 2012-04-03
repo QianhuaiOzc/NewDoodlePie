@@ -150,9 +150,13 @@ Core.registerModule("drawShape", function(sandBox) {
                         clearInterval(id);
 
                         setTimeout(function() {
-                            Core.stop("drawShape");
-                            Core.start("drawPicture");
+                            // Core.stop("drawShape");
+                            Core.stopAll();
+                            Core.start("drawPicture", src);
+                            Core.start("crayon");
+        					Core.start("brushSize");
                             Core.start("stamp");
+                            Core.start("undo");
                         }, 2000);
                     }
                 }, 50);

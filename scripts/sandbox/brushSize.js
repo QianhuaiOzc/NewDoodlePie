@@ -5,10 +5,11 @@ Core.registerModule("brushSize", function(sandBox) {
             { name: "s", value: 5 }
         ];
     var container = null;
+    var brushSizeDivList = [];
 	return {
 
 		init: function() {
-			var container = sandBox.container;
+			container = sandBox.container;
 			sandBox.show(container);
 			sandBox.addClass(container, "brushSize");
 
@@ -21,7 +22,7 @@ Core.registerModule("brushSize", function(sandBox) {
 				sandBox.css(brushDiv, "left", (60+i*45));
 
 				container.appendChild(brushDiv);
-
+				brushSizeDivList.push(brushDiv);
 				brushDiv.onclick = this.onclick();
 			}
 
@@ -50,6 +51,9 @@ Core.registerModule("brushSize", function(sandBox) {
 
 		destroy: function() {
 			sandBox.hide(container);
+			for(var i = 0; i < brushSizeDivList.length; i++) {
+				container.removeChild(brushSizeDivList[i]);
+			}
 		}
 	};
 });

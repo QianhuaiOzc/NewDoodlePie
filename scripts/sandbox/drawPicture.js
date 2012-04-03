@@ -1,4 +1,4 @@
-Core.registerModule("drawPicture", function(sandBox) {
+Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 	var container = null;
 	var frontCanvas = null, backCanvas = null;
 	var frontCtx = null, backCtx = null;
@@ -6,6 +6,8 @@ Core.registerModule("drawPicture", function(sandBox) {
 	var pathes = [];
 	var textureImage = null;
 	var isDrawing = false;
+	var backgroundImg = null;
+	var stampList = ["ball", "flower", "heart", "music", "star"], stampImgs = [];
 	
 	return {
 		
@@ -29,12 +31,24 @@ Core.registerModule("drawPicture", function(sandBox) {
 			textureImage = new Image();
 			textureImage.src = "images/crayon-texture.png";
 
+			backgroundImg = new Image();
+			backgroundImg.src = backgroundImgSrc + ".png"
+
+			for(var i = 0; i < stampList.length; i++) {
+	            var stampImage = new Image();
+	            var imgPath = stampList[i];
+	            stampImage.src = "images/stamps/"+stampList[i]+"1.png";
+	            stampImgs[imgPath] = stampImage;
+	        }
+
 			frontCanvas.onmousedown = this.mouseDown();
 			frontCanvas.onmouseup = this.mouseLeave();
 			frontCanvas.onmouseout = this.mouseLeave();
 			frontCanvas.onmousemove = this.mouseMove();
 
-			sandBox.listen( {"stampChange": this.stampChange } );
+			sandBox.listen( { "undo": this.undo() } );
+			sandBox.listen( { "reset": this.reset() } );
+			sandBox.listen( { "stampChange": this.stampChange } );
 			sandBox.listen( { "colorChange": this.colorChange } );
 			sandBox.listen( { "brushSizeChange": this.brushSizeChange } );
 		},
@@ -42,46 +56,99 @@ Core.registerModule("drawPicture", function(sandBox) {
 		mouseDown: function() {
 
 			return function(e) {
-				
-			// console.log("frontCanvas mouse down");
+				if(currentStamp) {
+					currentPath = {
+						stamp: currentStamp,
+						X: e.offsetX,
+						Y: e.offsetY
+					};
+				} else {
+					isDrawing = true;
+					currentPath = {
+						color: currentColor,
+						size: currentSize,
+						points: [ {
+							X: e.offsetX,
+							Y: e.offsetY	
+						} ],
+						stamp: null
+					};
+				}
+				console.log(currentPath);
 			};
 		},
 
 		mouseLeave: function() {
 			var parent = this;
 			return function(e) {
-				
+				if(currentStamp) {
+					if(currentPath != null) {
+						pathes.push(currentPath);	
+					}
+				} else if(isDrawing == true) {
+					isDrawing = false;
+					pathes.push(currentPath);
+				}
+				currentPath = null;
+				parent.repaintFront();
+				parent.repaintBack();
+				// console.log(pathes);
 			};
-			// console.log("frontCanvas mouse leave");
+			
 		},
 
 		mouseMove: function() {
 			var parent = this;
 			return function(e) {
-				
+				if(isDrawing == true) {
+					currentPath.points.push( {
+						X: e.offsetX,
+						Y: e.offsetY
+					} );
+					parent.repaintFront();
+					// console.log(currentPath);
+				}
 			};
-			// console.log("frontCanvas mouse move");
 		},
 
 		colorChange: function(color) {
 			currentColor = color;
-			// console.log("color change: " + color);
 		},
 
 		brushSizeChange: function(size) {
 			currentSize = size;
-			// console.log("brush size change: " + size);
 		},
 
 		stampChange: function(stamp) {
 			currentStamp = stamp;
-			console.log("stamp change: " + stamp);
+		},
+
+		undo: function() {
+			var parent = this;
+			return function() {
+				pathes.pop();
+				parent.repaintBack();
+				// console.log("undo");
+			};
+		},
+
+		reset: function() {
+			var parent = this;
+			return function() {
+				pathes.length = 0;
+				parent.repaintBack();
+				// console.log("reset");
+			};
 		},
 		
 		repaintFront: function() {
-			/*
 			frontCtx.fillStyle = "rgba(255, 255, 255, 0)";
             frontCtx.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
+
+            if(!currentPath || currentPath.stamp) {
+            	frontCtx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
+            	return ;
+            }
 
             frontCtx.beginPath();
             frontCtx.strokeStyle = "#" + currentPath.color;
@@ -97,38 +164,46 @@ Core.registerModule("drawPicture", function(sandBox) {
             frontCtx.stroke();
             frontCtx.closePath();
             frontCtx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
-            */
 			// console.log("repaintFront");
 		},
 
 		repaintBack: function() {
-			/*
-			if(isPaint == false && isDone == true) {
-                isPaint = true;
-                var num = Math.floor(Math.random() * 3);
-                var shape = shapeGroup[result.Name];
-                var img = new Image();
-                var src = "images/pictures/"+shape+"/"+num;
-                img.src = src+"-color.png";
-                var id = setInterval(function() {
-                    if(img.complete) {
-                        backCtx.drawImage(img, 0, 0, img.width, img.height);
-                        
-                        clearInterval(id);
+			backCtx.clearRect(0, 0, backCanvas.width, backCanvas.height);
 
-                        setTimeout(function() {
-                            Core.stop("drawShape");
-                            Core.start("drawPicture");
-                        }, 2000);
+			for(var i = 0; i < pathes.length; i++) {
+				var path = pathes[i];
+
+				if(path && path.stamp) {
+                    var stampImg = stampImgs[path.stamp];
+                    backCtx.drawImage(stampImg, path.X - stampImg.width/2, path.Y - stampImg.height/2);
+                } else if(path) {
+		    backCtx.beginPath();
+                    backCtx.strokeStyle = "#" + path.color;
+                    backCtx.lineWidth = path.size;
+                    backCtx.lineCap = "round";
+                    backCtx.lineJoin = "round";
+                    backCtx.moveTo(path.points[0].X, path.points[0].Y);
+
+                    for(var j = 1; j < path.points.length; j++) {
+            	        backCtx.lineTo(path.points[j].X, path.points[j].Y);
                     }
-                }, 50);
-            }
-            */
+
+                    backCtx.stroke();
+                    backCtx.closePath();
+
+                }
+			}
+
+			backCtx.globalAlpha = 0.4;
+			backCtx.drawImage(backgroundImg, 0, 0, backgroundImg.width, backgroundImg.height);
+			backCtx.globalAlpha = 1;
 			// console.log("repaintBack result: " + result.Name);	
 		},
 
 		destroy: function() {
 			sandBox.hide(container);
+			container.removeChild(frontCanvas);
+			container.removeChild(backCanvas);
 		}
 	};
 });

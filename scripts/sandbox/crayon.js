@@ -80,6 +80,9 @@ Core.registerModule("crayon", function(sandBox) {
 
 		destroy: function() {
 			sandBox.hide(container);
+			for(var i = 0; i < divPenList.length; i++) {
+				container.removeChild(divPenList[i]);
+			}
 		}
 	};
 });

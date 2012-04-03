@@ -44,6 +44,7 @@ var toggleMenu = function () {
         <div id="crayon"></div>
         <div id="stamp"></div>
         <div id="brushSize"></div>
+        <div id="undo"></div>
         <div id="pieMenu">
             <div id="save" onclick="toggleMenu()"></div>
             <div id="guess" onclick="toggleMenu(); game.loadModule('part3');"></div>
@@ -63,6 +64,7 @@ var toggleMenu = function () {
     <script type="text/javascript" src="scripts/sandbox/crayon.js"></script>
     <script type="text/javascript" src="scripts/sandbox/stamp.js"></script>
     <script type="text/javascript" src="scripts/sandbox/brushSize.js"></script>
+    <script type="text/javascript" src="scripts/sandbox/undo.js"></script>
     <script type="text/javascript">
         Core.stopAll();
         Core.start("drawShape");
