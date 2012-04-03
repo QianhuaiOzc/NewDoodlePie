@@ -153,6 +153,7 @@ Core.registerModule("drawShape", function(sandBox) {
                             // Core.stop("drawShape");
                             Core.stopAll();
                             Core.start("drawPicture", src);
+                            Core.start("pieMenu");
                             Core.start("crayon");
         					Core.start("brushSize");
                             Core.start("stamp");

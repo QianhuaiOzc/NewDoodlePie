@@ -51,6 +51,10 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 			sandBox.listen( { "stampChange": this.stampChange } );
 			sandBox.listen( { "colorChange": this.colorChange } );
 			sandBox.listen( { "brushSizeChange": this.brushSizeChange } );
+			sandBox.listen( { "save": this.save } );
+
+			setTimeout(this.repaintFront, 50);
+			setTimeout(this.repaintBack, 50);
 		},
 
 		mouseDown: function() {
@@ -74,7 +78,7 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 						stamp: null
 					};
 				}
-				console.log(currentPath);
+				// console.log(currentPath);
 			};
 		},
 
@@ -139,6 +143,16 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 				parent.repaintBack();
 				// console.log("reset");
 			};
+		},
+
+		save: function() {
+			try {
+				backCtx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
+                var dataUrl = backCanvas.toDataURL("image/png");
+                window.open(dataUrl);
+            } catch (ex) {
+                console.log(ex);
+            }
 		},
 		
 		repaintFront: function() {

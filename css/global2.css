@@ -37,7 +37,6 @@
     top: 682px;
     width: 126px;
     height: 86px;
-    display: none;
 }
 
 #save.disable {
@@ -53,7 +52,6 @@
     top: 577px;
     width: 110px;
     height: 99px;
-    display: none;
 }
 
 #guess.disable {
@@ -69,7 +67,6 @@
     top: 518px;
     width: 103px;
     height: 105px;
-    display: none;
 }
 
 #fill.disable {
@@ -85,7 +82,6 @@
     top: 481px;
     width: 110px;
     height: 118px;
-    display: none;
 }
 
 #blackboard.disable {
@@ -101,7 +97,6 @@
     top: 503px;
     width: 101px;
     height: 100px;
-    display: none;
 }
 
 #magic.disable {
@@ -121,7 +116,7 @@
     position: absolute;
     left: 132px;
     top: 118px;
-    border: #000 solid 1px;
+    /*border: #000 solid 1px;*/
     z-index: 2;
 }
 
@@ -129,7 +124,7 @@
     position: absolute;
     left: 132px;
     top: 118px;
-    border: #000 solid 1px;
+    /*border: #000 solid 1px;*/
     z-index: 1;
 }
 

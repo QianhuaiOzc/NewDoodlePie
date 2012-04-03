@@ -13,7 +13,7 @@
 <script type="text/javascript" src="scripts/jquery.lightbox-0.5.js"></script>
 <script type="text/javascript" src="scripts/hoverable_touchable.js"></script>
 <script type="text/javascript" src="scripts/dollar.js"></script>
-<script type="text/javascript" src="scripts/game.js"></script>
+<!-- <script type="text/javascript" src="scripts/game.js"></script> -->
 <script>
 $.extend($.support, { touch: "ontouchend" in document });
 /*
@@ -25,7 +25,7 @@ $(document).ready(function () {
     }
     game.loadModule("drawShape");
 });
-*/
+
 var toggleMenu = function () {
     $("#save").toggle();
     $("#guess").toggle();
@@ -33,6 +33,7 @@ var toggleMenu = function () {
     $("#blackboard").toggle();
     $("#magic").toggle();
 }
+*/
 </script>
 
 </head>
@@ -46,19 +47,20 @@ var toggleMenu = function () {
         <div id="brushSize"></div>
         <div id="undo"></div>
         <div id="pieMenu">
-            <div id="save" onclick="toggleMenu()"></div>
-            <div id="guess" onclick="toggleMenu(); game.loadModule('part3');"></div>
-            <div id="fill" onclick="toggleMenu(); game.loadModule('fill');"></div>
-            <div id="blackboard" onclick="toggleMenu(); game.loadModule('backboard');"></div>
-            <div id="magic" class="disable" href="images/magic-next.png"></div>
-            <div id="pie" onclick="toggleMenu()"></div>
+            <div id="save"></div>
+            <div id="guess"></div>
+            <div id="fill"></div>
+            <div id="blackboard"></div>
+            <div id="magic" class="disable"></div>
+            <div id="pie"></div>
         </div>
-        <div id="home" onclick="game.loadModule('drawShape');"></div>
+        <div id="home" onclick="Core.stopAll(); Core.start('drawShape'); Core.start('crayon'); Core.start('brushSize');"></div>
     </div>
 
     <script type="text/javascript" src="scripts/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="scripts/sandbox/core.js"></script>
     <script type="text/javascript" src="scripts/sandbox/sandbox.js"></script>
+    <script type="text/javascript" src="scripts/sandbox/pieMenu.js"></script>
     <script type="text/javascript" src="scripts/sandbox/drawShape.js"></script>
     <script type="text/javascript" src="scripts/sandbox/drawPicture.js"></script>
     <script type="text/javascript" src="scripts/sandbox/crayon.js"></script>
@@ -71,16 +73,5 @@ var toggleMenu = function () {
         Core.start("crayon");
         Core.start("brushSize");
     </script>
-    <!--
-    <script src="scripts/jquery-crayon.js"></script>
-
-    <script src="scripts/menu.js"></script>
-    <script src="scripts/drawShape.js"></script>
-    <script src="scripts/drawPicture.js"></script>
-    <script src="scripts/part3.js"></script>
-    <script src="scripts/fill.js"></script>
-    <script src="scripts/paint.js"></script>
-    <script src="scripts/backboard.js"></script>
-    -->
 </body>
 </html>
