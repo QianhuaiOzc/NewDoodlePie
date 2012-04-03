@@ -43,12 +43,9 @@ Core.registerModule("pieMenu", function(sandBox) {
 			};
 
 			fillDiv.onclick = function() {
-				Core.stopAll();
-				Core.start("painting");
-				Core.start("crayon");
-				Core.start("brushSize");
-				Core.start("undo");
-				Core.start("pieMenu");
+				sandBox.notify({
+					"type": "openPainting"
+				});
 			}
 		},
 
