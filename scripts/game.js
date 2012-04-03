@@ -31,57 +31,15 @@ var refreshLevel = function () {
 var game = {
     level: 1,
 
-    init: function(main) {
-        this._main = main;
-        this._frontCanvas = $("<canvas></canvas>").appendTo(main);
-        this._backCanvas = $("<canvas></canvas>").appendTo(main);
-        this._frontCanvas.css({
-            position: "absolute",
-            left: 132,
-            top: 120,
-            "z-index": 2
-        });
-        this._frontCanvas.attr({
-            width: 800,
-            height: 600
-        });
-        this._backCanvas.css({
-            position: "absolute",
-            left: 132,
-            top: 120,
-            "z-index": 1
-        });
-        this._backCanvas.attr({
-            width: 800,
-            height: 600
-        });
-        this.loadModule("drawShape");
-    },
-
     loadModule: function (name, args) {
         if (this._currModule) {
             this._currModule.dispose();
         }
 
-        this.clearCanvas();
-
         this._currModule = modules[name];
         this._currModule.init({
-            main: this._main,
-            frontCanvas: this._frontCanvas,
-            backCanvas: this._backCanvas,
             argument: args
         });
-    },
-
-    clearCanvas: function() {
-
-        var frontCanvas = this._frontCanvas.get(0);
-        var backCanvas = this._backCanvas.get(0);
-        var frontCtx = frontCanvas.getContext("2d");
-        var backCtx = backCanvas.getContext("2d");
-        frontCtx.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
-        backCtx.clearRect(0, 0, backCanvas.width, backCanvas.height);
     },
 
     shapeUsed: function (name) {

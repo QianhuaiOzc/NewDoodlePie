@@ -3,10 +3,13 @@
     var main;
     var img;
     var imgs = [];
+    var canvases = new Array(2);
     var stampsList = [ "ball", "flower", "heart", "music", "star" ];
 
     function init(options) {
-        main = options.main;
+        main = $("#main");
+        main.empty();
+
         img = new Image();
         img.src = options.argument + ".png";
         for(var i = 0; i < stampsList.length; i++) {
@@ -16,9 +19,22 @@
             imgs[imgPath] = stampImage;
         }
         $("#pieMenu").show();
-        
-        var frontCanvas = options.frontCanvas.get(0);
-        var backCanvas = options.backCanvas.get(0);
+
+        for(var i = 0; i < canvases.length; i++) {
+            canvases[i] = $("<canvas></canvas>").appendTo(main);
+            canvases[i].css({
+                position: "absolute",
+                left: 132,
+                top: 120,
+                "z-index": (i+1)
+            });
+            canvases[i].attr({
+                width: 800,
+                height: 600
+            });
+        }
+        var frontCanvas = canvases[1].get(0);
+        var backCanvas = canvases[0].get(0);
         var frontCtx = frontCanvas.getContext("2d");
         var backCtx = backCanvas.getContext("2d");
         var textureImage = new Image();
@@ -31,13 +47,17 @@
         var currStamp;
 
         var undo = function() {
+            // console.log(pathes.length);
             if(pathes.length > 0) {
                 pathes.pop();
             }
+            repaintFront();
             repaintBack();
         };
         var reset = function() {
             pathes.length = 0;
+            currPath = null;
+            repaintFront();
             repaintBack();
         };
         var sizeSelected = function(size) {
@@ -45,7 +65,7 @@
         }
         var colorSelected = function(color) {
             currColor = color;
-        }
+        }   
         var stampSelected = function(stamp) {
             currStamp = stamp;
         }
@@ -82,9 +102,12 @@
         });
 
         $(frontCanvas).mouseup(function(e) {
-            isDrawing = false;
-            pathes.push(currPath);
-            repaintBack();
+            if(isDrawing == true || currStamp) {
+                isDrawing = false;
+                pathes.push(currPath);
+                // console.log(pathes.length);
+                repaintBack();
+            }
         });
 
         $(frontCanvas).mousemove(function(e) {
@@ -98,27 +121,26 @@
         });
 
         $(frontCanvas).mouseleave(function(e) {
-            isDrawing = false;
-            pathes.push(currPath);
-            repaintBack();
+            if(isDrawing == true) {
+                isDrawing = false;
+                pathes.push(currPath);
+                console.log(pathes.length);
+                repaintBack();
+            }
         });
 
         var touchCanvas = $(frontCanvas).Touchable();
         touchCanvas.bind("touchablemove", function(e, touch) {
-            //console.log(touch);
         });
         touchCanvas.bind("touchableend", function(e, touch) {
-            //console.log(touch);
         });
         touchCanvas.bind("tap", function(e, touch) {
-            //console.log(touch);
         });
 
         frontCanvas.addEventListener("touchstart", function(e) {
         });
 
         frontCanvas.addEventListener("touchmove", function(e) {
-
         });
 
         frontCanvas.addEventListener("touchend", function(e) {});
@@ -126,7 +148,11 @@
         var repaintFront = function() {
             frontCtx.fillStyle = "rgba(255, 255, 255, 0)";
             frontCtx.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
-            var lineImg = new Image();
+
+            if(!currPath || currPath.stamp) {
+                frontCtx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);        
+                return ; 
+            }
 
             frontCtx.beginPath();
             frontCtx.strokeStyle = "#" + currPath.color;
@@ -141,7 +167,7 @@
             }
             frontCtx.stroke();
             frontCtx.closePath();
-            frontCtx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
+            frontCtx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);        
         };
 
         var repaintBack = function() {
