@@ -54,8 +54,59 @@ Core.registerModule("drawShape", function(sandBox) {
 			frontCanvas.onmouseout = this.mouseLeave();
 			frontCanvas.onmousemove = this.mouseMove();
 
+			if(sandBox.touchable()) {
+				frontCanvas.addEventListener("touchstart", this.touchStart());
+				frontCanvas.addEventListener("touchmove", this.touchMove());
+				frontCanvas.addEventListener("touchend", this.touchEnd());
+			}
+
 			sandBox.listen({ "colorChange": this.colorChange });
 			sandBox.listen({ "brushSizeChange" : this.brushSizeChange });
+		},
+
+		touchStart: function() {
+			var parent = this;
+			return function(evt) {
+				if(isDone == false) {
+					isDrawing = true;
+					currentPath = {
+						color: currentColor,
+						size: currentSize,
+						points: [{
+							X: evt.targetTouches[0].pageX - frontCanvas.offsetLeft,
+							Y: evt.targetTouches[0].pageY - frontCanvas.offsetTop
+						}]
+					};
+				}
+				var touchList = evt.targetTouches
+			};
+		},
+
+		touchMove: function() {
+			var parent = this;
+			return function(evt) {
+				evt.preventDefault();
+				if(isDrawing == true) {
+					currentPath.points.push( {
+						X: evt.targetTouches[0].pageX - frontCanvas.offsetLeft,
+						Y: evt.targetTouches[0].pageY - frontCanvas.offsetTop
+					} );
+					parent.repaintFront();
+				}
+			};
+		},
+
+		touchEnd: function() {
+			var parent = this;
+			return function(evt) {
+				if(isPaint == false && isDrawing == true) {
+					isDone = true;
+					isDrawing = false;
+					pathes.push(currentPath);
+					result = recognizer.Recognize(currentPath.points, true);
+					parent.repaintBack();
+				}	
+			};
 		},
 
 		mouseDown: function() {
@@ -72,7 +123,6 @@ Core.registerModule("drawShape", function(sandBox) {
 						} ]	
 					};
 				}
-			// console.log("frontCanvas mouse down");
 			};
 		},
 
@@ -87,7 +137,6 @@ Core.registerModule("drawShape", function(sandBox) {
 					parent.repaintBack();
 				}	
 			};
-			// console.log("frontCanvas mouse leave");
 		},
 
 		mouseMove: function() {
@@ -101,17 +150,14 @@ Core.registerModule("drawShape", function(sandBox) {
 					parent.repaintFront();
 				}
 			};
-			// console.log("frontCanvas mouse move");
 		},
 
 		colorChange: function(color) {
 			currentColor = color;
-			// console.log("color change: " + color);
 		},
 
 		brushSizeChange: function(size) {
 			currentSize = size;
-			// console.log("brush size change: " + size);
 		},
 		
 		repaintFront: function() {
@@ -132,7 +178,6 @@ Core.registerModule("drawShape", function(sandBox) {
             frontCtx.stroke();
             frontCtx.closePath();
             frontCtx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
-			// console.log("repaintFront");
 		},
 
 		repaintBack: function() {
@@ -161,29 +206,12 @@ Core.registerModule("drawShape", function(sandBox) {
                     }
                 }, 50);
             }
-			// console.log("repaintBack result: " + result.Name);	
 		},
 
 		destroy: function() {
 			sandBox.hide(container);
 			container.removeChild(frontCanvas);
 			container.removeChild(backCanvas);
-			// delete frontCanvas;
-			// delete backCanvas;
-			// delete frontCtx;
-			// delete backCtx;
-			// delete currentColor; 
-			// delete currentSize; 
-			// delete currentPath;
-			// delete pathes;
-			// delete isDrawing; 
-			// delete isDone;
-			// delete isPaint;
-			// delete textureImage;
-			// delete shapeGroup;
-		 //    delete recognizer;
-   //  		delete result;
-    		// console.log("destroy drawShape");
 		}
 	}
 });

@@ -51,7 +51,6 @@ Core.registerModule("blackboardCanvas", function(sandBox) {
 							Y: e.offsetY	
 						} ]
 					};
-				// console.log(currentPath);
 			};
 		},
 

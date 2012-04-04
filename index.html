@@ -13,15 +13,26 @@
 <script type="text/javascript" src="scripts/jquery.lightbox-0.5.js"></script>
 <script type="text/javascript" src="scripts/hoverable_touchable.js"></script>
 <script type="text/javascript" src="scripts/dollar.js"></script>
-<!-- <script type="text/javascript" src="scripts/game.js"></script> -->
-<script>
+<script type="text/javascript">
 $.extend($.support, { touch: "ontouchend" in document });
+$(document).ready(function () {
+    /*
+    if($.support.touch) {  // --> check the visitor's device touchable
+        $("body").html("<span>Your browser does not support touch</span>")
+    }
+    */
+    document.body.addEventListener("touchmove", function(e) {
+        e.preventDefault();
+    }, false);
+    document.body.addEventListener("touchstart", function(evt) {
+        evt.preventDefault();
+    }, false);
+});
 </script>
 
 </head>
 <body>
     <div id="container">
-        <!-- <div id="main"></div> -->
         <div id="drawShape"></div>
         <div id="drawPicture"></div>
         <div id="blackboardCanvas"></div>

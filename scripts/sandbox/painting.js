@@ -55,7 +55,6 @@ Core.registerModule("painting", function(sandBox) {
 							Y: e.offsetY	
 						} ]
 					};
-				// console.log(currentPath);
 			};
 		},
 
@@ -69,7 +68,6 @@ Core.registerModule("painting", function(sandBox) {
 				currentPath = null;
 				parent.repaintFront();
 				parent.repaintBack();
-				// console.log(pathes);
 			};
 			
 		},
@@ -83,7 +81,6 @@ Core.registerModule("painting", function(sandBox) {
 						Y: e.offsetY
 					} );
 					parent.repaintFront();
-					// console.log(currentPath);
 				}
 			};
 		},
@@ -101,7 +98,6 @@ Core.registerModule("painting", function(sandBox) {
 			return function() {
 				pathes.pop();
 				parent.repaintBack();
-				// console.log("undo");
 			};
 		},
 
@@ -110,7 +106,6 @@ Core.registerModule("painting", function(sandBox) {
 			return function() {
 				pathes.length = 0;
 				parent.repaintBack();
-				// console.log("reset");
 			};
 		},
 
@@ -142,8 +137,6 @@ Core.registerModule("painting", function(sandBox) {
 	            frontCtx.stroke();
 	            frontCtx.closePath();
             }
-            
-			// console.log("repaintFront");
 		},
 
 		repaintBack: function() {
@@ -169,8 +162,6 @@ Core.registerModule("painting", function(sandBox) {
 			}
 
 			backCtx.drawImage(backgroundImg, 0, 0, backgroundImg.width, backgroundImg.height);
-
-			// console.log("repaintBack result: " + result.Name);	
 		},
 
 		destroy: function() {

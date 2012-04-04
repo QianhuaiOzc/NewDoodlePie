@@ -164,6 +164,9 @@
 		$(elem).css(name, value);
 	}
 
+	SandBox.prototype.touchable = function() {
+		return ($.support.touch);
+	}
 	/**
 	 * get cookie by name
 	 * 
