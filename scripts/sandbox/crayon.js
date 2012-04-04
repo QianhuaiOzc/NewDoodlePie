@@ -74,7 +74,7 @@ Core.registerModule("crayon", function(sandBox) {
 			if(stamp != null) {
 				sandBox.removeClass(selectedDivPen, "selected");
 				sandBox.addClass(selectedDivPen, "unselected");
-				console.log("clear color");	
+				// console.log("clear color");	
 			}
 		},
 

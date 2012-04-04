@@ -5,7 +5,7 @@ Core.registerModule("controller", function(sandBox) {
 		"drawShape": ["drawShape", "crayon", "brushSize"],
 		"drawPicture": ["drawPicture", "crayon", "brushSize", "undo", "pieMenu", "stamp"],
 		"painting": ["painting", "crayon", "brushSize", "undo", "pieMenu"],
-		"blackboard": ["blackboard", "chalk", "brushSize", "undo", "pieMenu"]
+		"blackboard": ["blackboardCanvas", "chalk", "brushSize", "undo", "pieMenu"]
 	};
 	var currentModule = null;
 
@@ -62,7 +62,15 @@ Core.registerModule("controller", function(sandBox) {
 		}, 
 
 		openBlackboard: function() {
-			
+			var stopModules = moduleMap[currentModule];
+			for(var i = 0; i < stopModules.length; i++) {
+				Core.stop(stopModules[i]);
+			}
+			var startModules = moduleMap["blackboard"];
+			for(var i = 0; i < startModules.length; i++) {
+				Core.start(startModules[i]);
+			}
+			currentModule = "blackboard";
 		},
 		
 		destroy: function() {}

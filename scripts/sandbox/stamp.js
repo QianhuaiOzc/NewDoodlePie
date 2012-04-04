@@ -50,7 +50,7 @@ Core.registerModule("stamp", function(sandBox) {
 		},
 
 		clearStamp: function() {
-			console.log("clear stamp");
+			// console.log("clear stamp");
 
 			if(selectedStamp) {
 				sandBox.removeClass(selectedStamp, "selected");

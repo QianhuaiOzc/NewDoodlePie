@@ -154,20 +154,18 @@ Core.registerModule("painting", function(sandBox) {
 
 				
 		    	backCtx.beginPath();
-                    backCtx.strokeStyle = "#" + path.color;
-                    backCtx.lineWidth = path.size;
-                    backCtx.lineCap = "round";
-                    backCtx.lineJoin = "round";
-                    backCtx.moveTo(path.points[0].X, path.points[0].Y);
+                backCtx.strokeStyle = "#" + path.color;
+                backCtx.lineWidth = path.size;
+                backCtx.lineCap = "round";
+                backCtx.lineJoin = "round";
+                backCtx.moveTo(path.points[0].X, path.points[0].Y);
 
-                    for(var j = 1; j < path.points.length; j++) {
-            	        backCtx.lineTo(path.points[j].X, path.points[j].Y);
-                    }
+                for(var j = 1; j < path.points.length; j++) {
+            		backCtx.lineTo(path.points[j].X, path.points[j].Y);
+                }
 
-                    backCtx.stroke();
-                    backCtx.closePath();
-
-                
+                backCtx.stroke();
+                backCtx.closePath();
 			}
 
 			backCtx.drawImage(backgroundImg, 0, 0, backgroundImg.width, backgroundImg.height);

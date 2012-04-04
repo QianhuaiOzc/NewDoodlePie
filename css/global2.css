@@ -210,3 +210,18 @@
     left: 98px;
     z-index: 3;
 }
+
+.chalkPen {
+    position: absolute;
+    height: 40px;
+    width: 238px;
+    border: solid 1px red;
+}
+
+    .chalkPen.unselected {
+        left: -138px;
+    }
+
+    .chalkPen.selected {
+        left: -100px;
+    }

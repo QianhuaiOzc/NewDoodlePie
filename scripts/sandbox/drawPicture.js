@@ -93,10 +93,9 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 					isDrawing = false;
 					pathes.push(currentPath);
 				}
+				parent.paintBackIncr();
 				currentPath = null;
 				parent.repaintFront();
-				parent.repaintBack();
-				// console.log(pathes);
 			};
 			
 		},
@@ -191,7 +190,7 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
                     var stampImg = stampImgs[path.stamp];
                     backCtx.drawImage(stampImg, path.X - stampImg.width/2, path.Y - stampImg.height/2);
                 } else if(path) {
-		    backCtx.beginPath();
+		    		backCtx.beginPath();
                     backCtx.strokeStyle = "#" + path.color;
                     backCtx.lineWidth = path.size;
                     backCtx.lineCap = "round";
@@ -212,6 +211,25 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 			backCtx.drawImage(backgroundImg, 0, 0, backgroundImg.width, backgroundImg.height);
 			backCtx.globalAlpha = 1;
 			// console.log("repaintBack result: " + result.Name);	
+		},
+
+		paintBackIncr: function() {
+			if(currentPath && currentPath.stamp) {
+				var stampImg = stampImgs[currentPath.stamp];
+				backCtx.drawImage(stampImg, currentPath.X - stampImg.width/2, currentPath.Y - stampImg.height/2);
+			} else if(currentPath) {
+				backCtx.beginPath();
+				backCtx.strokeStyle = "#" + currentPath.color;
+				backCtx.lineWidth = currentPath.size;
+				backCtx.lineCap = "round";
+				backCtx.lineJoin = "round";
+				backCtx.moveTo(currentPath.points[0].X, currentPath.points[0].Y);
+				for(var i = 0; i < currentPath.points.length; i++) {
+					backCtx.lineTo(currentPath.points[i].X, currentPath.points[i].Y);
+				}
+				backCtx.stroke();
+				backCtx.closePath();		
+			}
 		},
 
 		destroy: function() {
