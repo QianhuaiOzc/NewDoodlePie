@@ -34,6 +34,12 @@ Core.registerModule("painting", function(sandBox) {
 			frontCanvas.onmouseout = this.mouseLeave();
 			frontCanvas.onmousemove = this.mouseMove();
 
+			if(sandBox.touchable()) {
+				frontCanvas.addEventListener("touchstart", this.touchStart());
+				frontCanvas.addEventListener("touchmove", this.touchMove());
+				frontCanvas.addEventListener("touchend", this.touchEnd());
+			}
+
 			sandBox.listen( { "undo": this.undo() } );
 			sandBox.listen( { "reset": this.reset() } );
 			sandBox.listen( { "colorChange": this.colorChange } );
@@ -41,6 +47,48 @@ Core.registerModule("painting", function(sandBox) {
 			sandBox.listen( { "save": this.save } );
 
 			setTimeout(this.repaintBack, 50);
+		},
+
+		touchStart: function() {
+			var parent = this;
+			return function(evt) {
+				isDrawing = true;
+					currentPath = {
+						color: currentColor,
+						size: currentSize,
+						points: [ {
+							X: evt.targetTouches[0].pageX - frontCanvas.offsetLeft,
+						Y: evt.targetTouches[0].pageY - frontCanvas.offsetTop
+						} ]
+					};
+			};
+		},
+
+		touchMove: function() {
+			var parent = this;
+			return function(evt) {
+				evt.preventDefault();
+				if(isDrawing == true) {
+					currentPath.points.push( {
+						X: evt.targetTouches[0].pageX - frontCanvas.offsetLeft,
+						Y: evt.targetTouches[0].pageY - frontCanvas.offsetTop
+					} );
+					parent.repaintFront();
+				}
+			};
+		},
+
+		touchEnd: function() {
+			var parent = this;
+			return function(evt) {
+				if(isDrawing == true) {
+					isDrawing = false;
+					pathes.push(currentPath);
+				}
+				currentPath = null;
+				parent.repaintFront();
+				parent.repaintBack();
+			};
 		},
 
 		mouseDown: function() {
