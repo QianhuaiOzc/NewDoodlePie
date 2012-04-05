@@ -37,6 +37,9 @@ Core.registerModule("crayon", function(sandBox) {
 	            container.appendChild(divPen);
 	            divPenList.push(divPen);
 	            divPen.onclick = this.onclick();
+	            if(sandBox.touchable()) {
+	            	divPen.addEventListener("touchstart", this.touchStart());
+	        	}
 	        }
 	        selectedDivPen = divPenList[0];
 
@@ -50,6 +53,27 @@ Core.registerModule("crayon", function(sandBox) {
 		},
 
 		onclick: function() {
+			var parent = this;
+			return function(evt) {
+				var selectedDiv = evt.target;
+				if (selectedDivPen) {
+					sandBox.removeClass(selectedDivPen, "selected");
+					sandBox.addClass(selectedDivPen, "unselected");
+	            }
+
+            	selectedDivPen = selectedDiv;
+
+	            sandBox.removeClass(selectedDivPen, "unselected");
+	            sandBox.addClass(selectedDivPen, "selected");
+
+				sandBox.notify({
+		          	"type": "colorChange", 
+		           	"data": selectedDiv.getAttribute("color")
+		        });	
+			};
+		},
+
+		touchStart: function() {
 			var parent = this;
 			return function(evt) {
 				var selectedDiv = evt.target;

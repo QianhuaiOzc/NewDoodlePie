@@ -78,7 +78,6 @@ Core.registerModule("drawShape", function(sandBox) {
 						}]
 					};
 				}
-				var touchList = evt.targetTouches
 			};
 		},
 

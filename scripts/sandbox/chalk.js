@@ -19,6 +19,9 @@ Core.registerModule("chalk", function(sandBox) {
 	            container.appendChild(divPen);
 	            divChalkList.push(divPen);
 	            divPen.onclick = this.onclick();
+	            if(sandBox.touchable()) {
+	            	divPen.addEventListener("touchstart", this.touchStart());
+	        	}
 	        }
 
 	        selectedChalk = divChalkList[0];
@@ -31,6 +34,27 @@ Core.registerModule("chalk", function(sandBox) {
 		},
 
 		onclick: function() {
+			var parent = this;
+			return function(evt) {
+				var chalkPenDiv = evt.target;
+				if(selectedChalk) {
+					sandBox.removeClass(selectedChalk, "selected");
+					sandBox.addClass(selectedChalk, "unselected");
+				}
+
+				selectedChalk = chalkPenDiv;
+
+				sandBox.removeClass(selectedChalk, "unselected");
+				sandBox.addClass(selectedChalk, "selected");
+
+				sandBox.notify({
+					"type": "chalkChange",
+					"data": chalkPenDiv.getAttribute("chalkcolor")
+				});
+			};
+		},
+
+		touchStart: function() {
 			var parent = this;
 			return function(evt) {
 				var chalkPenDiv = evt.target;

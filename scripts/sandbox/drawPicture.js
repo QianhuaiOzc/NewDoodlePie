@@ -46,6 +46,12 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 			frontCanvas.onmouseout = this.mouseLeave();
 			frontCanvas.onmousemove = this.mouseMove();
 
+			if(sandBox.touchable()) {
+				frontCanvas.addEventListener("touchstart", this.touchStart());
+				frontCanvas.addEventListener("touchmove", this.touchMove());
+				frontCanvas.addEventListener("touchend", this.touchEnd());
+			}
+
 			sandBox.listen( { "undo": this.undo() } );
 			sandBox.listen( { "reset": this.reset() } );
 			sandBox.listen( { "stampChange": this.stampChange } );
@@ -55,6 +61,61 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 
 			setTimeout(this.repaintFront, 50);
 			setTimeout(this.repaintBack, 50);
+		},
+
+		touchStart: function() {
+			var parent = this;
+			return function(evt) {
+				if(currentStamp) {
+					currentPath = {
+						stamp: currentStamp,
+						X: evt.targetTouches[0].pageX - frontCanvas.offsetLeft,
+						Y: evt.targetTouches[0].pageY - frontCanvas.offsetTop
+					};
+				} else {
+					isDrawing = true;
+					currentPath = {
+						color: currentColor,
+						size: currentSize,
+						points: [ {
+							X: evt.targetTouches[0].pageX - frontCanvas.offsetLeft,
+							Y: evt.targetTouches[0].pageY - frontCanvas.offsetTop
+						} ],
+						stamp: null
+					};
+				}
+			};
+		},
+
+		touchMove: function() {
+			var parent = this;
+			return function(evt) {
+				evt.preventDefault();
+				if(isDrawing == true) {
+					currentPath.points.push( {
+						X: evt.targetTouches[0].pageX - frontCanvas.offsetLeft,
+						Y: evt.targetTouches[0].pageY - frontCanvas.offsetTop
+					} );
+					parent.repaintFront();
+				}
+			};
+		},
+
+		touchEnd: function() {
+			var parent = this;
+			return function(evt) {
+				if(currentStamp) {
+					if(currentPath != null) {
+						pathes.push(currentPath);	
+					}
+				} else if(isDrawing == true) {
+					isDrawing = false;
+					pathes.push(currentPath);
+				}
+				parent.paintBackIncr();
+				currentPath = null;
+				parent.repaintFront();
+			};
 		},
 
 		mouseDown: function() {

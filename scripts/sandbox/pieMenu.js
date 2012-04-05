@@ -53,6 +53,44 @@ Core.registerModule("pieMenu", function(sandBox) {
 					"type": "openBlackboard"
 				});
 			}
+
+			if(sandBox.touchable()) {
+	           	pieDiv.addEventListener("touchstart", function(evt) {
+	           		if(isShow == true) {
+						sandBox.hide(saveDiv);
+						sandBox.hide(guessDiv);
+						sandBox.hide(blackboardDiv);
+						sandBox.hide(magicDiv);
+						sandBox.hide(fillDiv);
+						isShow = false;
+					} else {
+						sandBox.show(saveDiv);
+						sandBox.show(guessDiv);
+						sandBox.show(fillDiv);
+						sandBox.show(blackboardDiv);
+						sandBox.show(magicDiv);
+						isShow = true;
+					}
+	           	});
+
+	           	saveDiv.addEventListener("touchstart", function() {
+					sandBox.notify( {
+						"type": "save"
+					} );
+				});
+
+				fillDiv.addEventListener("touchstart", function() {
+					sandBox.notify({
+						"type": "openPainting"
+					});
+				});
+
+				blackboardDiv.addEventListener("touchstart", function() {
+					sandBox.notify({
+						"type": "openBlackboard"
+					});
+				});
+	        }
 		},
 
 		destroy: function() {

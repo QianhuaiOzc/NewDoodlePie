@@ -22,6 +22,9 @@ Core.registerModule("stamp", function(sandBox) {
     				
                 stampDivList.push(stampDiv);
                 stampDiv.onclick = this.onclick();
+                if(sandBox.touchable()) {
+	            	stampDiv.addEventListener("touchstart", this.touchStart());
+	        	}
             }
 
             sandBox.listen( { "colorChange" : this.clearStamp } );
@@ -49,6 +52,27 @@ Core.registerModule("stamp", function(sandBox) {
 			};
 		},
 
+		touchStart: function() {
+			var parent = this;
+			return function(evt) {
+				var targetStamp = evt.target;
+
+				if(selectedStamp) {
+					sandBox.removeClass(selectedStamp, "selected");
+					sandBox.addClass(selectedStamp, "unselected");
+				}
+
+				selectedStamp = targetStamp;
+
+				sandBox.removeClass(selectedStamp, "unselected");
+				sandBox.addClass(selectedStamp, "selected");
+
+				sandBox.notify({
+					"type": "stampChange",
+					"data": targetStamp.getAttribute("stamp")
+				});
+			};
+		},
 		clearStamp: function() {
 			// console.log("clear stamp");
 

@@ -24,6 +24,9 @@ Core.registerModule("brushSize", function(sandBox) {
 				container.appendChild(brushDiv);
 				brushSizeDivList.push(brushDiv);
 				brushDiv.onclick = this.onclick();
+				if(sandBox.touchable()) {
+	            	brushDiv.addEventListener("touchstart", this.touchStart());
+	        	}
 			}
 
 			sandBox.css(container, "background-image", "url(images/brush-l.png)");
@@ -47,6 +50,21 @@ Core.registerModule("brushSize", function(sandBox) {
 					"data": target.getAttribute("brushsize")
 				});
 			}
+		},
+
+		touchStart: function() {
+			var parent = this;
+			return function(evt) {
+				var target = evt.target;
+				var brushName = target.getAttribute("brushname");
+				console.log("brushName " + brushName);
+				sandBox.css(sandBox.container, "background-image", "url(images/brush-" + brushName + ".png)");
+
+				sandBox.notify({
+					"type": "brushSizeChange",
+					"data": target.getAttribute("brushsize")
+				});
+			};
 		},
 
 		destroy: function() {

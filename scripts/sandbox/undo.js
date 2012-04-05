@@ -29,6 +29,19 @@ Core.registerModule("undo", function(sandBox) {
 					"type": "reset"		
 				});
 			};
+
+			if(sandBox.touchable()) {
+	           	undoDiv.addEventListener("touchstart", function(evt) {
+	           		sandBox.notify({
+						"type": "undo"
+					});
+	           	});
+	           	resetDiv.addEventListener("touchstart", function(evt) {
+	           		sandBox.notify({
+						"type": "reset"		
+					});
+	           	});
+	        }
 		},
 
 		destroy: function() {

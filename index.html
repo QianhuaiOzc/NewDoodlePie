@@ -16,11 +16,6 @@
 <script type="text/javascript">
 $.extend($.support, { touch: "ontouchend" in document });
 $(document).ready(function () {
-    /*
-    if($.support.touch) {  // --> check the visitor's device touchable
-        $("body").html("<span>Your browser does not support touch</span>")
-    }
-    */
     document.body.addEventListener("touchmove", function(e) {
         e.preventDefault();
     }, false);
@@ -52,7 +47,8 @@ $(document).ready(function () {
         </div>
         <div id="home"></div>
     </div>
-
+    <script type="text/javascript" src="scripts/sandbox/fullscreen.js"></script>
+    <script type="text/javascript" src="scripts/jquery/jquery-fullscreen.js"></script>
     <script type="text/javascript" src="scripts/sandbox/core.js"></script>
     <script type="text/javascript" src="scripts/sandbox/sandbox.js"></script>
     <script type="text/javascript" src="scripts/sandbox/controller.js"></script>
