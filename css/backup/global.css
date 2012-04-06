@@ -7,8 +7,6 @@
     overflow: hidden;
     top: 50%;
     left: 50%;
-    background-image: url(../images/bg.png);
-    cursor: crosshair;
 }
 
 #main {
@@ -37,6 +35,7 @@
     top: 682px;
     width: 126px;
     height: 86px;
+    display: none;
 }
 
 #save.disable {
@@ -52,6 +51,7 @@
     top: 577px;
     width: 110px;
     height: 99px;
+    display: none;
 }
 
 #guess.disable {
@@ -67,6 +67,7 @@
     top: 518px;
     width: 103px;
     height: 105px;
+    display: none;
 }
 
 #fill.disable {
@@ -82,6 +83,7 @@
     top: 481px;
     width: 110px;
     height: 118px;
+    display: none;
 }
 
 #blackboard.disable {
@@ -97,6 +99,7 @@
     top: 503px;
     width: 101px;
     height: 100px;
+    display: none;
 }
 
 #magic.disable {
@@ -115,16 +118,16 @@
 .frontCanvas {
     position: absolute;
     left: 132px;
-    top: 118px;
-    /*border: #000 solid 1px;*/
+    top: 120px;
+    border: #000 solid 1px;
     z-index: 2;
 }
 
 .backCanvas {
     position: absolute;
     left: 132px;
-    top: 118px;
-    /*border: #000 solid 1px;*/
+    top: 120px;
+    border: #000 solid 1px;
     z-index: 1;
 }
 
@@ -156,72 +159,4 @@
         width: 30px;
         height: 30px;
         top: 15px;
-    }
-
-.stampList {
-    position: absolute;
-    background: url(../images/stamps/background.png) no-repeat;
-    top: -50px;
-    left: 180px;
-    height: 188px;
-    width: 736px;
-}
-
-    .stampList .stamp {
-        position: absolute;
-        height: 109px;
-        width: 106px;
-    }
-
-        .stampList .stamp.selected {
-            top: 55px;
-        }
-
-        .stampList .stamp.unselected {
-            top: 35px;
-        }
-
-.undoContainer {
-    z-index: 3;
-    position: absolute;
-    height: 62px;
-    top: 700px;
-    left: 210px;
-}
-
-.undo {
-    position: absolute;
-    width: 83px;                
-    height: 62px;
-    border: "1px solid red";
-    background-image: url(../images/undo.png);
-    top: 0px;
-    left: 0px;
-    z-index: 3;
-}
-
-.reset {
-    position: absolute;
-    width: 83px;
-    height: 62px;
-    border: "1px solid red";
-    background-image: url(../images/reset.png);
-    top: 0px;
-    left: 98px;
-    z-index: 3;
-}
-
-.chalkPen {
-    position: absolute;
-    height: 40px;
-    width: 238px;
-    border: solid 1px red;
-}
-
-    .chalkPen.unselected {
-        left: -138px;
-    }
-
-    .chalkPen.selected {
-        left: -100px;
     }
