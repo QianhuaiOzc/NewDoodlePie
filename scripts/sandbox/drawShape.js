@@ -160,23 +160,24 @@ Core.registerModule("drawShape", function(sandBox) {
 		},
 		
 		repaintFront: function() {
-			frontCtx.fillStyle = "rgba(255, 255, 255, 0)";
-            frontCtx.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
+			var ctx = frontCtx, points = currentPath.points;
+			ctx.fillStyle = "rgba(255, 255, 255, 0)";
+            ctx.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
 
-            frontCtx.beginPath();
-            frontCtx.strokeStyle = "#" + currentPath.color;
-            frontCtx.lineWidth =  currentPath.size;
-            frontCtx.lineJoin = "round";
-            frontCtx.lineCap = "round";
+            ctx.beginPath();
+            ctx.strokeStyle = "#" + currentPath.color;
+            ctx.lineWidth =  currentPath.size;
+            ctx.lineJoin = "round";
+            ctx.lineCap = "round";
 
-            frontCtx.moveTo(currentPath.points[0].X, currentPath.points[0].Y);
+            ctx.moveTo(points[0].X, points[0].Y);
 
-            for(var i = 0; i < currentPath.points.length; i++) {
-                frontCtx.lineTo(currentPath.points[i].X, currentPath.points[i].Y);
+            for(var i = 0; i < points.length; i++) {
+                ctx.lineTo(points[i].X, points[i].Y);
             }
-            frontCtx.stroke();
-            frontCtx.closePath();
-            frontCtx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
+            ctx.stroke();
+            ctx.closePath();
+            ctx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
 		},
 
 		repaintBack: function() {

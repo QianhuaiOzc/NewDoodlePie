@@ -81,13 +81,14 @@ Core.registerModule("painting", function(sandBox) {
 		touchEnd: function() {
 			var parent = this;
 			return function(evt) {
+				var p = parent;
 				if(isDrawing == true) {
 					isDrawing = false;
 					pathes.push(currentPath);
 				}
+				p.paintBackIncr();
 				currentPath = null;
-				parent.repaintFront();
-				parent.repaintBack();
+				p.repaintBack();
 			};
 		},
 
@@ -109,13 +110,14 @@ Core.registerModule("painting", function(sandBox) {
 		mouseLeave: function() {
 			var parent = this;
 			return function(e) {
+				var p = parent;
 				if(isDrawing == true) {
 					isDrawing = false;
 					pathes.push(currentPath);
 				}
+				p.paintBackIncr();
 				currentPath = null;
-				parent.repaintFront();
-				parent.repaintBack();
+				p.repaintBack();
 			};
 			
 		},
@@ -167,49 +169,70 @@ Core.registerModule("painting", function(sandBox) {
 		},
 		
 		repaintFront: function() {
-			frontCtx.fillStyle = "rgba(255, 255, 255, 0)";
-            frontCtx.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
+			var ctx = frontCtx;
+			ctx.fillStyle = "rgba(255, 255, 255, 0)";
+            ctx.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
 
             if(currentPath) {
-            	frontCtx.beginPath();
-	            frontCtx.strokeStyle = "#" + currentPath.color;
-	            frontCtx.lineWidth =  currentPath.size;
-	            frontCtx.lineJoin = "round";
-	            frontCtx.lineCap = "round";
+            	var points = currentPath.points;
+            	ctx.beginPath();
+	            ctx.strokeStyle = "#" + currentPath.color;
+	            ctx.lineWidth =  currentPath.size;
+	            ctx.lineJoin = "round";
+	            ctx.lineCap = "round";
 
-	            frontCtx.moveTo(currentPath.points[0].X, currentPath.points[0].Y);
+	            ctx.moveTo(points[0].X, points[0].Y);
 
-	            for(var i = 0; i < currentPath.points.length; i++) {
-	                frontCtx.lineTo(currentPath.points[i].X, currentPath.points[i].Y);
+	            for(var i = 0; i < points.length; i++) {
+	                ctx.lineTo(points[i].X, points[i].Y);
 	            }
-	            frontCtx.stroke();
-	            frontCtx.closePath();
+	            ctx.stroke();
+	            ctx.closePath();
             }
 		},
 
 		repaintBack: function() {
-			backCtx.clearRect(0, 0, backCanvas.width, backCanvas.height);
+			var ctx = backCtx, localPathes = pathes;
+			ctx.clearRect(0, 0, backCanvas.width, backCanvas.height);
 
 			for(var i = 0; i < pathes.length; i++) {
-				var path = pathes[i];
+				var path = localPathes[i];
+				var points = path.points;
 
 				
-		    	backCtx.beginPath();
-                backCtx.strokeStyle = "#" + path.color;
-                backCtx.lineWidth = path.size;
-                backCtx.lineCap = "round";
-                backCtx.lineJoin = "round";
-                backCtx.moveTo(path.points[0].X, path.points[0].Y);
+		    	ctx.beginPath();
+                ctx.strokeStyle = "#" + path.color;
+                ctx.lineWidth = path.size;
+                ctx.lineCap = "round";
+                ctx.lineJoin = "round";
+                ctx.moveTo(points[0].X, points[0].Y);
 
-                for(var j = 1; j < path.points.length; j++) {
-            		backCtx.lineTo(path.points[j].X, path.points[j].Y);
+                for(var j = 1; j < points.length; j++) {
+            		ctx.lineTo(points[j].X, points[j].Y);
                 }
 
-                backCtx.stroke();
-                backCtx.closePath();
+                ctx.stroke();
+                ctx.closePath();
 			}
 
 			backCtx.drawImage(backgroundImg, 0, 0, backgroundImg.width, backgroundImg.height);
+		},
+
+		paintBackIncr: function() {
+			if(currentPath) {
+				var ctx = backCtx, points = currentPath.points;
+				ctx.beginPath();
+				ctx.strokeStyle = "#" + currentPath.color;
+				ctx.lineWidth = currentPath.size;
+				ctx.lineCap = "round";
+				ctx.lineJoin = "round";
+				ctx.moveTo(points[0].X, points[0].Y);
+				for(var i = 0; i < points.length; i++) {
+					ctx.lineTo(points[i].X, points[i].Y);
+				}
+				ctx.stroke();
+				ctx.closePath();		
+			}
 		},
 
 		destroy: function() {
