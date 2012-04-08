@@ -1,6 +1,6 @@
 Core.registerModule("chalk", function(sandBox) {
 	var container = null;
-	var chalkList = ["ffffff", "29b0d2", "47d329", "d1f800", "986ad7", "fc0400"];
+	var chalkList = ["dfdfdf", "96d0d1", "a4efbc", "f1e08f", "f87cd6", "ff7863"];
 	var divChalkList = [], selectedChalk = null;
 	return {
 		init: function() {
@@ -15,7 +15,7 @@ Core.registerModule("chalk", function(sandBox) {
 	            sandBox.addClass(divPen, "chalkPen");
 	            sandBox.addClass(divPen, "unselected");
 	            sandBox.css(divPen, "top", (150+i*80));
-	            // sandBox.css(divPen, "background-image", "url(images/crayon-pens/" + i + "_" + color + ".png)");
+	            sandBox.css(divPen, "background-image", "url(images/blackboard/" + i + "_" + color + ".png)");
 	            container.appendChild(divPen);
 	            divChalkList.push(divPen);
 	            divPen.onclick = this.onclick();

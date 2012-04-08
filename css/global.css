@@ -7,14 +7,13 @@
     overflow: hidden;
     top: 50%;
     left: 50%;
-    background-image: url(../images/bg.png);
     cursor: crosshair;
 }
 
 #main {
     width: 100%;
     height: 100%;
-    background-image: url(../images/bg.png);
+    /*background-image: url(../images/bg.png);*/
     cursor: crosshair;
 }
 
@@ -213,9 +212,9 @@
 
 .chalkPen {
     position: absolute;
-    height: 40px;
-    width: 238px;
-    border: solid 1px red;
+    height: 54px;
+    width: 218px;
+    /*border: solid 1px red;*/
 }
 
     .chalkPen.unselected {
@@ -225,3 +224,11 @@
     .chalkPen.selected {
         left: -100px;
     }
+
+.blackboard {
+    background-image: url(../images/blackboard/blackboard-bg.png);
+}
+
+.normal {
+    background-image: url(../images/bg.png);
+}

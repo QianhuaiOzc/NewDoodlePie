@@ -52,7 +52,13 @@ Core.registerModule("pieMenu", function(sandBox) {
 				sandBox.notify({
 					"type": "openBlackboard"
 				});
-			}
+			};
+
+			guessDiv.onclick = function() {
+				sandBox.notify({
+					"type": "openGuess"
+				});	
+			};
 
 			if(sandBox.touchable()) {
 	           	pieDiv.addEventListener("touchstart", function(evt) {
