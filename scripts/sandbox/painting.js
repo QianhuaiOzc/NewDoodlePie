@@ -46,7 +46,8 @@ Core.registerModule("painting", function(sandBox) {
 			sandBox.listen( { "brushSizeChange": this.brushSizeChange } );
 			sandBox.listen( { "save": this.save } );
 
-			setTimeout(this.repaintBack, 50);
+			setInterval(this.repaintBack, 100);
+			setInterval(this.repaintFront, 50);
 		},
 
 		touchStart: function() {
@@ -88,7 +89,6 @@ Core.registerModule("painting", function(sandBox) {
 				}
 				p.paintBackIncr();
 				currentPath = null;
-				p.repaintBack();
 			};
 		},
 
@@ -117,7 +117,6 @@ Core.registerModule("painting", function(sandBox) {
 				}
 				p.paintBackIncr();
 				currentPath = null;
-				p.repaintBack();
 			};
 			
 		},

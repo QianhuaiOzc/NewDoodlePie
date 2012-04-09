@@ -96,6 +96,12 @@ Core.registerModule("pieMenu", function(sandBox) {
 						"type": "openBlackboard"
 					});
 				});
+
+				guessDiv.addEventListener("touchstart", function() {
+					sandBox.notify({
+						"type": "openGuess"
+					});
+				});	
 	        }
 		},
 

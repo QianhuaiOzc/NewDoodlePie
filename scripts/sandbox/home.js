@@ -12,6 +12,14 @@ Core.registerModule("home", function(sandBox) {
 					"type": "home"
 				});
 			}
+
+			if(sandBox.touchable()) {
+				container.addEventListener("touchstart", function(evt) {
+					sandBox.notify({
+						"type": "home"
+					});
+				});
+			}
 		},
 		destroy: function() {}
 	};
