@@ -60,7 +60,6 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 			sandBox.listen( { "brushSizeChange": this.brushSizeChange } );
 			sandBox.listen( { "save": this.save } );
 
-			// setTimeout(this.repaintFront, 50);
 			setInterval(this.repaintBack, 100);
 			setInterval(this.repaintFront, 50);
 		},
@@ -98,7 +97,6 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 						X: evt.targetTouches[0].pageX - frontCanvas.offsetLeft,
 						Y: evt.targetTouches[0].pageY - frontCanvas.offsetTop
 					} );
-					// parent.repaintFront();
 				}
 			};
 		},
@@ -170,7 +168,6 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 						X: e.offsetX,
 						Y: e.offsetY
 					} );
-					// parent.repaintFront();
 				}
 			};
 		},

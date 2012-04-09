@@ -1,4 +1,4 @@
-Core.registerMdule("magic", function(sandBox) {
+Core.registerModule("magic", function(sandBox) {
 	
 	var container = null;
 	

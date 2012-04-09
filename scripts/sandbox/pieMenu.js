@@ -12,97 +12,74 @@ Core.registerModule("pieMenu", function(sandBox) {
 			blackboardDiv = sandBox.find("#blackboard");
 			magicDiv = sandBox.find("#magic");
 			pieDiv = sandBox.find("#pie");
+			this.hideAll();			
+
+			pieDiv.addEventListener("click", this.toggleMenu());
+			saveDiv.addEventListener("click", this.notifySave);
+			fillDiv.addEventListener("click", this.notifyPainting);
+			blackboardDiv.addEventListener("click", this.notifyBlackboard);
+			guessDiv.addEventListener("click", this.notifyGuess);
+
+			if(sandBox.touchable()) {
+	           	pieDiv.addEventListener("touchstart", this.toggleMenu());
+	           	saveDiv.addEventListener("touchstart", this.notifySave);
+				fillDiv.addEventListener("touchstart", this.notifyPainting);
+				blackboardDiv.addEventListener("touchstart", this.notifyBlackboard);
+				guessDiv.addEventListener("touchstart", this.notifyGuess);	
+	        }
+		},
+
+		notifySave: function() {
+			sandBox.notify( {
+				"type": "save"
+			} );
+		},
+
+		notifyPainting: function() {
+			sandBox.notify({
+				"type": "openPainting"
+			});
+		},
+
+		notifyBlackboard: function() {
+			sandBox.notify({
+				"type": "openBlackboard"
+			});
+		},
+
+		notifyGuess: function() {
+			sandBox.notify({
+				"type": "openGuess"
+			});
+		},
+
+		toggleMenu: function() {
+			var parent = this;
+			return function() {
+				if(isShow == true) {
+					parent.hideAll();
+					isShow = false;
+				} else {
+					parent.showAll();
+					isShow = true;
+				}	
+			};
+		},
+
+		hideAll: function() {
 			sandBox.hide(saveDiv);
 			sandBox.hide(guessDiv);
 			sandBox.hide(blackboardDiv);
 			sandBox.hide(magicDiv);
 			sandBox.hide(fillDiv);
+		},
 
-			pieDiv.onclick = function() {
-				if(isShow == true) {
-					sandBox.hide(saveDiv);
-					sandBox.hide(guessDiv);
-					sandBox.hide(blackboardDiv);
-					sandBox.hide(magicDiv);
-					sandBox.hide(fillDiv);
-					isShow = false;
-				} else {
-					sandBox.show(saveDiv);
-					sandBox.show(guessDiv);
-					sandBox.show(fillDiv);
-					sandBox.show(blackboardDiv);
-					sandBox.show(magicDiv);
-					isShow = true;
-				}
-			};
-
-			saveDiv.onclick = function() {
-				sandBox.notify( {
-					"type": "save"
-				} );
-			};
-
-			fillDiv.onclick = function() {
-				sandBox.notify({
-					"type": "openPainting"
-				});
-			};
-
-			blackboardDiv.onclick = function() {
-				sandBox.notify({
-					"type": "openBlackboard"
-				});
-			};
-
-			guessDiv.onclick = function() {
-				sandBox.notify({
-					"type": "openGuess"
-				});	
-			};
-
-			if(sandBox.touchable()) {
-	           	pieDiv.addEventListener("touchstart", function(evt) {
-	           		if(isShow == true) {
-						sandBox.hide(saveDiv);
-						sandBox.hide(guessDiv);
-						sandBox.hide(blackboardDiv);
-						sandBox.hide(magicDiv);
-						sandBox.hide(fillDiv);
-						isShow = false;
-					} else {
-						sandBox.show(saveDiv);
-						sandBox.show(guessDiv);
-						sandBox.show(fillDiv);
-						sandBox.show(blackboardDiv);
-						sandBox.show(magicDiv);
-						isShow = true;
-					}
-	           	});
-
-	           	saveDiv.addEventListener("touchstart", function() {
-					sandBox.notify( {
-						"type": "save"
-					} );
-				});
-
-				fillDiv.addEventListener("touchstart", function() {
-					sandBox.notify({
-						"type": "openPainting"
-					});
-				});
-
-				blackboardDiv.addEventListener("touchstart", function() {
-					sandBox.notify({
-						"type": "openBlackboard"
-					});
-				});
-
-				guessDiv.addEventListener("touchstart", function() {
-					sandBox.notify({
-						"type": "openGuess"
-					});
-				});	
-	        }
+		showAll: function() {
+			sandBox.show(saveDiv);
+			sandBox.show(guessDiv);
+			sandBox.show(fillDiv);
+			sandBox.show(blackboardDiv);
+			sandBox.show(magicDiv);
 		},
 
 		destroy: function() {
