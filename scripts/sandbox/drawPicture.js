@@ -47,7 +47,7 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 			var stampImg = stampImgs[currentPath.stamp];
 			ctx.drawImage(stampImg, currentPath.X - stampImg.width/2, currentPath.Y - stampImg.height/2);
 		} else if(currentPath) {
-			sandBox.drawAPath(ctx, path);	
+			sandBox.drawAPath(ctx, currentPath);	
 		}
 	};
 

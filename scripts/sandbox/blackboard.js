@@ -6,6 +6,31 @@ Core.registerModule("blackboardCanvas", function(sandBox) {
 	var pathes = [];
 	var isDrawing = false;
 	
+	var repaintFront = function() {
+		var ctx = frontCtx;
+		ctx.fillStyle = "rgba(255, 255, 255, 0)";
+        ctx.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
+        if(currentPath) {
+          	sandBox.drawAPath(ctx, currentPath);
+        }
+	};
+
+	var repaintBack = function() {
+		var ctx = backCtx, localPathes = pathes;
+		ctx.clearRect(0, 0, backCanvas.width, backCanvas.height);
+		for(var i = 0; i < pathes.length; i++) {
+			var path = localPathes[i];
+			sandBox.drawAPath(ctx, path);
+		}
+	};
+
+	var paintBackIncr = function() {
+		if(currentPath) {
+			var ctx = backCtx, points = currentPath.points;
+			sandBox.drawAPath(ctx, currentPath);		
+		}
+	};
+
 	return {
 		
 		init: function() {
@@ -26,107 +51,58 @@ Core.registerModule("blackboardCanvas", function(sandBox) {
 			backCtx = backCanvas.getContext("2d");
 
 
-			frontCanvas.onmousedown = this.mouseDown();
-			frontCanvas.onmouseup = this.mouseLeave();
-			frontCanvas.onmouseout = this.mouseLeave();
-			frontCanvas.onmousemove = this.mouseMove();
+			frontCanvas.onmousedown = this.drawStart;
+			frontCanvas.onmouseup = this.drawStop;
+			frontCanvas.onmouseout = this.drawStop;
+			frontCanvas.onmousemove = this.drawing;
 
 			if(sandBox.touchable()) {
-				frontCanvas.addEventListener("touchstart", this.touchStart());
-				frontCanvas.addEventListener("touchmove", this.touchMove());
-				frontCanvas.addEventListener("touchend", this.touchEnd());
+				frontCanvas.addEventListener("touchstart", this.drawStart);
+				frontCanvas.addEventListener("touchmove", this.drawing);
+				frontCanvas.addEventListener("touchend", this.drawStop);
 			}
 
-			sandBox.listen( { "undo": this.undo() } );
-			sandBox.listen( { "reset": this.reset() } );
+			sandBox.listen( { "undo": this.undo } );
+			sandBox.listen( { "reset": this.reset } );
 			sandBox.listen( { "chalkChange": this.colorChange } );
 			sandBox.listen( { "brushSizeChange": this.brushSizeChange } );
 			sandBox.listen( { "save": this.save } );
 
 		},
 
-		touchStart: function() {
-			var parent = this;
-			return function(evt) {
-				isDrawing = true;
-					currentPath = {
-						color: currentColor,
-						size: currentSize,
-						points: [ {
-							X: evt.targetTouches[0].pageX - frontCanvas.offsetLeft,
-							Y: evt.targetTouches[0].pageY - frontCanvas.offsetTop
-						} ]
-					};
+		drawStart: function(evt) {
+			isDrawing = true;
+			currentPath = {
+				color: currentColor,
+				size: currentSize,
+				points: [ {
+					X: evt.changedTouches ? evt.changedTouches[0].pageX - frontCanvas.offsetLeft : evt.offsetX,
+					Y: evt.changedTouches ? evt.changedTouches[0].pageY - frontCanvas.offsetTop : evt.offsetY
+				} ]
 			};
 		},
 
-		touchMove: function() {
-			var parent = this;
-			return function(evt) {
-				evt.preventDefault();
-				if(isDrawing == true) {
-					currentPath.points.push( {
-						X: evt.targetTouches[0].pageX - frontCanvas.offsetLeft,
-						Y: evt.targetTouches[0].pageY - frontCanvas.offsetTop
-					} );
-					parent.repaintFront();
-				}
-			};
+		drawing: function(evt) {
+			if(evt.preventDefault) {
+				evt.preventDefault();	
+			}
+			if(isDrawing == true) {
+				currentPath.points.push( {
+					X: evt.changedTouches ? evt.changedTouches[0].pageX - frontCanvas.offsetLeft : evt.offsetX,
+					Y: evt.changedTouches ? evt.changedTouches[0].pageY - frontCanvas.offsetTop : evt.offsetY
+				} );
+				repaintFront();
+			}
 		},
 
-		touchEnd: function() {
-			var parent = this;
-			return function(evt) {
-				if(isDrawing == true) {
-					isDrawing = false;
-					pathes.push(currentPath);
-				}
-				parent.paintBackIncr();
-				currentPath = null;
-				parent.repaintFront();
-			};
-		},
-
-		mouseDown: function() {
-
-			return function(e) {
-					isDrawing = true;
-					currentPath = {
-						color: currentColor,
-						size: currentSize,
-						points: [ {
-							X: e.offsetX,
-							Y: e.offsetY	
-						} ]
-					};
-			};
-		},
-
-		mouseLeave: function() {
-			var parent = this;
-			return function(e) {
-				if(isDrawing == true) {
-					isDrawing = false;
-					pathes.push(currentPath);
-				}
-				parent.paintBackIncr();
-				currentPath = null;
-				parent.repaintFront();
-			};
-			
-		},
-
-		mouseMove: function() {
-			var parent = this;
-			return function(e) {
-				if(isDrawing == true) {
-					currentPath.points.push( {
-						X: e.offsetX,
-						Y: e.offsetY
-					} );
-					parent.repaintFront();
-				}
-			};
+		drawStop: function(evt) {
+			if(isDrawing == true) {
+				isDrawing = false;
+				pathes.push(currentPath);
+			}
+			paintBackIncr();
+			currentPath = null;
+			repaintFront();
 		},
 
 		colorChange: function(color) {
@@ -138,20 +114,14 @@ Core.registerModule("blackboardCanvas", function(sandBox) {
 		},
 
 		undo: function() {
-			var parent = this;
-			return function() {
-				pathes.pop();
-				parent.repaintBack();
-				parent.repaintFront();
-			};
+			pathes.pop();
+			repaintBack();
+			repaintFront();
 		},
 
 		reset: function() {
-			var parent = this;
-			return function() {
-				pathes.length = 0;
-				parent.repaintBack();
-			};
+			pathes.length = 0;
+			repaintBack();
 		},
 
 		save: function() {
@@ -161,70 +131,6 @@ Core.registerModule("blackboardCanvas", function(sandBox) {
             } catch (ex) {
                 console.log(ex);
             }
-		},
-		
-		repaintFront: function() {
-			var ctx = frontCtx;
-			ctx.fillStyle = "rgba(255, 255, 255, 0)";
-            ctx.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
-
-            if(currentPath) {
-            	var points = currentPath.points;
-            	ctx.beginPath();
-	            ctx.strokeStyle = "#" + currentPath.color;
-	            ctx.lineWidth =  currentPath.size;
-	            ctx.lineJoin = "round";
-	            ctx.lineCap = "round";
-
-	            ctx.moveTo(points[0].X, points[0].Y);
-
-	            for(var i = 0; i < points.length; i++) {
-	                ctx.lineTo(points[i].X, points[i].Y);
-	            }
-	            ctx.stroke();
-	            ctx.closePath();
-            }
-		},
-
-		repaintBack: function() {
-			var ctx = backCtx, localPathes = pathes;
-			ctx.clearRect(0, 0, backCanvas.width, backCanvas.height);
-
-			for(var i = 0; i < pathes.length; i++) {
-				var path = localPathes[i];
-
-				
-		    	ctx.beginPath();
-                ctx.strokeStyle = "#" + path.color;
-                ctx.lineWidth = path.size;
-                ctx.lineCap = "round";
-                ctx.lineJoin = "round";
-                ctx.moveTo(path.points[0].X, path.points[0].Y);
-
-                for(var j = 1; j < path.points.length; j++) {
-            		ctx.lineTo(path.points[j].X, path.points[j].Y);
-                }
-
-                ctx.stroke();
-                ctx.closePath();
-			}
-		},
-
-		paintBackIncr: function() {
-			if(currentPath) {
-				var ctx = backCtx, points = currentPath.points;
-				ctx.beginPath();
-				ctx.strokeStyle = "#" + currentPath.color;
-				ctx.lineWidth = currentPath.size;
-				ctx.lineCap = "round";
-				ctx.lineJoin = "round";
-				ctx.moveTo(points[0].X, points[0].Y);
-				for(var i = 0; i < points.length; i++) {
-					ctx.lineTo(points[i].X, points[i].Y);
-				}
-				ctx.stroke();
-				ctx.closePath();		
-			}
 		},
 
 		destroy: function() {
