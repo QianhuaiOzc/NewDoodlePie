@@ -9,7 +9,48 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 	var backgroundImg = null;
 	var stampList = ["ball", "flower", "heart", "music", "star"], stampImgs = [];
 	var backIntervalId = null, frontIntervalId = null;
-	
+
+	var repaintFront = function() {
+		var ctx = frontCtx;
+		ctx.fillStyle = "rgba(255, 255, 255, 0)";
+        ctx.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
+        if(!currentPath || currentPath.stamp) {
+          	ctx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
+           	return ;
+        }
+        sandBox.drawAPath(ctx, currentPath);
+        ctx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
+	};
+
+	var repaintBack = function() {
+		var ctx = backCtx, localPathes = pathes;
+		ctx.clearRect(0, 0, backCanvas.width, backCanvas.height);
+		for(var i = 0; i < pathes.length; i++) {
+			var path = localPathes[i];
+
+			if(path && path.stamp) {
+                var stampImg = stampImgs[path.stamp];
+                ctx.drawImage(stampImg, path.X - stampImg.width/2, path.Y - stampImg.height/2);
+            } else if(path) {
+	            sandBox.drawAPath(ctx, path);
+            }
+		}
+
+		ctx.globalAlpha = 0.4;
+		ctx.drawImage(backgroundImg, 0, 0, backgroundImg.width, backgroundImg.height);
+		ctx.globalAlpha = 1;
+	};
+
+	var paintBackIncr = function() {
+		var ctx = backCtx;
+		if(currentPath && currentPath.stamp) {
+			var stampImg = stampImgs[currentPath.stamp];
+			ctx.drawImage(stampImg, currentPath.X - stampImg.width/2, currentPath.Y - stampImg.height/2);
+		} else if(currentPath) {
+			sandBox.drawAPath(ctx, path);	
+		}
+	};
+
 	return {
 		
 		init: function() {
@@ -42,134 +83,72 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 	            stampImgs[imgPath] = stampImage;
 	        }
 
-			frontCanvas.onmousedown = this.mouseDown();
-			frontCanvas.onmouseup = this.mouseLeave();
-			frontCanvas.onmouseout = this.mouseLeave();
-			frontCanvas.onmousemove = this.mouseMove();
+			frontCanvas.onmousedown = this.drawStart;
+			frontCanvas.onmouseup = this.drawStop;
+			frontCanvas.onmouseout = this.drawStop;
+			frontCanvas.onmousemove = this.drawing;
 
 			if(sandBox.touchable()) {
-				frontCanvas.addEventListener("touchstart", this.touchStart());
-				frontCanvas.addEventListener("touchmove", this.touchMove());
-				frontCanvas.addEventListener("touchend", this.touchEnd());
+				frontCanvas.addEventListener("touchstart", this.drawStart);
+				frontCanvas.addEventListener("touchmove", this.drawing);
+				frontCanvas.addEventListener("touchend", this.drawStop);
 			}
 
-			sandBox.listen( { "undo": this.undo() } );
-			sandBox.listen( { "reset": this.reset() } );
+			sandBox.listen( { "undo": this.undo } );
+			sandBox.listen( { "reset": this.reset } );
 			sandBox.listen( { "stampChange": this.stampChange } );
 			sandBox.listen( { "colorChange": this.colorChange } );
 			sandBox.listen( { "brushSizeChange": this.brushSizeChange } );
 			sandBox.listen( { "save": this.save } );
 
-			setInterval(this.repaintBack, 100);
-			setInterval(this.repaintFront, 50);
+			setInterval(repaintBack, 100);
+			setInterval(repaintFront, 50);
 		},
 
-		touchStart: function() {
-			var parent = this;
-			return function(evt) {
-				if(currentStamp) {
-					currentPath = {
-						stamp: currentStamp,
-						X: evt.targetTouches[0].pageX - frontCanvas.offsetLeft,
-						Y: evt.targetTouches[0].pageY - frontCanvas.offsetTop
-					};
-				} else {
-					isDrawing = true;
-					currentPath = {
-						color: currentColor,
-						size: currentSize,
-						points: [ {
-							X: evt.targetTouches[0].pageX - frontCanvas.offsetLeft,
-							Y: evt.targetTouches[0].pageY - frontCanvas.offsetTop
-						} ],
-						stamp: null
-					};
-				}
-			};
+		drawStart: function(evt) {
+			if(currentStamp) {
+				currentPath = {
+					stamp: currentStamp,
+					X: evt.changedTouches ? evt.changedTouches[0].pageX - frontCanvas.offsetLeft : evt.offsetX,
+					Y: evt.changedTouches ? evt.changedTouches[0].pageY - frontCanvas.offsetTop : evt.offsetY
+				};
+			} else {
+				isDrawing = true;
+				currentPath = {
+					color: currentColor,
+					size: currentSize,
+					points: [ {
+						X: evt.changedTouches ? evt.changedTouches[0].pageX - frontCanvas.offsetLeft : evt.offsetX,
+						Y: evt.changedTouches ? evt.changedTouches[0].pageY - frontCanvas.offsetTop : evt.offsetY
+					} ],
+					stamp: null
+				};
+			}
 		},
 
-		touchMove: function() {
-			var parent = this;
-			return function(evt) {
-				evt.preventDefault();
-				if(isDrawing == true) {
-					currentPath.points.push( {
-						X: evt.targetTouches[0].pageX - frontCanvas.offsetLeft,
-						Y: evt.targetTouches[0].pageY - frontCanvas.offsetTop
-					} );
+		drawStop: function(evt) {
+			if(currentStamp) {
+				if(currentPath != null) {
+					pathes.push(currentPath);	
 				}
-			};
+			} else if(isDrawing == true) {
+				isDrawing = false;
+				pathes.push(currentPath);
+			}
+			paintBackIncr();
+			currentPath = null;
 		},
 
-		touchEnd: function() {
-			var parent = this;
-			return function(evt) {
-				if(currentStamp) {
-					if(currentPath != null) {
-						pathes.push(currentPath);	
-					}
-				} else if(isDrawing == true) {
-					isDrawing = false;
-					pathes.push(currentPath);
-				}
-				parent.paintBackIncr();
-				currentPath = null;
-				// parent.repaintFront();
-			};
-		},
-
-		mouseDown: function() {
-
-			return function(e) {
-				if(currentStamp) {
-					currentPath = {
-						stamp: currentStamp,
-						X: e.offsetX,
-						Y: e.offsetY
-					};
-				} else {
-					isDrawing = true;
-					currentPath = {
-						color: currentColor,
-						size: currentSize,
-						points: [ {
-							X: e.offsetX,
-							Y: e.offsetY	
-						} ],
-						stamp: null
-					};
-				}
-			};
-		},
-
-		mouseLeave: function() {
-			var parent = this;
-			return function(e) {
-				if(currentStamp) {
-					if(currentPath != null) {
-						pathes.push(currentPath);	
-					}
-				} else if(isDrawing == true) {
-					isDrawing = false;
-					pathes.push(currentPath);
-				}
-				parent.paintBackIncr();
-				currentPath = null;
-				// parent.repaintFront();
-			};
-			
-		},
-
-		mouseMove: function() {
-			var parent = this;
-			return function(e) {
-				if(isDrawing == true) {
-					currentPath.points.push( {
-						X: e.offsetX,
-						Y: e.offsetY
-					} );
-				}
-			};
+		drawing: function(evt) {
+			if(evt.preventDefault) {
+				evt.preventDefault();	
+			}
+			if(isDrawing == true) {
+				currentPath.points.push( {
+					X: evt.changedTouches ? evt.changedTouches[0].pageX - frontCanvas.offsetLeft : evt.offsetX,
+					Y: evt.changedTouches ? evt.changedTouches[0].pageY - frontCanvas.offsetTop : evt.offsetY
+				} );
+			}
 		},
 
 		colorChange: function(color) {
@@ -185,19 +164,13 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 		},
 
 		undo: function() {
-			var parent = this;
-			return function() {
-				pathes.pop();
-				parent.repaintBack();
-			};
+			pathes.pop();
+			repaintBack();
 		},
 
 		reset: function() {
-			var parent = this;
-			return function() {
-				pathes.length = 0;
-				parent.repaintBack();
-			};
+			pathes.length = 0;
+			repaintBack();
 		},
 
 		save: function() {
@@ -208,87 +181,6 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
             } catch (ex) {
                 console.log(ex);
             }
-		},
-		
-		repaintFront: function() {
-			var ctx = frontCtx;
-			ctx.fillStyle = "rgba(255, 255, 255, 0)";
-            ctx.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
-
-            if(!currentPath || currentPath.stamp) {
-            	ctx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
-            	return ;
-            }
-            var points = currentPath.points;
-            ctx.beginPath();
-            ctx.strokeStyle = "#" + currentPath.color;
-            ctx.lineWidth =  currentPath.size;
-            ctx.lineJoin = "round";
-            ctx.lineCap = "round";
-
-            ctx.moveTo(points[0].X, points[0].Y);
-
-            for(var i = 0; i < points.length; i++) {
-                ctx.lineTo(points[i].X, points[i].Y);
-            }
-            ctx.stroke();
-            ctx.closePath();
-            ctx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
-		},
-
-		repaintBack: function() {
-			var ctx = backCtx, localPathes = pathes;
-			ctx.clearRect(0, 0, backCanvas.width, backCanvas.height);
-
-			for(var i = 0; i < pathes.length; i++) {
-				var path = localPathes[i];
-
-				if(path && path.stamp) {
-                    var stampImg = stampImgs[path.stamp];
-                    ctx.drawImage(stampImg, path.X - stampImg.width/2, path.Y - stampImg.height/2);
-                } else if(path) {
-                	var points = path.points;
-		    		ctx.beginPath();
-                    ctx.strokeStyle = "#" + path.color;
-                    ctx.lineWidth = path.size;
-                    ctx.lineCap = "round";
-                    ctx.lineJoin = "round";
-                    ctx.moveTo(points[0].X, points[0].Y);
-
-                    for(var j = 1; j < points.length; j++) {
-            	        ctx.lineTo(points[j].X, points[j].Y);
-                    }
-
-                    ctx.stroke();
-                    ctx.closePath();
-
-                }
-			}
-
-			ctx.globalAlpha = 0.4;
-			ctx.drawImage(backgroundImg, 0, 0, backgroundImg.width, backgroundImg.height);
-			ctx.globalAlpha = 1;
-		},
-
-		paintBackIncr: function() {
-			var ctx = backCtx;
-			if(currentPath && currentPath.stamp) {
-				var stampImg = stampImgs[currentPath.stamp];
-				ctx.drawImage(stampImg, currentPath.X - stampImg.width/2, currentPath.Y - stampImg.height/2);
-			} else if(currentPath) {
-				var points = currentPath.points;
-				ctx.beginPath();
-				ctx.strokeStyle = "#" + currentPath.color;
-				ctx.lineWidth = currentPath.size;
-				ctx.lineCap = "round";
-				ctx.lineJoin = "round";
-				ctx.moveTo(points[0].X, points[0].Y);
-				for(var i = 0; i < points.length; i++) {
-					ctx.lineTo(points[i].X, points[i].Y);
-				}
-				ctx.stroke();
-				ctx.closePath();		
-			}
 		},
 
 		destroy: function() {

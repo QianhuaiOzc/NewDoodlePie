@@ -200,6 +200,20 @@
 		return str.trim();
 	};
 
+	SandBox.prototype.drawAPath = function(ctx, path) {
+		var points = path.points;
+		ctx.beginPath();
+		ctx.strokeStyle = "#" + path.color;
+		ctx.lineWidth = path.size;
+		ctx.lineJoin = "round";
+		ctx.lineCap = "round";
+		for(var i = 0; i < points.length; i++) {
+            ctx.lineTo(points[i].X, points[i].Y);
+        }
+        ctx.stroke();
+        ctx.closePath();
+	}
+
 	this.SandBox = SandBox;
 	
 })(jQuery);
