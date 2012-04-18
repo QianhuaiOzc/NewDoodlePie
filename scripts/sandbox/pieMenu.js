@@ -72,7 +72,7 @@ Core.registerModule("pieMenu", function(sandBox) {
 		guessComplete: function() {
 			guessFinished = true;
 			refreshLevel();
-		}
+		},
 
 		notifySave: function() {
 			sandBox.notify( {
