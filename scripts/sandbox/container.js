@@ -10,6 +10,26 @@ Core.registerModule("container", function(sandBox) {
 	};
 	var currentModule = null;
 
+	var moduleSwitch = function(newModule, oldModule, data) {
+		if(oldModule == "blackboard") {
+			sandBox.removeClass(container, "blackboard");
+			sandBox.addClass(container, "normal");
+			var title = sandBox.find("#title");
+			sandBox.show(title);
+		}
+		var stopModules = moduleMap[oldModule];
+		var oldLength = stopModules.length;
+		for(var i = 0; i < oldLength; i++) {
+			Core.stop(stopModules[i]);
+		}
+		var startModules = moduleMap[newModule];
+		var newLength = startModules.length;
+		for(var i = 0; i < newLength; i++) {
+			Core.start(startModules[i], data);
+		}
+		currentModule = newModule;
+	};
+
 	return {
 		init: function() {
 			container = sandBox.container;
@@ -30,73 +50,29 @@ Core.registerModule("container", function(sandBox) {
 		},
 
 		openGuess: function(evtObj) {
-			var stopModules = moduleMap[currentModule];
-			for(var i = 0; i < stopModules.length; i++) {
-				Core.stop(stopModules[i]);
-			}
-			var startModules = moduleMap["game"];
-			for(var i = 0; i < startModules.length; i++) {
-				Core.start(startModules[i]);
-			}
-			currentModule = "game";
+			moduleSwitch("game", currentModule);
 		},
 
 		drawShapeFinish: function(evtObj) {
-			sandBox.removeClass(container, "blackboard");
-			sandBox.addClass(container, "normal");
 			var nextModule = evtObj.nextModule;
 			var data = evtObj.data;
-			var stopModules = moduleMap["drawShape"];
-			for(var i = 0; i < stopModules.length; i++) {
-				Core.stop(stopModules[i]);
-			}
-			var startModules = moduleMap[nextModule];
-			for(var i = 0; i < startModules.length; i++) {
-				Core.start(startModules[i], data);
-			}
-			currentModule = nextModule;
+			moduleSwitch(nextModule, "drawShape", data);
 		},
 
 		openPainting: function() {
-			sandBox.removeClass(container, "blackboard");
-			sandBox.addClass(container, "normal");
-			var stopModules = moduleMap[currentModule];
-			for(var i = 0; i < stopModules.length; i++) {
-				Core.stop(stopModules[i]);
-			}
-			var startModules = moduleMap["painting"];
-			for(var i = 0; i < startModules.length; i++) {
-				Core.start(startModules[i]);
-			}
-			currentModule = "painting";
+			moduleSwitch("painting", currentModule);
 		},
 
 		home: function() {
-			sandBox.removeClass(container, "blackboard");
-			sandBox.addClass(container, "normal");
-			var stopModules = moduleMap[currentModule];
-			for(var i = 0; i < stopModules.length; i++) {
-				Core.stop(stopModules[i]);
-			}
-			var startModules = moduleMap["drawShape"];
-			for(var i = 0; i < startModules.length; i++) {
-				Core.start(startModules[i]);
-			}
-			currentModule = "drawShape";
+			moduleSwitch("drawShape", currentModule);
 		}, 
 
 		openBlackboard: function() {
-			var stopModules = moduleMap[currentModule];
-			for(var i = 0; i < stopModules.length; i++) {
-				Core.stop(stopModules[i]);
-			}
-			var startModules = moduleMap["blackboard"];
-			for(var i = 0; i < startModules.length; i++) {
-				Core.start(startModules[i]);
-			}
+			moduleSwitch("blackboard", currentModule);
 			sandBox.removeClass(container, "normal");
 			sandBox.addClass(container, "blackboard");
-			currentModule = "blackboard";
+			var title = sandBox.find("#title");
+			sandBox.hide(title);
 		},
 		
 		gameFinish: function() {

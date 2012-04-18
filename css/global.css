@@ -1,3 +1,12 @@
+#title {
+    background-image: url(../images/title.png);    
+    width: 650px;
+    height: 105px;
+    position: absolute;
+    top: -14px;
+    left: 200px;
+}
+
 #container {
     margin-top: -384px;
     margin-left: -512px;
@@ -10,10 +19,13 @@
     cursor: crosshair;
 }
 
+#home {
+    /*background-image: url();*/
+}
+
 #main {
     width: 100%;
     height: 100%;
-    /*background-image: url(../images/bg.png);*/
     cursor: crosshair;
 }
 

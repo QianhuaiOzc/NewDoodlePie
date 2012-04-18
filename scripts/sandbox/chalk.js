@@ -18,9 +18,9 @@ Core.registerModule("chalk", function(sandBox) {
 	            sandBox.css(divPen, "background-image", "url(images/blackboard/" + i + "_" + color + ".png)");
 	            container.appendChild(divPen);
 	            divChalkList.push(divPen);
-	            divPen.onclick = this.onclick();
+	            divPen.onclick = this.onSelected;
 	            if(sandBox.touchable()) {
-	            	divPen.addEventListener("touchstart", this.touchStart());
+	            	divPen.addEventListener("touchstart", this.onSelected);
 	        	}
 	        }
 
@@ -33,46 +33,19 @@ Core.registerModule("chalk", function(sandBox) {
 	        });
 		},
 
-		onclick: function() {
-			var parent = this;
-			return function(evt) {
-				var chalkPenDiv = evt.target;
-				if(selectedChalk) {
-					sandBox.removeClass(selectedChalk, "selected");
-					sandBox.addClass(selectedChalk, "unselected");
-				}
-
-				selectedChalk = chalkPenDiv;
-
-				sandBox.removeClass(selectedChalk, "unselected");
-				sandBox.addClass(selectedChalk, "selected");
-
-				sandBox.notify({
-					"type": "chalkChange",
-					"data": chalkPenDiv.getAttribute("chalkcolor")
-				});
-			};
-		},
-
-		touchStart: function() {
-			var parent = this;
-			return function(evt) {
-				var chalkPenDiv = evt.target;
-				if(selectedChalk) {
-					sandBox.removeClass(selectedChalk, "selected");
-					sandBox.addClass(selectedChalk, "unselected");
-				}
-
-				selectedChalk = chalkPenDiv;
-
-				sandBox.removeClass(selectedChalk, "unselected");
-				sandBox.addClass(selectedChalk, "selected");
-
-				sandBox.notify({
-					"type": "chalkChange",
-					"data": chalkPenDiv.getAttribute("chalkcolor")
-				});
-			};
+		onSelected: function(evt) {
+			var chalkPenDiv = evt.target;
+			if(selectedChalk) {
+				sandBox.removeClass(selectedChalk, "selected");
+				sandBox.addClass(selectedChalk, "unselected");
+			}
+			selectedChalk = chalkPenDiv;
+			sandBox.removeClass(selectedChalk, "unselected");
+			sandBox.addClass(selectedChalk, "selected");
+			sandBox.notify({
+				"type": "chalkChange",
+				"data": chalkPenDiv.getAttribute("chalkcolor")
+			});
 		},
 
 		destroy: function() {

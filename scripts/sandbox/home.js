@@ -1,6 +1,7 @@
 Core.registerModule("home", function(sandBox) {
 	
 	var container = null;
+	var title = null;
 
 	return {
 		init: function() {

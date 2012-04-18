@@ -36,9 +36,9 @@ Core.registerModule("crayon", function(sandBox) {
 	            sandBox.css(divPen, "background-image", "url(images/crayon-pens/" + i + "_" + color + ".png)");
 	            container.appendChild(divPen);
 	            divPenList.push(divPen);
-	            divPen.onclick = this.onclick();
+	            divPen.onclick = this.onSelected;
 	            if(sandBox.touchable()) {
-	            	divPen.addEventListener("touchstart", this.touchStart());
+	            	divPen.addEventListener("touchstart", this.onSelected);
 	        	}
 	        }
 	        selectedDivPen = divPenList[0];
@@ -52,53 +52,25 @@ Core.registerModule("crayon", function(sandBox) {
 	        } );
 		},
 
-		onclick: function() {
-			var parent = this;
-			return function(evt) {
-				var selectedDiv = evt.target;
-				if (selectedDivPen) {
-					sandBox.removeClass(selectedDivPen, "selected");
-					sandBox.addClass(selectedDivPen, "unselected");
-	            }
-
-            	selectedDivPen = selectedDiv;
-
-	            sandBox.removeClass(selectedDivPen, "unselected");
-	            sandBox.addClass(selectedDivPen, "selected");
-
+		onSelected: function(evt) {
+			var selectedDiv = evt.target;
+			if (selectedDivPen) {
+				sandBox.removeClass(selectedDivPen, "selected");
+				sandBox.addClass(selectedDivPen, "unselected");
+            }
+           	selectedDivPen = selectedDiv;
+            sandBox.removeClass(selectedDivPen, "unselected");
+            sandBox.addClass(selectedDivPen, "selected");
 				sandBox.notify({
-		          	"type": "colorChange", 
-		           	"data": selectedDiv.getAttribute("color")
-		        });	
-			};
-		},
-
-		touchStart: function() {
-			var parent = this;
-			return function(evt) {
-				var selectedDiv = evt.target;
-				if (selectedDivPen) {
-					sandBox.removeClass(selectedDivPen, "selected");
-					sandBox.addClass(selectedDivPen, "unselected");
-	            }
-
-            	selectedDivPen = selectedDiv;
-
-	            sandBox.removeClass(selectedDivPen, "unselected");
-	            sandBox.addClass(selectedDivPen, "selected");
-
-				sandBox.notify({
-		          	"type": "colorChange", 
-		           	"data": selectedDiv.getAttribute("color")
-		        });	
-			};
+	          	"type": "colorChange", 
+	           	"data": selectedDiv.getAttribute("color")
+	        });	
 		},
 
 		clearColor: function(stamp) {
 			if(stamp != null) {
 				sandBox.removeClass(selectedDivPen, "selected");
 				sandBox.addClass(selectedDivPen, "unselected");
-				// console.log("clear color");	
 			}
 		},
 
