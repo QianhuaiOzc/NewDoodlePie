@@ -9,6 +9,7 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 	var backgroundImg = null;
 	var stampList = ["ball", "flower", "heart", "music", "star"], stampImgs = [];
 	var backIntervalId = null, frontIntervalId = null;
+	var hasSave = false;
 
 	var repaintFront = function() {
 		var ctx = frontCtx;
@@ -178,6 +179,10 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 				backCtx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
                 var dataUrl = backCanvas.toDataURL("image/png");
                 window.open(dataUrl);
+                if(hasSave == false) {
+                	hasSave = true;
+                	sandBox.notify({"type": "finishOnePic"});
+                }
             } catch (ex) {
                 console.log(ex);
             }
@@ -189,6 +194,7 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 			container.removeChild(backCanvas);
 			clearInterval(frontIntervalId);
 			clearInterval(backIntervalId);
+			sandBox.ignore("save");
 		}
 	};
 });
