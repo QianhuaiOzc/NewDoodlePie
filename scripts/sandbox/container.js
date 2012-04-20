@@ -9,6 +9,8 @@ Core.registerModule("container", function(sandBox) {
 		"game": ["game"]
 	};
 	var currentModule = null;
+	var level = 1, drawFinished = 0, picFinished = 0, 
+		fillFinished = false, guessFinished = true, bboardFinished = false;
 
 	var moduleSwitch = function(newModule, oldModule, data) {
 		if(oldModule == "blackboard") {
@@ -28,6 +30,22 @@ Core.registerModule("container", function(sandBox) {
 			Core.start(startModules[i], data);
 		}
 		currentModule = newModule;
+		sandBox.notify({"type": "currentLevel", "data": level});
+	};
+
+	var updateLevel = function() {
+		if(drawFinished >= 2 && picFinished >= 3 && guessFinished == true) {
+			level = 2;
+			sandBox.notify({"type": "currentLevel", "data": level});
+		}
+		if(drawFinished >= 3 && picFinished >= 5 && fillFinished == true) {
+			level = 3;
+			sandBox.notify({"type": "currentLevel", "data": level});
+		}
+		if(level == 3 && drawFinished >= 4 && bboardFinished == true) {
+			level = 4;
+			sandBox.notify({"type": "currentLevel", "data": level});
+		}
 	};
 
 	return {
@@ -47,6 +65,32 @@ Core.registerModule("container", function(sandBox) {
 			sandBox.listen({"openBlackboard": this.openBlackboard});
 			sandBox.listen({"openGuess": this.openGuess});
 			sandBox.listen({"gameFinish": this.gameFinish});
+			sandBox.listen({"finishOneDraw": this.incrDraw});
+			sandBox.listen({"finishOnePic": this.incrPic});
+			sandBox.listen({"fillFinish": this.finishFill});
+			sandBox.listen({"blackboardFinish": this.finishBlackboard});
+		},
+
+		finishBlackboard: function() {
+			bboardFinished = true;
+			updateLevel();
+		},
+
+		finishFill: function() {
+			fillFinished = true;
+			updateLevel();
+		},
+
+		incrPic: function() {
+			picFinished++;
+			updateLevel();
+			// console.log("finishe pic: " + picFinished);
+		},
+
+		incrDraw: function() {
+			drawFinished++;
+			updateLevel();
+			// console.log("finishe draw: " + drawFinished);
 		},
 
 		openGuess: function(evtObj) {

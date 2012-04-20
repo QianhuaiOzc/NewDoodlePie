@@ -4,7 +4,7 @@ Core.registerModule("blackboardCanvas", function(sandBox) {
 	var frontCtx = null, backCtx = null;
 	var currentPath = null, currentColor = null, currentSize = null;
 	var pathes = [];
-	var isDrawing = false;
+	var isDrawing = false, hasSave = false;
 	
 	var repaintFront = function() {
 		var ctx = frontCtx;
@@ -128,6 +128,10 @@ Core.registerModule("blackboardCanvas", function(sandBox) {
 			try {
                 var dataUrl = backCanvas.toDataURL("image/png");
                 window.open(dataUrl);
+                if(hasSave == false) {
+                	hasSave = true;
+                	sandBox.notify({"type": "blackboardFinish"});
+                }
             } catch (ex) {
                 console.log(ex);
             }

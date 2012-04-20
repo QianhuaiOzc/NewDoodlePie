@@ -6,6 +6,7 @@ Core.registerModule("painting", function(sandBox) {
 	var pathes = [];
 	var isDrawing = false;
 	var backgroundImg = null;
+	var hasSave = false;
 
 	var repaintFront = function() {
 			var ctx = frontCtx;
@@ -136,6 +137,10 @@ Core.registerModule("painting", function(sandBox) {
 			try {
                 var dataUrl = backCanvas.toDataURL("image/png");
                 window.open(dataUrl);
+                if(hasSave == false) {
+                	hasSave = true;
+                	sandBox.notify({"type": "fillFinish"});
+                }
             } catch (ex) {
                 console.log(ex);
             }

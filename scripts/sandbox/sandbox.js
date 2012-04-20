@@ -1,5 +1,12 @@
 (function($) {
-	var globalData = {};
+	var globalData = {
+		shapeFinished: 0,
+		pictureFinished: 0,
+		fillFinished: false,
+		guessFinished: true,
+		blackboardFinished: false,
+		level: 1
+	};
 
 	var SandBox = function(core, moduleName) {
 		if(!moduleName) {
@@ -212,7 +219,7 @@
         }
         ctx.stroke();
         ctx.closePath();
-	}
+	};
 
 	this.SandBox = SandBox;
 	

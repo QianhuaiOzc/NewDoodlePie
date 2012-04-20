@@ -2,7 +2,6 @@ Core.registerModule("pieMenu", function(sandBox) {
 	var container = null;
 	var saveDiv = null, guessDiv = null, fillDiv = null, blackboardDiv = null, magicDiv = null, pieDiv = null;
 	var isShow = false;
-	var imageDrawed = 0, fillFinished = false, guessFinished = false;
 
 	var hideAll = function() {
 		sandBox.hide(saveDiv);
@@ -20,10 +19,6 @@ Core.registerModule("pieMenu", function(sandBox) {
 		sandBox.show(magicDiv);
 	};
 
-	var refreshLevel = function() {
-		
-	};
-
 	return {
 		init: function() {
 			container = sandBox.container;
@@ -36,12 +31,16 @@ Core.registerModule("pieMenu", function(sandBox) {
 			pieDiv = sandBox.find("#pie");
 			hideAll();
 
+			// pieDiv.addEventListener("click", this.toggleMenu);
+			pieDiv.onclick = this.toggleMenu;
+			// pieDiv.addEventListener("touchstart", this.toggleMenu);
+
 			sandBox.addClass(blackboardDiv, "disable");
 			sandBox.addClass(magicDiv, "disable");
 			sandBox.addClass(fillDiv, "disable");
 
 			pieDiv.addEventListener("click", this.toggleMenu);
-			saveDiv.addEventListener("click", this.notifySave);
+			//saveDiv.addEventListener("click", this.notifySave);
 			//fillDiv.addEventListener("click", this.notifyPainting);
 			//blackboardDiv.addEventListener("click", this.notifyBlackboard);
 			guessDiv.addEventListener("click", this.notifyGuess);
@@ -53,20 +52,41 @@ Core.registerModule("pieMenu", function(sandBox) {
 				//blackboardDiv.addEventListener("touchstart", this.notifyBlackboard);
 				guessDiv.addEventListener("touchstart", this.notifyGuess);	
 	        }
+				
+			// saveDiv.addEventListener("click", this.notifySave);
+			saveDiv.onclick = this.notifySave;
+			if(sandBox.touchable()) {
+	           	// saveDiv.addEventListener("touchstart", this.notifySave);
+	           	saveDiv.ontouchstart = this.notifySave;
+	           	pieDiv.ontouchstart = this.toggleMenu;
+	       	}
 
-	        sandBox.listen( {"finishedDraw": this.finishedDraw} );
-	        sandBox.listen( {"fillComplete": this.fillComplete} );
-	        sandBox.listen( {"guessComplete": this.guessComplete} );
+	       	sandBox.listen({"currentLevel": this.updateMenu()});
+
 		},
 
-		finishedDraw: function() {
-			imageDrawed++;
-			refreshLevel();
-		},
-
-		fillComplete: function() {
-			fillFinished = true;
-			refreshLevel();	
+		updateMenu: function() {
+			var parent = this;
+			return function(level) {
+				if(level >= 2) {
+					sandBox.removeClass(fillDiv, "disable");
+					fillDiv.onclick = parent.notifyPainting;
+					fillDiv.ontouchstart = parent.notifyPainting;
+					// fillDiv.addEventListener("click", parent.notifyPainting);
+					// fillDiv.addEventListener("touchstart", parent.notifyPainting);
+				}
+				if(level >= 3) {
+					sandBox.removeClass(blackboardDiv, "disable");
+					blackboardDiv.onclick = parent.notifyBlackboard;
+					blackboardDiv.ontouchstart = parent.notifyBlackboard;
+					// blackboardDiv.addEventListener("click", parent.notifyBlackboard);
+					// blackboardDiv.addEventListener("touchstart", parent.notifyBlackboard);
+				}
+				if(level >= 4) {
+					sandBox.removeClass(magicDiv, "disable");
+				}
+				console.log(level);	
+			};
 		},
 
 		guessComplete: function() {
@@ -110,6 +130,7 @@ Core.registerModule("pieMenu", function(sandBox) {
 
 		destroy: function() {
 			sandBox.hide(container);
+
 		}
 	};
 });
