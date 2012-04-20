@@ -5,7 +5,11 @@
      height:100%;
     width:100%;
 }
+#game{
 
+    position: relative;
+    top:110px;
+}
 #slider .content{
 	position:relative;
 	width:800px;

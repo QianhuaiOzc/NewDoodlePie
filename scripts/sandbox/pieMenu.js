@@ -44,14 +44,14 @@ Core.registerModule("pieMenu", function(sandBox) {
 			saveDiv.addEventListener("click", this.notifySave);
 			//fillDiv.addEventListener("click", this.notifyPainting);
 			//blackboardDiv.addEventListener("click", this.notifyBlackboard);
-			//guessDiv.addEventListener("click", this.notifyGuess);
+			guessDiv.addEventListener("click", this.notifyGuess);
 
 			if(sandBox.touchable()) {
 	           	pieDiv.addEventListener("touchstart", this.toggleMenu);
 	           	saveDiv.addEventListener("touchstart", this.notifySave);
 				//fillDiv.addEventListener("touchstart", this.notifyPainting);
 				//blackboardDiv.addEventListener("touchstart", this.notifyBlackboard);
-				//guessDiv.addEventListener("touchstart", this.notifyGuess);	
+				guessDiv.addEventListener("touchstart", this.notifyGuess);	
 	        }
 
 	        sandBox.listen( {"finishedDraw": this.finishedDraw} );
@@ -72,7 +72,7 @@ Core.registerModule("pieMenu", function(sandBox) {
 		guessComplete: function() {
 			guessFinished = true;
 			refreshLevel();
-		}
+		},
 
 		notifySave: function() {
 			sandBox.notify( {

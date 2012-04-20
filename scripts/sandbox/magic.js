@@ -1,4 +1,4 @@
-Core.registerModule("magic", function(sandBox) {
+Core.registerModule("magic", function(sb) {
 	
 	var container = null;
 	
@@ -6,6 +6,8 @@ Core.registerModule("magic", function(sandBox) {
 	return {
 		init: function() {
 			
+			container = sb.container;
+
 		},
 
 		destroy: function() {
