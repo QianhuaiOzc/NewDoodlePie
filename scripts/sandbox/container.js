@@ -10,7 +10,7 @@ Core.registerModule("container", function(sandBox) {
 	};
 	var currentModule = null;
 	var level = 1, drawFinished = 0, picFinished = 0, 
-		fillFinished = false, guessFinished = true, bboardFinished = false;
+		fillFinished = false, guessFinished = false, bboardFinished = false;
 
 	var moduleSwitch = function(newModule, oldModule, data) {
 		if(oldModule == "blackboard") {
@@ -120,6 +120,7 @@ Core.registerModule("container", function(sandBox) {
 		},
 		
 		gameFinish: function() {
+			/*
 			var stopModules = moduleMap[currentModule];
 			for(var i = 0; i < stopModules.length; i++) {
 				Core.stop(stopModules[i]);
@@ -128,6 +129,10 @@ Core.registerModule("container", function(sandBox) {
 			for(var i = 0; i < startModules.length; i++) {
 				Core.start(startModules[i]);
 			}
+			*/
+			guessFinished = true;
+			moduleSwitch("drawShape", currentModule);
+			updateLevel();
 		},
 
 		destroy: function() {}

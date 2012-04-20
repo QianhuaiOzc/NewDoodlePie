@@ -31,35 +31,18 @@ Core.registerModule("pieMenu", function(sandBox) {
 			pieDiv = sandBox.find("#pie");
 			hideAll();
 
-			// pieDiv.addEventListener("click", this.toggleMenu);
-			pieDiv.onclick = this.toggleMenu;
-			// pieDiv.addEventListener("touchstart", this.toggleMenu);
-
 			sandBox.addClass(blackboardDiv, "disable");
 			sandBox.addClass(magicDiv, "disable");
 			sandBox.addClass(fillDiv, "disable");
-
-			pieDiv.addEventListener("click", this.toggleMenu);
-			//saveDiv.addEventListener("click", this.notifySave);
-			//fillDiv.addEventListener("click", this.notifyPainting);
-			//blackboardDiv.addEventListener("click", this.notifyBlackboard);
-			guessDiv.addEventListener("click", this.notifyGuess);
-
-			if(sandBox.touchable()) {
-	           	pieDiv.addEventListener("touchstart", this.toggleMenu);
-	           	saveDiv.addEventListener("touchstart", this.notifySave);
-				//fillDiv.addEventListener("touchstart", this.notifyPainting);
-				//blackboardDiv.addEventListener("touchstart", this.notifyBlackboard);
-				guessDiv.addEventListener("touchstart", this.notifyGuess);	
-	        }
-				
-			// saveDiv.addEventListener("click", this.notifySave);
+			
+			guessDiv.onclick = this.notifyGuess;	
+			pieDiv.onclick = this.toggleMenu;
 			saveDiv.onclick = this.notifySave;
 			if(sandBox.touchable()) {
-	           	// saveDiv.addEventListener("touchstart", this.notifySave);
-	           	saveDiv.ontouchstart = this.notifySave;
-	           	pieDiv.ontouchstart = this.toggleMenu;
-	       	}
+	           	saveDiv.addEventListener("touchstart", this.notifySave);
+	           	pieDiv.addEventListener("touchstart", this.toggleMenu);
+	           	guessDiv.addEventListener("touchstart", this.notifyGuess);
+	        }
 
 	       	sandBox.listen({"currentLevel": this.updateMenu()});
 
@@ -71,13 +54,11 @@ Core.registerModule("pieMenu", function(sandBox) {
 				if(level >= 2) {
 					sandBox.removeClass(fillDiv, "disable");
 					fillDiv.onclick = parent.notifyPainting;
-					// fillDiv.ontouchstart = parent.notifyPainting;
 					fillDiv.addEventListener("touchstart", parent.notifyPainting);
 				}
 				if(level >= 3) {
 					sandBox.removeClass(blackboardDiv, "disable");
 					blackboardDiv.onclick = parent.notifyBlackboard;
-					// blackboardDiv.ontouchstart = parent.notifyBlackboard;
 					blackboardDiv.addEventListener("touchstart", parent.notifyBlackboard);
 				}
 				if(level >= 4) {
@@ -128,6 +109,11 @@ Core.registerModule("pieMenu", function(sandBox) {
 
 		destroy: function() {
 			sandBox.hide(container);
+			saveDiv.removeEventListener("touchstart", this.notifySave);
+	        pieDiv.removeEventListener("touchstart", this.toggleMenu);
+	        guessDiv.removeEventListener("touchstart", this.notifyGuess);
+	        fillDiv.removeEventListener("touchstart", parent.notifyPainting);
+	        blackboardDiv.removeEventListener("touchstart", parent.notifyBlackboard);
 
 		}
 	};
