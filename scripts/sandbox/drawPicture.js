@@ -13,7 +13,7 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 
 	var repaintFront = function() {
 		var ctx = frontCtx;
-		ctx.fillStyle = "rgba(255, 255, 255, 0)";
+		// ctx.fillStyle = "rgba(255, 255, 255, 0)";
         ctx.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
         if(!currentPath || currentPath.stamp) {
           	ctx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);

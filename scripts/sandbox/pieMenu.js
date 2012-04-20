@@ -38,6 +38,20 @@ Core.registerModule("pieMenu", function(sandBox) {
 			sandBox.addClass(blackboardDiv, "disable");
 			sandBox.addClass(magicDiv, "disable");
 			sandBox.addClass(fillDiv, "disable");
+
+			pieDiv.addEventListener("click", this.toggleMenu);
+			//saveDiv.addEventListener("click", this.notifySave);
+			//fillDiv.addEventListener("click", this.notifyPainting);
+			//blackboardDiv.addEventListener("click", this.notifyBlackboard);
+			guessDiv.addEventListener("click", this.notifyGuess);
+
+			if(sandBox.touchable()) {
+	           	pieDiv.addEventListener("touchstart", this.toggleMenu);
+	           	saveDiv.addEventListener("touchstart", this.notifySave);
+				//fillDiv.addEventListener("touchstart", this.notifyPainting);
+				//blackboardDiv.addEventListener("touchstart", this.notifyBlackboard);
+				guessDiv.addEventListener("touchstart", this.notifyGuess);	
+	        }
 				
 			// saveDiv.addEventListener("click", this.notifySave);
 			saveDiv.onclick = this.notifySave;
@@ -71,6 +85,11 @@ Core.registerModule("pieMenu", function(sandBox) {
 				}
 				console.log(level);	
 			};
+		},
+
+		guessComplete: function() {
+			guessFinished = true;
+			refreshLevel();
 		},
 
 		notifySave: function() {
