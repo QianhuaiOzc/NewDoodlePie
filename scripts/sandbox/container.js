@@ -6,7 +6,7 @@ Core.registerModule("container", function(sandBox) {
 		"drawPicture": ["drawPicture", "crayon", "brushSize", "undo", "pieMenu", "stamp"],
 		"painting": ["painting", "crayon", "brushSize", "undo", "pieMenu"],
 		"blackboard": ["blackboardCanvas", "chalk", "brushSize", "undo", "pieMenu"],
-		"game": ["game"]
+		"game": ["game", "pieMenu"]
 	};
 	var currentModule = null;
 	var level = 1, drawFinished = 0, picFinished = 0, 

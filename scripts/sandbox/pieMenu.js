@@ -57,16 +57,14 @@ Core.registerModule("pieMenu", function(sandBox) {
 				if(level >= 2) {
 					sandBox.removeClass(fillDiv, "disable");
 					fillDiv.onclick = parent.notifyPainting;
-					fillDiv.ontouchstart = parent.notifyPainting;
-					// fillDiv.addEventListener("click", parent.notifyPainting);
-					// fillDiv.addEventListener("touchstart", parent.notifyPainting);
+					// fillDiv.ontouchstart = parent.notifyPainting;
+					fillDiv.addEventListener("touchstart", parent.notifyPainting);
 				}
 				if(level >= 3) {
 					sandBox.removeClass(blackboardDiv, "disable");
 					blackboardDiv.onclick = parent.notifyBlackboard;
-					blackboardDiv.ontouchstart = parent.notifyBlackboard;
-					// blackboardDiv.addEventListener("click", parent.notifyBlackboard);
-					// blackboardDiv.addEventListener("touchstart", parent.notifyBlackboard);
+					// blackboardDiv.ontouchstart = parent.notifyBlackboard;
+					blackboardDiv.addEventListener("touchstart", parent.notifyBlackboard);
 				}
 				if(level >= 4) {
 					sandBox.removeClass(magicDiv, "disable");
