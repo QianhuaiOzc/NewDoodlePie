@@ -194,7 +194,7 @@ Core.registerModule("game", function(sandBox) {
 
 			pic = sandBox.createElement("img");
 			toNextButton.addEventListener("click",Events.toNextQuestion,false);
-			toNextQuestion.addEventListener("touchstart", Events.toNextQuestion, false);
+			toNextButton.addEventListener("touchstart", Events.toNextQuestion, false);
 
 			slider.id = "slider";
 			sandBox.addClass(score, "score");
