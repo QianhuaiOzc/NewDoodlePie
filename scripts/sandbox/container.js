@@ -1,8 +1,8 @@
 Core.registerModule("container", function(sandBox) {
 	var container = null;
 	var moduleMap = {
-		"start": ["drawShape", "crayon", "brushSize", "home"],
-		"drawShape": ["drawShape", "crayon", "brushSize"],
+		"start": ["drawShape", "crayon", "brushSize", "home", "pieMenu"],
+		"drawShape": ["drawShape", "crayon", "brushSize", "pieMenu"],
 		"drawPicture": ["drawPicture", "crayon", "brushSize", "undo", "pieMenu", "stamp"],
 		"painting": ["painting", "crayon", "brushSize", "undo", "pieMenu"],
 		"blackboard": ["blackboardCanvas", "chalk", "brushSize", "undo", "pieMenu"],
