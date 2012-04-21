@@ -46,7 +46,6 @@ Core.registerModule("drawShape", function(sandBox) {
                 if(img.complete) {
                     backCtx.drawImage(img, 0, 0, img.width, img.height);
                     clearInterval(id);
-                    sandBox.notify({"type": "finishOneDraw"});
                     setTimeout(function() {
                         sandBox.notify({
                            	"type": "drawShapeFinish",

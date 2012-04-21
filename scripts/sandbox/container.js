@@ -65,7 +65,6 @@ Core.registerModule("container", function(sandBox) {
 			sandBox.listen({"openBlackboard": this.openBlackboard});
 			sandBox.listen({"openGuess": this.openGuess});
 			sandBox.listen({"gameFinish": this.gameFinish});
-			sandBox.listen({"finishOneDraw": this.incrDraw});
 			sandBox.listen({"finishOnePic": this.incrPic});
 			sandBox.listen({"fillFinish": this.finishFill});
 			sandBox.listen({"blackboardFinish": this.finishBlackboard});
@@ -84,13 +83,6 @@ Core.registerModule("container", function(sandBox) {
 		incrPic: function() {
 			picFinished++;
 			updateLevel();
-			// console.log("finishe pic: " + picFinished);
-		},
-
-		incrDraw: function() {
-			drawFinished++;
-			updateLevel();
-			// console.log("finishe draw: " + drawFinished);
 		},
 
 		openGuess: function(evtObj) {
@@ -100,6 +92,8 @@ Core.registerModule("container", function(sandBox) {
 		drawShapeFinish: function(evtObj) {
 			var nextModule = evtObj.nextModule;
 			var data = evtObj.data;
+			drawFinished++;
+			updateLevel();
 			moduleSwitch(nextModule, "drawShape", data);
 		},
 
@@ -120,16 +114,6 @@ Core.registerModule("container", function(sandBox) {
 		},
 		
 		gameFinish: function() {
-			/*
-			var stopModules = moduleMap[currentModule];
-			for(var i = 0; i < stopModules.length; i++) {
-				Core.stop(stopModules[i]);
-			}
-			var startModules = moduleMap["drawShape"];
-			for(var i = 0; i < startModules.length; i++) {
-				Core.start(startModules[i]);
-			}
-			*/
 			guessFinished = true;
 			moduleSwitch("drawShape", currentModule);
 			updateLevel();
