@@ -1,0 +1,9 @@
+CACHE MANIFEST
+# version 1
+CACHE:
+scripts/jquery/*
+images/bg.jpg
+
+NETWORK:
+
+FALLBACK:
