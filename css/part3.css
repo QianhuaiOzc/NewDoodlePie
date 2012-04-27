@@ -8,7 +8,7 @@
 #game{
 
     position: relative;
-    top:110px;
+    top:0px;
 }
 #slider .content{
 	position:relative;
@@ -79,7 +79,7 @@ background-image: url(../images/guess/next_s.png);
     background-image: url(../images/guess/wrong.png);
     height:186px;
     width:307px;
-    bottom:120px;
+    bottom:50px;
     right:100px;
 
 }
@@ -88,7 +88,7 @@ background-image: url(../images/guess/next_s.png);
     background-image: url(../images/guess/right.png);
     height:186px;
     width:307px;
-    bottom:140px;
+    bottom:50px;
     right:100px;
 
 }
