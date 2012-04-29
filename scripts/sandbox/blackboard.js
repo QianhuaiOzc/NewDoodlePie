@@ -4,7 +4,7 @@ Core.registerModule("blackboardCanvas", function(sandBox) {
 	var frontCtx = null, backCtx = null;
 	var currentPath = null, currentColor = null, currentSize = null;
 	var pathes = [];
-	var isDrawing = false, hasSave = false;
+	var isDrawing = false;
 	
 	var repaintFront = function() {
 		var ctx = frontCtx;
@@ -65,8 +65,7 @@ Core.registerModule("blackboardCanvas", function(sandBox) {
 			sandBox.listen( { "undo": this.undo,
 				"reset": this.reset,
 				"chalkChange": this.colorChange,
-				"brushSizeChange": this.brushSizeChange,
-				"save": this.save } );
+				"brushSizeChange": this.brushSizeChange} );
 
 		},
 
@@ -122,19 +121,6 @@ Core.registerModule("blackboardCanvas", function(sandBox) {
 		reset: function() {
 			pathes.length = 0;
 			repaintBack();
-		},
-
-		save: function() {
-			try {
-                var dataUrl = backCanvas.toDataURL("image/png");
-                window.open(dataUrl);
-                if(hasSave == false) {
-                	hasSave = true;
-                	sandBox.notify({"type": "blackboardFinish"});
-                }
-            } catch (ex) {
-                console.log(ex);
-            }
 		},
 
 		destroy: function() {

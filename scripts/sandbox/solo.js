@@ -8,7 +8,6 @@ Core.registerModule("solo", function(sandBox) {
 	var isDrawing = false;
 	var stampList = ["ball", "flower", "heart", "music", "star"], stampImgs = [];
 	var backIntervalId = null, frontIntervalId = null;
-	var hasSave = false;
 
 	var repaintFront = function() {
 		var ctx = frontCtx;
@@ -93,8 +92,7 @@ Core.registerModule("solo", function(sandBox) {
 				"reset": this.reset,
 				"stampChange": this.stampChange,
 				"colorChange": this.colorChange,
-				"brushSizeChange": this.brushSizeChange,
-				"save": this.save } );
+				"brushSizeChange": this.brushSizeChange} );
 
 			setInterval(repaintBack, 100);
 			setInterval(repaintFront, 50);
@@ -166,22 +164,6 @@ Core.registerModule("solo", function(sandBox) {
 		reset: function() {
 			pathes.length = 0;
 			repaintBack();
-		},
-
-		save: function() {
-			try {
-				backCtx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
-                var dataUrl = backCanvas.toDataURL("image/png");
-                // window.open(dataUrl);
-                var downloadUrl = dataUrl.replace("image/png", "image/octet-stream");
-                document.location.href = downloadUrl;
-                if(hasSave == false) {
-                	hasSave = true;
-                	sandBox.notify({"type": "finishOnePic"});
-                }
-            } catch (ex) {
-                console.log(ex);
-            }
 		},
 
 		destroy: function() {
