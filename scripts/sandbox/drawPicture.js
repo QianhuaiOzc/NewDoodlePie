@@ -19,6 +19,7 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
         }
         sandBox.drawAPath(ctx, currentPath);
         ctx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
+        
 	};
 
 	var repaintBack = function() {

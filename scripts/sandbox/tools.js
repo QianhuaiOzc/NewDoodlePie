@@ -80,31 +80,6 @@ Core.registerModule("home", function(sandBox) {
 	};
 });
 
-Core.registerModule("info", function(sandBox) {
-	var container = null;
-	var helpDiv = null, finishDiv = null;
-
-	return {
-		init: function() {
-			container = sandBox.container;
-			sandBox.show(container);
-			helpDiv = sandBox.createElement("div");
-			finishDiv = sandBox.createElement("div");
-			helpDiv.id = "help";
-			finishDiv.id = "finish";
-			container.appendChild(helpDiv);
-			container.appendChild(finishDiv);
-			
-		},
-
-		destroy: function() {
-			sandBox.hide(container);
-			container.removeChild(helpDiv);
-			container.removeChild(finishDiv);
-		}
-	};
-});
-
 Core.registerModule("stamp", function(sandBox) {
 	var container = null;
 	var stampsList = [ "ball", "flower", "heart", "music", "star" ];
@@ -421,6 +396,51 @@ Core.registerModule("crayon", function(sandBox) {
 			for(var i = 0; i < divPenList.length; i++) {
 				container.removeChild(divPenList[i]);
 			}
+		}
+	};
+});
+
+Core.registerModule("info", function(sandBox) {
+	var container = null;
+	var helpDiv = null, finishDiv = null, shadowDiv = null;
+	var containDiv = null, contentDiv = null;
+
+	var popUp = function(content) {
+		container.appendChild(shadowDiv);
+		sandBox.addClass(shadowDiv, "shadow");
+		sandBox.addClass(containDiv, "rc shadow");
+		containDiv.id = "popup";
+		container.appendChild(containDiv);
+		contentDiv.id = "pop-content";
+		sandBox.addClass(contentDiv, "rc");
+		setTimeout(function() {
+			containDiv.appendChild(contentDiv);
+		}, 2000);
+	}
+
+	return {
+		init: function() {
+			container = sandBox.container;
+			sandBox.show(container);
+			helpDiv = sandBox.find("#help");
+			finishDiv = sandBox.find("#finish");
+			shadowDiv = sandBox.createElement("div");
+
+			containDiv = sandBox.createElement("div");
+			contentDiv = sandBox.createElement("div");
+
+			helpDiv.onclick = popUp;
+			finishDiv.onclick = popUp;
+
+			shadowDiv.onclick = function() {
+				sandBox.removeClass(shadowDiv, "shadow");
+				container.removeChild(containDiv);
+				container.removeChild(contentDiv);
+			}
+		},
+
+		destroy: function() {
+			sandBox.hide(container);
 		}
 	};
 });
