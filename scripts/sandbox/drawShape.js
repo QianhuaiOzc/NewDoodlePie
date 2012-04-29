@@ -94,8 +94,8 @@ Core.registerModule("drawShape", function(sandBox) {
 				frontCanvas.addEventListener("touchend", this.drawStop);
 			}
 
-			sandBox.listen({ "colorChange": this.colorChange });
-			sandBox.listen({ "brushSizeChange" : this.brushSizeChange });
+			sandBox.listen({ "colorChange": this.colorChange,
+				"brushSizeChange" : this.brushSizeChange });
 		},
 
 		drawStart: function(evt) {

@@ -95,12 +95,12 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 				frontCanvas.addEventListener("touchend", this.drawStop);
 			}
 
-			sandBox.listen( { "undo": this.undo } );
-			sandBox.listen( { "reset": this.reset } );
-			sandBox.listen( { "stampChange": this.stampChange } );
-			sandBox.listen( { "colorChange": this.colorChange } );
-			sandBox.listen( { "brushSizeChange": this.brushSizeChange } );
-			sandBox.listen( { "save": this.save } );
+			sandBox.listen( { "undo": this.undo,
+				"reset": this.reset,
+				"stampChange": this.stampChange,
+				"colorChange": this.colorChange,
+				"brushSizeChange": this.brushSizeChange,
+				"save": this.save } );
 
 			setInterval(repaintBack, 100);
 			setInterval(repaintFront, 50);
