@@ -62,11 +62,11 @@ Core.registerModule("blackboardCanvas", function(sandBox) {
 				frontCanvas.addEventListener("touchend", this.drawStop);
 			}
 
-			sandBox.listen( { "undo": this.undo } );
-			sandBox.listen( { "reset": this.reset } );
-			sandBox.listen( { "chalkChange": this.colorChange } );
-			sandBox.listen( { "brushSizeChange": this.brushSizeChange } );
-			sandBox.listen( { "save": this.save } );
+			sandBox.listen( { "undo": this.undo,
+				"reset": this.reset,
+				"chalkChange": this.colorChange,
+				"brushSizeChange": this.brushSizeChange,
+				"save": this.save } );
 
 		},
 

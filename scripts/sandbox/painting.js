@@ -70,11 +70,11 @@ Core.registerModule("painting", function(sandBox) {
 				frontCanvas.addEventListener("touchend", this.drawStop);
 			}
 
-			sandBox.listen( { "undo": this.undo } );
-			sandBox.listen( { "reset": this.reset } );
-			sandBox.listen( { "colorChange": this.colorChange } );
-			sandBox.listen( { "brushSizeChange": this.brushSizeChange } );
-			sandBox.listen( { "save": this.save } );
+			sandBox.listen( { "undo": this.undo ,
+				"reset": this.reset,
+				"colorChange": this.colorChange,
+				"brushSizeChange": this.brushSizeChange,
+				"save": this.save } );
 
 			setInterval(repaintBack, 100);
 			setInterval(repaintFront, 50);
