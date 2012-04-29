@@ -178,7 +178,9 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 			try {
 				backCtx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
                 var dataUrl = backCanvas.toDataURL("image/png");
-                window.open(dataUrl);
+                // window.open(dataUrl);
+                var downloadUrl = dataUrl.replace("image/png", "image/octet-stream");
+                document.location.href = downloadUrl;
                 if(hasSave == false) {
                 	hasSave = true;
                 	sandBox.notify({"type": "finishOnePic"});
