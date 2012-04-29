@@ -1,11 +1,12 @@
 Core.registerModule("container", function(sandBox) {
 	var container = null;
 	var moduleMap = {
-		"start": ["drawShape", "crayon", "brushSize", "home", "pieMenu"],
+		"start": ["drawShape", "crayon", "brushSize", "home", "pieMenu", "info"],
 		"drawShape": ["drawShape", "crayon", "brushSize", "pieMenu"],
 		"drawPicture": ["drawPicture", "crayon", "brushSize", "undo", "pieMenu", "stamp"],
 		"painting": ["painting", "crayon", "brushSize", "undo", "pieMenu"],
 		"blackboard": ["blackboardCanvas", "chalk", "brushSize", "undo", "pieMenu"],
+		"solo": ["solo", "crayon", "brushSize", "undo", "pieMenu", "stamp"],
 		"game": ["game", "pieMenu"]
 	};
 	var currentModule = null;
@@ -59,15 +60,16 @@ Core.registerModule("container", function(sandBox) {
 			}
 			currentModule = "start";
 
-			sandBox.listen({"drawShapeFinish": this.drawShapeFinish});
-			sandBox.listen({"openPainting": this.openPainting});
-			sandBox.listen({"home": this.home});
-			sandBox.listen({"openBlackboard": this.openBlackboard});
-			sandBox.listen({"openGuess": this.openGuess});
-			sandBox.listen({"gameFinish": this.gameFinish});
-			sandBox.listen({"finishOnePic": this.incrPic});
-			sandBox.listen({"fillFinish": this.finishFill});
-			sandBox.listen({"blackboardFinish": this.finishBlackboard});
+			sandBox.listen({"drawShapeFinish": this.drawShapeFinish,
+				"openPainting": this.openPainting,
+				"home": this.home,
+				"openBlackboard": this.openBlackboard,
+				"openGuess": this.openGuess,
+				"gameFinish": this.gameFinish,
+				"finishOnePic": this.incrPic,
+				"fillFinish": this.finishFill,
+				"openSolo": this.openSolo,
+				"blackboardFinish": this.finishBlackboard});
 		},
 
 		finishBlackboard: function() {
@@ -117,6 +119,10 @@ Core.registerModule("container", function(sandBox) {
 			guessFinished = true;
 			moduleSwitch("drawShape", currentModule);
 			updateLevel();
+		},
+
+		openSolo: function() {
+			moduleSwitch("solo", currentModule);
 		},
 
 		destroy: function() {}

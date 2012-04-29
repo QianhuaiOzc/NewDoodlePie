@@ -80,6 +80,31 @@ Core.registerModule("home", function(sandBox) {
 	};
 });
 
+Core.registerModule("info", function(sandBox) {
+	var container = null;
+	var helpDiv = null, finishDiv = null;
+
+	return {
+		init: function() {
+			container = sandBox.container;
+			sandBox.show(container);
+			helpDiv = sandBox.createElement("div");
+			finishDiv = sandBox.createElement("div");
+			helpDiv.id = "help";
+			finishDiv.id = "finish";
+			container.appendChild(helpDiv);
+			container.appendChild(finishDiv);
+			
+		},
+
+		destroy: function() {
+			sandBox.hide(container);
+			container.removeChild(helpDiv);
+			container.removeChild(finishDiv);
+		}
+	};
+});
+
 Core.registerModule("stamp", function(sandBox) {
 	var container = null;
 	var stampsList = [ "ball", "flower", "heart", "music", "star" ];

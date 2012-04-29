@@ -35,19 +35,19 @@
     height: 200px;
 }
 
-#save {
+#soloBtn {
     z-index: 1000;
     position: absolute;
     /* border: 1px solid red; */
-    background-image: url(../images/menu/save.png);
+    background-image: url(../images/menu/solo.png);
     left: 573px;
     top: 682px;
     width: 126px;
     height: 86px;
 }
 
-#save.disable {
-    background-image: url(../images/menu/save_disable.png);
+#soloBtn.disable {
+    background-image: url(../images/menu/solo_disable.png);
 }
 
 #guess {
@@ -240,4 +240,24 @@
 
 .normal {
     background-image: url(../images/bg.jpg);
+}
+
+#help {
+    position: absolute;
+    top: 110px;
+    right: 9px;
+    width: 114px;
+    height: 106px;
+    background-image: url(../images/help.png);
+    z-index: 10;
+}
+
+#finish {
+    position: absolute;
+    top: 220px;
+    right: 9px;
+    width: 114px;
+    height: 106px;
+    background-image: url(../images/finish.png);
+    z-index: 10;
 }
