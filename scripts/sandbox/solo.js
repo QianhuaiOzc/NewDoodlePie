@@ -100,11 +100,6 @@ Core.registerModule("solo", function(sandBox) {
 
 		drawStart: function(evt) {
 			if(currentStamp) {
-				currentPath = {
-					stamp: currentStamp,
-					X: evt.changedTouches ? evt.changedTouches[0].pageX - frontCanvas.offsetLeft : evt.offsetX,
-					Y: evt.changedTouches ? evt.changedTouches[0].pageY - frontCanvas.offsetTop : evt.offsetY
-				};
 			} else {
 				isDrawing = true;
 				currentPath = {
@@ -121,7 +116,12 @@ Core.registerModule("solo", function(sandBox) {
 
 		drawStop: function(evt) {
 			if(currentStamp) {
-				if(currentPath != null) {
+				if(evt.type != "mouseout") {
+					currentPath = {
+						stamp: currentStamp,
+						X: evt.changedTouches ? evt.changedTouches[0].pageX - frontCanvas.offsetLeft : evt.offsetX,
+						Y: evt.changedTouches ? evt.changedTouches[0].pageY - frontCanvas.offsetTop : evt.offsetY
+					};
 					pathes.push(currentPath);	
 				}
 			} else if(isDrawing == true) {
