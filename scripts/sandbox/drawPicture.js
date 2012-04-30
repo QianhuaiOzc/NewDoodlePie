@@ -26,6 +26,9 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 	var repaintBack = function() {
 		var ctx = backCtx, localPathes = pathes;
 		ctx.clearRect(0, 0, backCanvas.width, backCanvas.height);
+		ctx.globalAlpha = 0.4;
+		ctx.drawImage(backgroundImg, 0, 0, backgroundImg.width, backgroundImg.height);
+		ctx.globalAlpha = 1;
 		for(var i = 0; i < pathes.length; i++) {
 			var path = localPathes[i];
 
@@ -37,9 +40,9 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
             }
 		}
 
-		ctx.globalAlpha = 0.4;
-		ctx.drawImage(backgroundImg, 0, 0, backgroundImg.width, backgroundImg.height);
-		ctx.globalAlpha = 1;
+		// ctx.globalAlpha = 0.4;
+		// ctx.drawImage(backgroundImg, 0, 0, backgroundImg.width, backgroundImg.height);
+		// ctx.globalAlpha = 1;
 	};
 
 	var paintBackIncr = function() {
