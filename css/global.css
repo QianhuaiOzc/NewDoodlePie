@@ -262,7 +262,7 @@
     z-index: 4;
 }
 
-.shadow {
+.sd {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -299,7 +299,7 @@
     background: url(../images/pop-bg.png) repeat;
     z-index: 6;
     -webkit-animation-name: popup;
-    -webkit-animation-duration: 1s;
+    -webkit-animation-duration: 0.5s;
     -webkit-animation-timing-function: linear;
 }
 

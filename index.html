@@ -19,6 +19,7 @@
 <link rel="stylesheet" type="text/css" href="css/part3.css" />
 
 <script type="text/javascript" src="scripts/jquery/jquery-1.7.2.min.js"></script>
+<script src=" http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=3168919025" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
 $.extend($.support, { touch: "ontouchend" in document });
 $(document).ready(function () {
@@ -32,7 +33,79 @@ $(document).ready(function () {
     }
 });
 </script>
-
+<style type="text/css">
+#check {
+    position: absolute;
+    top: 234px;
+    left: 312px;
+    width: 400px;
+    height: 300px;
+    background: url(images/pop-bg.png) repeat;
+    z-index: 6;
+}
+#state {
+    position: absolute;
+    top: 234px;
+    left: 312px;
+    width: 400px;
+    height: 300px;
+    background: url(images/pop-bg.png) repeat;
+    z-index: 6;
+}
+.content {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 374px;
+    height: 274px;
+    border: 3px dashed #b79770;
+    text-align: center;
+}
+.closeBtn {
+    margin: 0;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-image: url(images/close.png);
+    width: 40px;
+    height: 40px;
+    z-index: 6;
+}
+#infoBtn {
+    background-image: url(images/info.png);
+    width: 86px;
+    height: 77px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 6;
+}
+#checkContent #main {
+    width: 370px;
+    height: 150px;
+}
+#checkContent #main {
+    text-align: center;
+}
+#sina {
+    position: absolute;
+    top: 170px;
+    left: 80px;
+    background-image: url(images/sina.png);
+    width: 64px;
+    height: 64px;
+    display: block;
+}
+#email {
+    position: absolute;
+    top: 170px;
+    right: 80px;
+    background-image: url(images/sina.png);
+    width: 64px;
+    height: 64px;
+    display: block;
+}
+</style>
 </head>
 <body>
     <div id="container">
@@ -60,6 +133,28 @@ $(document).ready(function () {
         <div id="info">
             <div id="help"></div>
             <div id="finish"></div>
+            <div id="state" class="rc shadow">
+                <div id="stateContent" class="rc content">
+                    <h1 id="level">Level 2 Challenge</h1>
+                    <ul id="tasks">
+                    </ul>
+                </div>
+                <div id="infoBtn"></div>
+                <div class="closeBtn"></div>
+            </div>
+            <div id="check" class="rc shadow">
+                <div id="checkContent" class="rc content">
+                    <div id="main">
+                        <h1>耶！完成啦！</h1>
+                        <p>分享你的作品吧！<p>
+                    </div>
+                    <div id="share">
+                        <a id="sina" href="javascript: void(0);"></a>
+                        <a id="email" href="javascript: void(0);"></a>
+                    </div>
+                </div>
+                <div class="closeBtn"></div>
+            </div>
         </div>
     </div>
 

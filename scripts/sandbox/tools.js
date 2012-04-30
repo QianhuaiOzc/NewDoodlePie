@@ -402,59 +402,56 @@ Core.registerModule("crayon", function(sandBox) {
 
 Core.registerModule("info", function(sandBox) {
 	var container = null;
-	var helpDiv = null, finishDiv = null, shadowDiv = null;
-	var containDiv = null, contentDiv = null;
+	var stateBtn = null, checkBtn = null, shadowDiv = null;
+	var stateDiv = null, checkDiv = null;
 
-	var popUp = function(content) {
+	var mask = function(content) {
 		container.appendChild(shadowDiv);
-		sandBox.addClass(shadowDiv, "shadow");
-		sandBox.addClass(containDiv, "rc shadow");
-		containDiv.id = "popup";
-		container.appendChild(containDiv);
-		contentDiv.id = "pop-content";
-		sandBox.addClass(contentDiv, "rc");
-		setTimeout(function() {
-			containDiv.appendChild(contentDiv);
-		}, 2000);
+		sandBox.addClass(shadowDiv, "sd");
 	}
+
+	var showState = function() {
+		mask();
+		var state = JSON.parse(localStorage.getItem("state"));
+		var level = state.level;
+
+		var levelDiv = sandBox.find("#level");
+		level.innerText = "Level " + level + " Challenge"
+
+		stateDiv.style.display = "block";
+	};
+	var showCheck = function() {
+		mask();
+		checkDiv.style.display = "block";
+		sandBox.notify({"type": "check"});
+	};
+	var disappear = function() {
+		sandBox.removeClass(shadowDiv, "sd");
+		stateDiv.style.display = "none";
+		checkDiv.style.display = "none";
+	};
 
 	return {
 		init: function() {
 			container = sandBox.container;
 			sandBox.show(container);
-			helpDiv = sandBox.find("#help");
-			finishDiv = sandBox.find("#finish");
+			stateBtn = sandBox.find("#help");
+			checkBtn = sandBox.find("#finish");
 			shadowDiv = sandBox.createElement("div");
 
-			containDiv = sandBox.createElement("div");
-			contentDiv = sandBox.createElement("div");
+			stateDiv = sandBox.find("#state");
+			stateDiv.style.display = "none";
+			checkDiv = sandBox.find("#check");
+			checkDiv.style.display = "none";
 
-			helpDiv.onclick = function() {
-				var state = JSON.parse(localStorage.getItem("state"));
-				var level = state.level;
-				var levelDiv = sandBox.createElement("p");
-				levelDiv.innerText = "You Current Level: " + level;
-				contentDiv.appendChild(levelDiv);
-				popUp();
-			};
-			finishDiv.onclick = function() {
-				var current = sandBox.createElement("p");
-				current.innerText = "Finish";
-				contentDiv.appendChild(current);
-				popUp();
-				sandBox.notify({"type": "check"});
-			};
+			stateBtn.onclick = showState;
+			stateBtn.addEventListener("touchstart", showState);
 
-			shadowDiv.onclick = function() {
-				sandBox.removeClass(shadowDiv, "shadow");
-				container.removeChild(containDiv);
-				containDiv.removeChild(contentDiv);
-				var children = contentDiv.childNodes;
-				var length = children.length;
-				for (var i = 0; i < length; i++) {
-					contentDiv.removeChild(children[i]);
-				}
-			}
+			checkBtn.onclick = showCheck;
+			checkBtn.addEventListener("touchstart", showCheck);
+
+			shadowDiv.onclick = disappear;
+			shadowDiv.addEventListener("touchstart", disappear);
 		},
 
 		destroy: function() {
