@@ -438,6 +438,9 @@ Core.registerModule("info", function(sandBox) {
 				popUp();
 			};
 			finishDiv.onclick = function() {
+				var current = sandBox.createElement("p");
+				current.innerText = "Finish";
+				contentDiv.appendChild(current);
 				popUp();
 				sandBox.notify({"type": "check"});
 			};
