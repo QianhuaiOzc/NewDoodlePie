@@ -10,8 +10,9 @@ Core.registerModule("container", function(sandBox) {
 		"game": ["game", "pieMenu"]
 	};
 	var currentModule = null;
-	var level = 1, drawFinished = 0, picFinished = 0, 
-		fillFinished = false, guessFinished = false, bboardFinished = false;
+	var stateInfo = {
+		level: 1, drawFinished: 0, picFinished: 0, fillFinished: false, guessFinished: false, bboardFinished: false,
+	};
 
 	var moduleSwitch = function(newModule, oldModule, data) {
 		if(oldModule == "blackboard") {
@@ -31,22 +32,23 @@ Core.registerModule("container", function(sandBox) {
 			Core.start(startModules[i], data);
 		}
 		currentModule = newModule;
-		sandBox.notify({"type": "currentLevel", "data": level});
+		sandBox.notify({"type": "currentLevel", "data": stateInfo.level});
 	};
 
 	var updateLevel = function() {
-		if(drawFinished >= 2 && picFinished >= 3 && guessFinished == true) {
-			level = 2;
-			sandBox.notify({"type": "currentLevel", "data": level});
+		var si = stateInfo;
+		if(si.drawFinished >= 2 && si.picFinished >= 3 && si.guessFinished == true) {
+			si.level = 2;
 		}
-		if(drawFinished >= 3 && picFinished >= 5 && fillFinished == true) {
-			level = 3;
-			sandBox.notify({"type": "currentLevel", "data": level});
+		if(si.drawFinished >= 3 && si.picFinished >= 5 && si.fillFinished == true) {
+			si.level = 3;
 		}
-		if(level == 3 && drawFinished >= 4 && bboardFinished == true) {
-			level = 4;
-			sandBox.notify({"type": "currentLevel", "data": level});
+		if(si.level == 3 && si.drawFinished >= 4 && si.bboardFinished == true) {
+			si.level = 4;
 		}
+		// console.log("save");
+		sandBox.notify({"type": "currentLevel", "data": si.level});
+		localStorage.setItem("state", JSON.stringify(si));
 	};
 
 	return {
@@ -60,6 +62,11 @@ Core.registerModule("container", function(sandBox) {
 			}
 			currentModule = "start";
 
+			var oldLevel = localStorage.getItem("state");
+			if(oldLevel != null) {
+				stateInfo = JSON.parse(oldLevel);
+			}
+			sandBox.notify({"type": "currentLevel", "data": stateInfo.level});
 			sandBox.listen({"drawShapeFinish": this.drawShapeFinish,
 				"openPainting": this.openPainting,
 				"home": this.home,
@@ -73,17 +80,17 @@ Core.registerModule("container", function(sandBox) {
 		},
 
 		finishBlackboard: function() {
-			bboardFinished = true;
+			stateInfo.bboardFinished = true;
 			updateLevel();
 		},
 
 		finishFill: function() {
-			fillFinished = true;
+			stateInfo.fillFinished = true;
 			updateLevel();
 		},
 
 		incrPic: function() {
-			picFinished++;
+			stateInfo.picFinished++;
 			updateLevel();
 		},
 
@@ -94,7 +101,7 @@ Core.registerModule("container", function(sandBox) {
 		drawShapeFinish: function(evtObj) {
 			var nextModule = evtObj.nextModule;
 			var data = evtObj.data;
-			drawFinished++;
+			stateInfo.drawFinished++;
 			updateLevel();
 			moduleSwitch(nextModule, "drawShape", data);
 		},
@@ -116,7 +123,7 @@ Core.registerModule("container", function(sandBox) {
 		},
 		
 		gameFinish: function() {
-			guessFinished = true;
+			stateInfo.guessFinished = true;
 			moduleSwitch("drawShape", currentModule);
 			updateLevel();
 		},

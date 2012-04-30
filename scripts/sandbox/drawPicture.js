@@ -9,6 +9,7 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 	var backgroundImg = null;
 	var stampList = ["ball", "flower", "heart", "music", "star"], stampImgs = [];
 	var backIntervalId = null, frontIntervalId = null;
+	var hasCheck = false;
 
 	var repaintFront = function() {
 		var ctx = frontCtx;
@@ -98,7 +99,8 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 				"reset": this.reset,
 				"stampChange": this.stampChange,
 				"colorChange": this.colorChange,
-				"brushSizeChange": this.brushSizeChange} );
+				"brushSizeChange": this.brushSizeChange,
+				"check": this.check} );
 
 			setInterval(repaintBack, 100);
 			setInterval(repaintFront, 50);
@@ -170,6 +172,13 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 		reset: function() {
 			pathes.length = 0;
 			repaintBack();
+		},
+
+		check: function() {
+			if(hasCheck === false) {
+				sandBox.notify({"type": "finishOnePic"});
+				hasCheck = true;
+			}
 		},
 
 		destroy: function() {

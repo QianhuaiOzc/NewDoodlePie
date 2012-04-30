@@ -64,7 +64,6 @@ Core.registerModule("pieMenu", function(sandBox) {
 				if(level >= 4) {
 					sandBox.removeClass(magicDiv, "disable");
 				}
-				console.log(level);	
 			};
 		},
 

@@ -429,13 +429,28 @@ Core.registerModule("info", function(sandBox) {
 			containDiv = sandBox.createElement("div");
 			contentDiv = sandBox.createElement("div");
 
-			helpDiv.onclick = popUp;
-			finishDiv.onclick = popUp;
+			helpDiv.onclick = function() {
+				var state = JSON.parse(localStorage.getItem("state"));
+				var level = state.level;
+				var levelDiv = sandBox.createElement("p");
+				levelDiv.innerText = "You Current Level: " + level;
+				contentDiv.appendChild(levelDiv);
+				popUp();
+			};
+			finishDiv.onclick = function() {
+				popUp();
+				sandBox.notify({"type": "check"});
+			};
 
 			shadowDiv.onclick = function() {
 				sandBox.removeClass(shadowDiv, "shadow");
 				container.removeChild(containDiv);
-				container.removeChild(contentDiv);
+				containDiv.removeChild(contentDiv);
+				var children = contentDiv.childNodes;
+				var length = children.length;
+				for (var i = 0; i < length; i++) {
+					contentDiv.removeChild(children[i]);
+				}
 			}
 		},
 

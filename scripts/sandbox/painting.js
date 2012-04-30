@@ -72,7 +72,8 @@ Core.registerModule("painting", function(sandBox) {
 			sandBox.listen( { "undo": this.undo ,
 				"reset": this.reset,
 				"colorChange": this.colorChange,
-				"brushSizeChange": this.brushSizeChange} );
+				"brushSizeChange": this.brushSizeChange,
+				"check": this.check} );
 
 			setInterval(repaintBack, 100);
 			setInterval(repaintFront, 50);
@@ -129,6 +130,10 @@ Core.registerModule("painting", function(sandBox) {
 		reset: function() {
 			pathes.length = 0;
 			repaintBack();
+		},
+
+		check: function() {
+			sandBox.notify({"type": "fillFinish"});
 		},
 
 		destroy: function() {

@@ -65,7 +65,8 @@ Core.registerModule("blackboardCanvas", function(sandBox) {
 			sandBox.listen( { "undo": this.undo,
 				"reset": this.reset,
 				"chalkChange": this.colorChange,
-				"brushSizeChange": this.brushSizeChange} );
+				"brushSizeChange": this.brushSizeChange,
+				"check": this.check} );
 
 		},
 
@@ -121,6 +122,10 @@ Core.registerModule("blackboardCanvas", function(sandBox) {
 		reset: function() {
 			pathes.length = 0;
 			repaintBack();
+		},
+
+		check: function() {
+			sandBox.notify({"type": "blackboardFinish"});
 		},
 
 		destroy: function() {
