@@ -24,6 +24,13 @@ Core.registerModule("drawShape", function(sandBox) {
         "right curly brace": "spiral",
         "pigtail": "spiral"
     };
+    var imageNumber = {
+    	"triangle": 5,
+    	"circle": 10,
+    	"rectangle": 6,
+    	"spiral": 0,
+    	"star": 0
+    };
     var recognizer = null, result = null;
 
     var repaintFront = function() {
@@ -37,8 +44,8 @@ Core.registerModule("drawShape", function(sandBox) {
     var repaintBack = function() {
     	if(isPaint == false && isDone == true) {
             isPaint = true;
-            var num = Math.floor(Math.random() * 3);
             var shape = shapeGroup[result.Name];
+            var num = Math.floor(Math.random() * imageNumber[shape]);
             var img = new Image();
             var src = "images/pictures/"+shape+"/"+num;
             img.src = src+"-color.png";
