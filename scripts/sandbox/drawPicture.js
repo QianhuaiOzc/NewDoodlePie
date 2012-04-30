@@ -39,10 +39,6 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 	            sandBox.drawAPath(ctx, path);
             }
 		}
-
-		// ctx.globalAlpha = 0.4;
-		// ctx.drawImage(backgroundImg, 0, 0, backgroundImg.width, backgroundImg.height);
-		// ctx.globalAlpha = 1;
 	};
 
 	var paintBackIncr = function() {
@@ -111,11 +107,6 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 
 		drawStart: function(evt) {
 			if(currentStamp) {
-				currentPath = {
-					stamp: currentStamp,
-					X: evt.changedTouches ? evt.changedTouches[0].pageX - frontCanvas.offsetLeft : evt.offsetX,
-					Y: evt.changedTouches ? evt.changedTouches[0].pageY - frontCanvas.offsetTop : evt.offsetY
-				};
 			} else {
 				isDrawing = true;
 				currentPath = {
@@ -132,7 +123,12 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 
 		drawStop: function(evt) {
 			if(currentStamp) {
-				if(currentPath != null) {
+				if(evt.type != "mouseout") {
+					currentPath = {
+						stamp: currentStamp,
+						X: evt.changedTouches ? evt.changedTouches[0].pageX - frontCanvas.offsetLeft : evt.offsetX,
+						Y: evt.changedTouches ? evt.changedTouches[0].pageY - frontCanvas.offsetTop : evt.offsetY
+					};
 					pathes.push(currentPath);	
 				}
 			} else if(isDrawing == true) {
