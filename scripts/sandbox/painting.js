@@ -6,7 +6,6 @@ Core.registerModule("painting", function(sandBox) {
 	var pathes = [];
 	var isDrawing = false;
 	var backgroundImg = null;
-	var hasSave = false;
 
 	var repaintFront = function() {
 			var ctx = frontCtx;
@@ -70,11 +69,11 @@ Core.registerModule("painting", function(sandBox) {
 				frontCanvas.addEventListener("touchend", this.drawStop);
 			}
 
-			sandBox.listen( { "undo": this.undo } );
-			sandBox.listen( { "reset": this.reset } );
-			sandBox.listen( { "colorChange": this.colorChange } );
-			sandBox.listen( { "brushSizeChange": this.brushSizeChange } );
-			sandBox.listen( { "save": this.save } );
+			sandBox.listen( { "undo": this.undo ,
+				"reset": this.reset,
+				"colorChange": this.colorChange,
+				"brushSizeChange": this.brushSizeChange,
+				"check": this.check} );
 
 			setInterval(repaintBack, 100);
 			setInterval(repaintFront, 50);
@@ -133,17 +132,8 @@ Core.registerModule("painting", function(sandBox) {
 			repaintBack();
 		},
 
-		save: function() {
-			try {
-                var dataUrl = backCanvas.toDataURL("image/png");
-                window.open(dataUrl);
-                if(hasSave == false) {
-                	hasSave = true;
-                	sandBox.notify({"type": "fillFinish"});
-                }
-            } catch (ex) {
-                console.log(ex);
-            }
+		check: function() {
+			sandBox.notify({"type": "fillFinish"});
 		},
 
 		destroy: function() {

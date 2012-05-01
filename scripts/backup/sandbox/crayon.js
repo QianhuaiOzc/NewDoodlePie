@@ -61,7 +61,7 @@ Core.registerModule("crayon", function(sandBox) {
            	selectedDivPen = selectedDiv;
             sandBox.removeClass(selectedDivPen, "unselected");
             sandBox.addClass(selectedDivPen, "selected");
-				sandBox.notify({
+			sandBox.notify({
 	          	"type": "colorChange", 
 	           	"data": selectedDiv.getAttribute("color")
 	        });	

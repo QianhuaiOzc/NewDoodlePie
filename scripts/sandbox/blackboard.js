@@ -4,7 +4,7 @@ Core.registerModule("blackboardCanvas", function(sandBox) {
 	var frontCtx = null, backCtx = null;
 	var currentPath = null, currentColor = null, currentSize = null;
 	var pathes = [];
-	var isDrawing = false, hasSave = false;
+	var isDrawing = false;
 	
 	var repaintFront = function() {
 		var ctx = frontCtx;
@@ -62,11 +62,11 @@ Core.registerModule("blackboardCanvas", function(sandBox) {
 				frontCanvas.addEventListener("touchend", this.drawStop);
 			}
 
-			sandBox.listen( { "undo": this.undo } );
-			sandBox.listen( { "reset": this.reset } );
-			sandBox.listen( { "chalkChange": this.colorChange } );
-			sandBox.listen( { "brushSizeChange": this.brushSizeChange } );
-			sandBox.listen( { "save": this.save } );
+			sandBox.listen( { "undo": this.undo,
+				"reset": this.reset,
+				"chalkChange": this.colorChange,
+				"brushSizeChange": this.brushSizeChange,
+				"check": this.check} );
 
 		},
 
@@ -124,17 +124,8 @@ Core.registerModule("blackboardCanvas", function(sandBox) {
 			repaintBack();
 		},
 
-		save: function() {
-			try {
-                var dataUrl = backCanvas.toDataURL("image/png");
-                window.open(dataUrl);
-                if(hasSave == false) {
-                	hasSave = true;
-                	sandBox.notify({"type": "blackboardFinish"});
-                }
-            } catch (ex) {
-                console.log(ex);
-            }
+		check: function() {
+			sandBox.notify({"type": "blackboardFinish"});
 		},
 
 		destroy: function() {

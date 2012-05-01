@@ -9,11 +9,10 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 	var backgroundImg = null;
 	var stampList = ["ball", "flower", "heart", "music", "star"], stampImgs = [];
 	var backIntervalId = null, frontIntervalId = null;
-	var hasSave = false;
+	var hasCheck = false;
 
 	var repaintFront = function() {
 		var ctx = frontCtx;
-		// ctx.fillStyle = "rgba(255, 255, 255, 0)";
         ctx.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
         if(!currentPath || currentPath.stamp) {
           	ctx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
@@ -21,11 +20,15 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
         }
         sandBox.drawAPath(ctx, currentPath);
         ctx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
+        
 	};
 
 	var repaintBack = function() {
 		var ctx = backCtx, localPathes = pathes;
 		ctx.clearRect(0, 0, backCanvas.width, backCanvas.height);
+		ctx.globalAlpha = 0.4;
+		ctx.drawImage(backgroundImg, 0, 0, backgroundImg.width, backgroundImg.height);
+		ctx.globalAlpha = 1;
 		for(var i = 0; i < pathes.length; i++) {
 			var path = localPathes[i];
 
@@ -36,10 +39,6 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 	            sandBox.drawAPath(ctx, path);
             }
 		}
-
-		ctx.globalAlpha = 0.4;
-		ctx.drawImage(backgroundImg, 0, 0, backgroundImg.width, backgroundImg.height);
-		ctx.globalAlpha = 1;
 	};
 
 	var paintBackIncr = function() {
@@ -95,12 +94,12 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 				frontCanvas.addEventListener("touchend", this.drawStop);
 			}
 
-			sandBox.listen( { "undo": this.undo } );
-			sandBox.listen( { "reset": this.reset } );
-			sandBox.listen( { "stampChange": this.stampChange } );
-			sandBox.listen( { "colorChange": this.colorChange } );
-			sandBox.listen( { "brushSizeChange": this.brushSizeChange } );
-			sandBox.listen( { "save": this.save } );
+			sandBox.listen( { "undo": this.undo,
+				"reset": this.reset,
+				"stampChange": this.stampChange,
+				"colorChange": this.colorChange,
+				"brushSizeChange": this.brushSizeChange,
+				"check": this.check} );
 
 			setInterval(repaintBack, 100);
 			setInterval(repaintFront, 50);
@@ -108,11 +107,6 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 
 		drawStart: function(evt) {
 			if(currentStamp) {
-				currentPath = {
-					stamp: currentStamp,
-					X: evt.changedTouches ? evt.changedTouches[0].pageX - frontCanvas.offsetLeft : evt.offsetX,
-					Y: evt.changedTouches ? evt.changedTouches[0].pageY - frontCanvas.offsetTop : evt.offsetY
-				};
 			} else {
 				isDrawing = true;
 				currentPath = {
@@ -129,7 +123,12 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 
 		drawStop: function(evt) {
 			if(currentStamp) {
-				if(currentPath != null) {
+				if(evt.type != "mouseout") {
+					currentPath = {
+						stamp: currentStamp,
+						X: evt.changedTouches ? evt.changedTouches[0].pageX - frontCanvas.offsetLeft : evt.offsetX,
+						Y: evt.changedTouches ? evt.changedTouches[0].pageY - frontCanvas.offsetTop : evt.offsetY
+					};
 					pathes.push(currentPath);	
 				}
 			} else if(isDrawing == true) {
@@ -174,18 +173,11 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 			repaintBack();
 		},
 
-		save: function() {
-			try {
-				backCtx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
-                var dataUrl = backCanvas.toDataURL("image/png");
-                window.open(dataUrl);
-                if(hasSave == false) {
-                	hasSave = true;
-                	sandBox.notify({"type": "finishOnePic"});
-                }
-            } catch (ex) {
-                console.log(ex);
-            }
+		check: function() {
+			if(hasCheck === false) {
+				sandBox.notify({"type": "finishOnePic"});
+				hasCheck = true;
+			}
 		},
 
 		destroy: function() {

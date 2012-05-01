@@ -1,10 +1,10 @@
 Core.registerModule("pieMenu", function(sandBox) {
 	var container = null;
-	var saveDiv = null, guessDiv = null, fillDiv = null, blackboardDiv = null, magicDiv = null, pieDiv = null;
+	var soloDiv = null, guessDiv = null, fillDiv = null, blackboardDiv = null, magicDiv = null, pieDiv = null;
 	var isShow = false;
 
 	var hideAll = function() {
-		sandBox.hide(saveDiv);
+		sandBox.hide(soloDiv);
 		sandBox.hide(guessDiv);
 		sandBox.hide(blackboardDiv);
 		sandBox.hide(magicDiv);
@@ -12,7 +12,7 @@ Core.registerModule("pieMenu", function(sandBox) {
 	};
 
 	var showAll = function() {
-		sandBox.show(saveDiv);
+		sandBox.show(soloDiv);
 		sandBox.show(guessDiv);
 		sandBox.show(fillDiv);
 		sandBox.show(blackboardDiv);
@@ -23,7 +23,7 @@ Core.registerModule("pieMenu", function(sandBox) {
 		init: function() {
 			container = sandBox.container;
 			sandBox.show(container);
-			saveDiv = sandBox.find("#save");
+			soloDiv = sandBox.find("#soloBtn");
 			guessDiv = sandBox.find("#guess");
 			fillDiv = sandBox.find("#fill");
 			blackboardDiv = sandBox.find("#blackboard");
@@ -37,9 +37,9 @@ Core.registerModule("pieMenu", function(sandBox) {
 			
 			guessDiv.onclick = this.notifyGuess;	
 			pieDiv.onclick = this.toggleMenu;
-			saveDiv.onclick = this.notifySave;
+			soloDiv.onclick = this.notifySolo;
 			if(sandBox.touchable()) {
-	           	saveDiv.addEventListener("touchstart", this.notifySave);
+	           	soloDiv.addEventListener("touchstart", this.notifySolo);
 	           	pieDiv.addEventListener("touchstart", this.toggleMenu);
 	           	guessDiv.addEventListener("touchstart", this.notifyGuess);
 	        }
@@ -64,7 +64,6 @@ Core.registerModule("pieMenu", function(sandBox) {
 				if(level >= 4) {
 					sandBox.removeClass(magicDiv, "disable");
 				}
-				console.log(level);	
 			};
 		},
 
@@ -73,10 +72,10 @@ Core.registerModule("pieMenu", function(sandBox) {
 			refreshLevel();
 		},
 
-		notifySave: function() {
-			sandBox.notify( {
-				"type": "save"
-			} );
+		notifySolo: function() {
+			sandBox.notify({
+				"type": "openSolo"
+			});
 		},
 
 		notifyPainting: function() {
@@ -109,7 +108,7 @@ Core.registerModule("pieMenu", function(sandBox) {
 
 		destroy: function() {
 			sandBox.hide(container);
-			saveDiv.removeEventListener("touchstart", this.notifySave);
+			soloDiv.removeEventListener("touchstart", this.notifySolo);
 	        pieDiv.removeEventListener("touchstart", this.toggleMenu);
 	        guessDiv.removeEventListener("touchstart", this.notifyGuess);
 	        fillDiv.removeEventListener("touchstart", parent.notifyPainting);
