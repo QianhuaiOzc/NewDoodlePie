@@ -146,6 +146,7 @@ Core.registerModule("game", function(sandBox) {
 			});
 			fragm.appendChild(li);
 			li.addEventListener("click",Events.hadChoose,false);
+			li.addEventListener("touchstart", Events.hadChoose, false);
 		
 			li.onselectstart = function(){
 				return false;
@@ -193,6 +194,7 @@ Core.registerModule("game", function(sandBox) {
 
 			pic = sandBox.createElement("img");
 			toNextButton.addEventListener("click",Events.toNextQuestion,false);
+			toNextButton.addEventListener("touchstart", Events.toNextQuestion, false);
 
 			slider.id = "slider";
 			sandBox.addClass(score, "score");
