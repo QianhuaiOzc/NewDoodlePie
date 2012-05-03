@@ -7,6 +7,7 @@ Core.registerModule("container", function(sandBox) {
 		"painting": ["painting", "crayon", "brushSize", "undo", "pieMenu"],
 		"blackboard": ["blackboardCanvas", "chalk", "brushSize", "undo", "pieMenu"],
 		"solo": ["solo", "crayon", "brushSize", "undo", "pieMenu", "stamp"],
+		"magic": ["kaleidoscope", "crayon", "brushSize", "pieMenu","magicType"],
 		"game": ["game", "pieMenu"]
 	};
 	var currentModule = null;
@@ -72,6 +73,7 @@ Core.registerModule("container", function(sandBox) {
 				"home": this.home,
 				"openBlackboard": this.openBlackboard,
 				"openGuess": this.openGuess,
+				"openMagic":this.openMagic,
 				"gameFinish": this.gameFinish,
 				"finishOnePic": this.incrPic,
 				"fillFinish": this.finishFill,
@@ -96,6 +98,10 @@ Core.registerModule("container", function(sandBox) {
 
 		openGuess: function(evtObj) {
 			moduleSwitch("game", currentModule);
+		},
+
+		openMagic: function(evtObj) {
+			moduleSwitch("magic", currentModule);
 		},
 
 		drawShapeFinish: function(evtObj) {
