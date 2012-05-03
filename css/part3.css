@@ -9,10 +9,7 @@
 
     position: relative;
     top:0px;
-<<<<<<< HEAD
-=======
     height: 1024px;
->>>>>>> 1c43459260947ac2042695c5481fd741a84a1e70
 }
 #slider .content{
 	position:relative;
@@ -83,11 +80,7 @@ background-image: url(../images/guess/next_s.png);
     background-image: url(../images/guess/wrong.png);
     height:186px;
     width:307px;
-<<<<<<< HEAD
-    bottom:50px;
-=======
     bottom:390px;
->>>>>>> 1c43459260947ac2042695c5481fd741a84a1e70
     right:100px;
 
 }
@@ -96,11 +89,7 @@ background-image: url(../images/guess/next_s.png);
     background-image: url(../images/guess/right.png);
     height:186px;
     width:307px;
-<<<<<<< HEAD
-    bottom:50px;
-=======
     bottom:390px;
->>>>>>> 1c43459260947ac2042695c5481fd741a84a1e70
     right:100px;
 
 }
