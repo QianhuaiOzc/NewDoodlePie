@@ -177,6 +177,69 @@ Core.registerModule("stamp", function(sandBox) {
 		}
 	};
 });
+Core.registerModule("magicType", function(sandBox) {
+	var container = null;
+	var typeList = [ "triangle", "rectangle", "circle"];
+	var typeDivList = [], selectedType = null;
+
+	return {
+		init: function() {
+			container = sandBox.container;
+			sandBox.show(container);
+			sandBox.addClass(container, "stampList");
+
+			for (var i = 0,len = typeList.length; i < len; i++) {
+
+                var type = typeList[i];
+
+                var typeDiv = sandBox.createElement("div");
+
+                sandBox.addClass(typeDiv, "stamp");
+                sandBox.addClass(typeDiv, "unselected");
+                sandBox.css(typeDiv, "left", (65 + i * 116));
+                sandBox.css(typeDiv, "background", "url(images/magic/"+type+".png) no-repeat");
+                typeDiv.setAttribute("magicType", type);
+                container.appendChild(typeDiv);
+    				
+                typeDivList.push(typeDiv);
+                typeDiv.onclick = this.doSelect();
+                if(sandBox.touchable()) {
+	            	typeDiv.addEventListener("touchstart", this.doSelect());
+	        	}
+            }
+
+		},
+
+		doSelect: function() {
+			var parent = this;
+			return function(evt) {
+				var targetType = evt.target;
+
+				if(selectedType) {
+					sandBox.removeClass(selectedType, "selected");
+					sandBox.addClass(selectedType, "unselected");
+				}
+
+				selectedType = targetType;
+
+				sandBox.removeClass(selectedType, "unselected");
+				sandBox.addClass(selectedType, "selected");
+
+				sandBox.notify({
+					"type": "changeDrawMagicType",
+					"data": targetType.getAttribute("magicType")
+				});
+			};
+		},
+
+		destroy: function() {
+			sandBox.hide(container);
+			for(var i = 0; i < typeDivList.length; i++) {
+				container.removeChild(typeDivList[i]);
+			}
+		}
+	};
+});
 
 Core.registerModule("brushSize", function(sandBox) {
 	var brushSizes = [
