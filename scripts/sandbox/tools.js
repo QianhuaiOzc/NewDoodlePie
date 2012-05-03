@@ -456,6 +456,9 @@ Core.registerModule("info", function(sandBox) {
 
 		destroy: function() {
 			sandBox.hide(container);
+			stateBtn.removeEventListener("touchstart", showState);
+			checkBtn.removeEventListener("touchstart", showCheck);
+			shadowDiv.removeEventListener("touchstart", disappear);
 		}
 	};
 });

@@ -60,7 +60,7 @@ Core.registerModule("container", function(sandBox) {
 			for(var i = 0; i < startModules.length; i++) {
 				Core.start(startModules[i]);
 			}
-			currentModule = "start";
+			currentModule = "drawShape";
 
 			var oldLevel = localStorage.getItem("state");
 			if(oldLevel != null) {

@@ -46,6 +46,7 @@ Core.registerModule("drawShape", function(sandBox) {
             isPaint = true;
             var shape = shapeGroup[result.Name];
             var num = Math.floor(Math.random() * imageNumber[shape]);
+            console.log("shape: " + shape + "\nnum: " + num);
             var img = new Image();
             var src = "images/pictures/"+shape+"/"+num;
             img.src = src+"-color.png";
