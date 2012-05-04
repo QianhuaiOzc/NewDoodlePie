@@ -46,7 +46,7 @@ Core.registerModule("drawShape", function(sandBox) {
             isPaint = true;
             var shape = shapeGroup[result.Name];
             var num = Math.floor(Math.random() * imageNumber[shape]);
-            console.log("shape: " + shape + "\nnum: " + num);
+            // console.log("shape: " + shape + "\nnum: " + num);
             var img = new Image();
             var src = "images/pictures/"+shape+"/"+num;
             img.src = src+"-color.png";
@@ -55,6 +55,7 @@ Core.registerModule("drawShape", function(sandBox) {
                     backCtx.drawImage(img, 0, 0, img.width, img.height);
                     clearInterval(id);
                     setTimeout(function() {
+                    	sandBox.notify({ "type": "showCheckBtn" });
                         sandBox.notify({
                            	"type": "drawShapeFinish",
                           	"data": {
@@ -104,6 +105,7 @@ Core.registerModule("drawShape", function(sandBox) {
 
 			sandBox.listen({ "colorChange": this.colorChange,
 				"brushSizeChange" : this.brushSizeChange });
+			sandBox.notify({ "type": "hideCheckBtn" });
 		},
 
 		drawStart: function(evt) {

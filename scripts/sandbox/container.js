@@ -1,7 +1,7 @@
 Core.registerModule("container", function(sandBox) {
 	var container = null;
 	var moduleMap = {
-		"start": ["drawShape", "crayon", "brushSize", "home", "pieMenu", "info"],
+		"start": ["info", "drawShape", "crayon", "brushSize", "home", "pieMenu"],
 		"drawShape": ["drawShape", "crayon", "brushSize", "pieMenu"],
 		"drawPicture": ["drawPicture", "crayon", "brushSize", "undo", "pieMenu", "stamp"],
 		"painting": ["painting", "crayon", "brushSize", "undo", "pieMenu"],
@@ -13,6 +13,7 @@ Core.registerModule("container", function(sandBox) {
 	var currentModule = null;
 	var stateInfo = {
 		level: 1, drawFinished: 0, picFinished: 0, fillFinished: false, guessFinished: false, bboardFinished: false,
+		firstDate: null
 	};
 
 	var moduleSwitch = function(newModule, oldModule, data) {

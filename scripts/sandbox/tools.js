@@ -465,7 +465,7 @@ Core.registerModule("crayon", function(sandBox) {
 
 Core.registerModule("info", function(sandBox) {
 	var container = null;
-	var stateBtn = null, checkBtn = null, shadowDiv = null;
+	var stateBtn = null, checkBtn = null, shadowDiv = null, stateCloBtn = null, checkCloBtn = null;
 	var stateDiv = null, checkDiv = null;
 
 	var mask = function(content) {
@@ -494,6 +494,14 @@ Core.registerModule("info", function(sandBox) {
 		checkDiv.style.display = "none";
 	};
 
+	var hideCheckBtn = function() {
+		sandBox.hide(checkBtn);
+	};
+
+	var showCheckBtn = function() {
+		sandBox.show(checkBtn);
+	};
+
 	return {
 		init: function() {
 			container = sandBox.container;
@@ -507,6 +515,12 @@ Core.registerModule("info", function(sandBox) {
 			checkDiv = sandBox.find("#check");
 			checkDiv.style.display = "none";
 
+			stateCloBtn = sandBox.find("#state .closeBtn");
+			stateCloBtn.onclick = disappear;
+
+			checkCloBtn = sandBox.find("#check .closeBtn");
+			checkCloBtn.onclick = disappear;
+
 			stateBtn.onclick = showState;
 			stateBtn.addEventListener("touchstart", showState);
 
@@ -515,7 +529,11 @@ Core.registerModule("info", function(sandBox) {
 
 			shadowDiv.onclick = disappear;
 			shadowDiv.addEventListener("touchstart", disappear);
+
+			sandBox.listen({"hideCheckBtn": hideCheckBtn, "showCheckBtn": showCheckBtn});
 		},
+
+
 
 		destroy: function() {
 			sandBox.hide(container);
