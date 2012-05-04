@@ -514,11 +514,11 @@ Core.registerModule("info", function(sandBox) {
 
 	var createTaskDivList = function(state) {
 		var taskList = [];
+		var drawShape = sandBox.createElement("li");
+		var drawPict = sandBox.createElement("li");
 		switch (state.level) {
 			case 1: 
-				var drawShape = sandBox.createElement("li");
 				drawShape.innerText = "You have finished " + state.drawFinished + " of 2 shapes!";
-				var drawPict = sandBox.createElement("li");
 				drawPict.innerText = "You have finished " + state.picFinished + " of 3 pictures!";
 				var guess = sandBox.createElement("li");
 				if(state.guessFinished === true) {
@@ -531,8 +531,30 @@ Core.registerModule("info", function(sandBox) {
 				taskList.push(guess);
 				break;
 			case 2: 
+				drawShape.innerText = "You have finished " + state.drawFinished + " of 3 shapes!";
+				drawPict.innerText = "You have finished " + state.picFinished + " of 5 pictures!";
+				var fill = sandBox.createElement("li");
+				if(state.fillFinished === true) {
+					fill.innerText = "You have finished the fill!";
+				} else {
+					fill.innerText = "You have not finished the fill!";
+				}
+				taskList.push(drawShape);
+				taskList.push(drawPict);
+				taskList.push(fill);
 				break;
 			case 3: 
+				drawShape.innerText = "You have finished " + state.drawFinished + " of 4 shapes!";
+				drawPict.innerText = "You have finished " + state.picFinished + " of 7 pictures!";
+				var blackboard = sandBox.createElement("li");
+				if(state.bboardFinished === true) {
+					blackboard.innerText = "You have finished the blackboard!";
+				} else {
+					blackboard.innerText = "You have not finished the blackboard!";
+				}
+				taskList.push(drawShape);
+				taskList.push(drawPict);
+				taskList.push(blackboard);
 				break;
 			default :
 		}

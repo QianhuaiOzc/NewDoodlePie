@@ -45,7 +45,7 @@ Core.registerModule("container", function(sandBox) {
 		if(si.drawFinished >= 3 && si.picFinished >= 5 && si.fillFinished == true) {
 			si.level = 3;
 		}
-		if(si.level == 3 && si.drawFinished >= 4 && si.bboardFinished == true) {
+		if(si.level == 4 && si.drawFinished >= 7 && si.bboardFinished == true) {
 			si.level = 4;
 		}
 		// console.log("save");
