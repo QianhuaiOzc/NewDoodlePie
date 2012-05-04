@@ -399,7 +399,7 @@
 
 @font-face {
     font-family: WebFont;
-    src: url(../font/FZMWFont.ttf) format("truetype");
+    src: url(../font/MarkerFeltWide.ttf) format("truetype");
     font-weight: normal;
 }
 
@@ -409,13 +409,16 @@
 
 #state #level {
     font-size: 40px;
+    margin-bottom: 0;
 }
 
 #state #tasks {
     text-align: left;
     list-style: none;
     font-weight: bold;
-    font-size: 23px;
+    font-size: 20px;
+    margin-top: 0;
+    line-height: 40px;
 }
 
 #check #tips {
