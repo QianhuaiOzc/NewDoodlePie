@@ -396,3 +396,28 @@
     height: 64px;
     display: block;
 }
+
+@font-face {
+    font-family: WebFont;
+    src: url(../font/FZMWFont.ttf) format("truetype");
+    font-weight: normal;
+}
+
+.webfont {
+    font-family: WebFont;
+}
+
+#state #level {
+    font-size: 40px;
+}
+
+#state #tasks {
+    text-align: left;
+    list-style: none;
+    font-weight: bold;
+    font-size: 23px;
+}
+
+#check #tips {
+    font-size: 25px;
+}

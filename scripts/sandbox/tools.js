@@ -467,7 +467,7 @@ Core.registerModule("info", function(sandBox) {
 	var container = null;
 	var stateBtn = null, checkBtn = null, shadowDiv = null, stateCloBtn = null, checkCloBtn = null;
 	var stateDiv = null, checkDiv = null;
-
+	var taskUL = null;
 	var mask = function(content) {
 		container.appendChild(shadowDiv);
 		sandBox.addClass(shadowDiv, "sd");
@@ -478,8 +478,14 @@ Core.registerModule("info", function(sandBox) {
 		var state = JSON.parse(localStorage.getItem("state"));
 		var level = state.level;
 
-		var levelDiv = sandBox.find("#level");
-		level.innerText = "Level " + level + " Challenge"
+		var levelDiv = sandBox.find("#level", stateDiv);
+		levelDiv.innerText = "Level " + level + " Challenge"
+
+		var tasks = createTaskDivList(state);
+		var i = 0, length = tasks.length;
+		for(; i < length; i++) {
+			taskUL.appendChild(tasks[i]);
+		}
 
 		stateDiv.style.display = "block";
 	};
@@ -491,6 +497,10 @@ Core.registerModule("info", function(sandBox) {
 	var disappear = function() {
 		sandBox.removeClass(shadowDiv, "sd");
 		stateDiv.style.display = "none";
+		var children = taskUL.childNodes, i = children.length - 1;
+		for(; i > 0; i--) {
+			taskUL.removeChild(children[i]);
+		}
 		checkDiv.style.display = "none";
 	};
 
@@ -501,6 +511,33 @@ Core.registerModule("info", function(sandBox) {
 	var showCheckBtn = function() {
 		sandBox.show(checkBtn);
 	};
+
+	var createTaskDivList = function(state) {
+		var taskList = [];
+		switch (state.level) {
+			case 1: 
+				var drawShape = sandBox.createElement("li");
+				drawShape.innerText = "You have finished " + state.drawFinished + " of 2 shapes!";
+				var drawPict = sandBox.createElement("li");
+				drawPict.innerText = "You have finished " + state.picFinished + " of 3 pictures!";
+				var guess = sandBox.createElement("li");
+				if(state.guessFinished === true) {
+					guess.innerText = "You have finished the guess!";
+				} else {
+					guess.innerText = "You have not finish the guess!";
+				}
+				taskList.push(drawShape);
+				taskList.push(drawPict);
+				taskList.push(guess);
+				break;
+			case 2: 
+				break;
+			case 3: 
+				break;
+			default :
+		}
+		return taskList;
+	}
 
 	return {
 		init: function() {
@@ -515,11 +552,13 @@ Core.registerModule("info", function(sandBox) {
 			checkDiv = sandBox.find("#check");
 			checkDiv.style.display = "none";
 
-			stateCloBtn = sandBox.find("#state .closeBtn");
+			stateCloBtn = sandBox.find(".closeBtn", stateDiv);
 			stateCloBtn.onclick = disappear;
 
-			checkCloBtn = sandBox.find("#check .closeBtn");
+			checkCloBtn = sandBox.find(".closeBtn", checkDiv);
 			checkCloBtn.onclick = disappear;
+
+			taskUL = sandBox.find("#tasks", stateDiv);
 
 			stateBtn.onclick = showState;
 			stateBtn.addEventListener("touchstart", showState);
