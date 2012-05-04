@@ -196,7 +196,7 @@ Core.registerModule("magicType", function(sandBox) {
 
                 sandBox.addClass(typeDiv, "stamp");
                 sandBox.addClass(typeDiv, "unselected");
-                sandBox.css(typeDiv, "left", (65 + i * 116));
+                sandBox.css(typeDiv, "left", (100 + i * 200));
                 sandBox.css(typeDiv, "background", "url(images/magic/"+type+".png) no-repeat");
                 typeDiv.setAttribute("magicType", type);
                 container.appendChild(typeDiv);

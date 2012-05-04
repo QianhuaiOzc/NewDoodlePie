@@ -7,7 +7,7 @@ Core.registerModule("container", function(sandBox) {
 		"painting": ["painting", "crayon", "brushSize", "undo", "pieMenu"],
 		"blackboard": ["blackboardCanvas", "chalk", "brushSize", "undo", "pieMenu"],
 		"solo": ["solo", "crayon", "brushSize", "undo", "pieMenu", "stamp"],
-		"magic": ["kaleidoscope", "crayon", "brushSize", "pieMenu","magicType"],
+		"magic": ["kaleidoscope", "crayon", "brushSize", "pieMenu","magicType","undo"],
 		"game": ["game", "pieMenu"]
 	};
 	var currentModule = null;
