@@ -32,7 +32,7 @@ Core.registerModule("pieMenu", function(sandBox) {
 			hideAll();
 
 			sandBox.addClass(blackboardDiv, "disable");
-			// sandBox.addClass(magicDiv, "disable");
+			sandBox.addClass(magicDiv, "disable");
 			sandBox.addClass(fillDiv, "disable");
 			
 			guessDiv.onclick = this.notifyGuess;	
@@ -43,6 +43,7 @@ Core.registerModule("pieMenu", function(sandBox) {
 	           	soloDiv.addEventListener("touchstart", this.notifySolo);
 	           	pieDiv.addEventListener("touchstart", this.toggleMenu);
 	           	guessDiv.addEventListener("touchstart", this.notifyGuess);
+	           	magicDiv.addEventListener("touchstart", this.notifyMagic);
 	        }
 
 	       	sandBox.listen({"currentLevel": this.updateMenu()});
