@@ -1,7 +1,7 @@
 Core.registerModule("kaleidoscope", function(sb) {
 
 
-			var magicType = null;
+			var magicType = "main";
 
 			var isDrawing = false,currentPath = [],
 			
@@ -219,9 +219,9 @@ Core.registerModule("kaleidoscope", function(sb) {
 				backgroundRepeat:"no-repeat",
 				backgroundPosition:"center",
 				backgroundColor:"white",
-				display:"block",
-				height:"100%",
-				width:"100%"
+				display:"none",
+				height:(panelH+2)+"px",
+				width:(panelW+2)+"px"
 
 			});
 
@@ -297,7 +297,11 @@ Core.registerModule("kaleidoscope", function(sb) {
 
 				"brushSizeChange": this.brushSizeChange,
 
-				"check":this.check
+				"check":this.check,
+
+				"showMainPage":this.showMainPage,
+
+				"hiddenMainPage":this.hiddenMainPage
 
 			});
 
@@ -315,21 +319,27 @@ Core.registerModule("kaleidoscope", function(sb) {
 
 			sb.notify({
 
-				type:"changeDrawMagicType",
+				type:"showMainPage",
 
-				data:"triangle"
+				data:null
 
 			});
 
 		},
 		changeDrawMagicType:function(type){
 				
-			// if(magicType==type) return;
-			
-			if(magicType!=null&&mainPage.style.display=="block") {
+			if(magicType==type) return;
 
-				container.removeChild(mainPage);
+			if(magicType=="main"){
+
+				sb.notify({
+
+					type:"hiddenMainPage",
+
+					data:null
+				});
 			}
+
 			pathes.length = 0;	
 			showCtx.clearRect(0,0,panelW,panelH);
 			show2Ctx.clearRect(0,0,panelW,panelH);
@@ -352,6 +362,9 @@ Core.registerModule("kaleidoscope", function(sb) {
 				paintelemH = paintelemW;
 				paintT = (panelH-paintelemH)/2;
 				paintL = (panelW-paintelemW)/2;
+
+			}else if(type=="main"){
+
 
 			}
 
@@ -382,6 +395,7 @@ Core.registerModule("kaleidoscope", function(sb) {
 			smCtx.clearRect(0,0,paintelemW,paintelemH);
 			frontCtx.clearRect(0,0,paintelemW,paintelemH);
 			backCtx.clearRect(0,0,paintelemW,paintelemH);
+
 			var ctx = smCtx;
 			ctx.save();
 			ctx.strokeStyle = "#CCC";
@@ -472,7 +486,7 @@ Core.registerModule("kaleidoscope", function(sb) {
 
 		drawStart:function(evt){
 			
-			isDrawing = true;
+			if(magicType=="main") return;
 			if(magicType=="rectangle"||magicType=="triangle"){
 
 				// fn.css(backCanvas,{
@@ -482,7 +496,9 @@ Core.registerModule("kaleidoscope", function(sb) {
 				// fn.css(frontCanvas,{
 				// 	opacity:"0"
 				// });
-				}
+			}
+
+			isDrawing = true;
 			currentPath = {
 				color: currentColor,
 				size: currentSize,
@@ -493,7 +509,21 @@ Core.registerModule("kaleidoscope", function(sb) {
 			};
 		},
 
+		showMainPage:function(){
+
+			mainPage.style["display"] = "block";
+
+		},
+
+		hiddenMainPage:function(){
+			
+		 	mainPage.style["display"]="none";
+
+
+		},
+
 		drawStop:function(evt) {
+			if(magicType=="main") return;
 			if(isDrawing == true) {
 				isDrawing = false;
 				pathes.push(currentPath);
@@ -503,7 +533,7 @@ Core.registerModule("kaleidoscope", function(sb) {
 		},
 
 		drawing:function(evt) {
-			
+			if(magicType=="main") return;
 			if(evt.preventDefault) {
 				evt.preventDefault();
 			}
