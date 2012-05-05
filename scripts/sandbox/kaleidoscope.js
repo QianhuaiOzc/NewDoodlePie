@@ -1,18 +1,20 @@
 Core.registerModule("kaleidoscope", function(sb) {
 
 
-			var magicType = null;
+			var magicType = "main";
 
 			var isDrawing = false,currentPath = [],
 			
 			currentColor = "AACD34",currentSize = "5",
 			pathes = [],paintL = 0,paintT = 0,radius = 0,circleFactor = 6;
 			
-			var panelW = 800,panelH = 600,factor = 4,
+			var panelW = 600,panelH = 600,factor = 4,
 			paintelemW = panelW/factor,paintelemH = panelH/factor;
 
 
-			var magic = null,container = null,
+			var magic = null,
+			container = null,
+			mainPage = null,
 			showMagic = null,
 			showMagic2 = null,
 			frontCanvas = null,
@@ -20,7 +22,8 @@ Core.registerModule("kaleidoscope", function(sb) {
 			showCtx = null,
 			show2Ctx = null,
 			frontCtx = null,
-			textureImage = null;
+			textureImage = null,
+			shapeModel = null;
 
 			var fn = {
 
@@ -180,28 +183,45 @@ Core.registerModule("kaleidoscope", function(sb) {
 			showMagic2 = fn.create("canvas");
 			frontCanvas = fn.create("canvas");
 			backCanvas = fn.create("canvas");
+			shapeModel = fn.create("canvas");
+			mainPage = fn.create("div");
 			showCtx = showMagic.getContext("2d");
 			show2Ctx = showMagic2.getContext("2d");
 			frontCtx = frontCanvas.getContext("2d");
 			backCtx = backCanvas.getContext("2d");
+			smCtx = shapeModel.getContext("2d");
 			showMagic.className = "showMagic";
 			showMagic2.className = "showMagic";
 			frontCanvas.id  = "frontCanvas";
 			backCanvas.id = "backCanvas";
-
+			mainPage.className = "mainPage";
 			textureImage = new Image();
 			textureImage.src = "images/crayon-texture.png";
+
 
 			sb.show(container);
 
 			fn.css(magic,{
 
 				position: "absolute",
-				left: "132px",
+				left: "247px",
 				top: "118px",
 				zIndex: 2,
 				height:panelH+"px",
-				width:panelW+"px",
+				width:panelW+"px"
+
+			});
+
+			fn.css(mainPage,{
+
+				position: "absolute",
+				backgroundImage:"url(images/magic/magic-show.png)",
+				backgroundRepeat:"no-repeat",
+				backgroundPosition:"center",
+				backgroundColor:"white",
+				display:"none",
+				height:(panelH+2)+"px",
+				width:(panelW+2)+"px"
 
 			});
 
@@ -224,8 +244,8 @@ Core.registerModule("kaleidoscope", function(sb) {
 
 				position:"absolute",
 				left:"0px",
-				top:"0px",
-				border:"1px solid black"
+				top:"0px"
+				// border:"1px solid #CCC"
 
 			});
 
@@ -234,13 +254,17 @@ Core.registerModule("kaleidoscope", function(sb) {
 				position:"absolute",
 				left:"0px",
 				top:"0px",
-				border:"1px solid black"
+				border:"1px dashed #CCC"
 
 			});
 
 			fn.css(backCanvas,{
 				position: "absolute",
 				cursor: "pointer"
+			});
+
+			fn.css(shapeModel,{
+				position: "absolute",
 			});
 
 			fn.css(frontCanvas,{
@@ -251,7 +275,9 @@ Core.registerModule("kaleidoscope", function(sb) {
 			magic.appendChild(showMagic);
 			magic.appendChild(showMagic2);
 			magic.appendChild(backCanvas);
+			magic.appendChild(shapeModel);
 			magic.appendChild(frontCanvas);
+			magic.appendChild(mainPage);
 
 			sb.listen({
 
@@ -271,17 +297,31 @@ Core.registerModule("kaleidoscope", function(sb) {
 
 				"brushSizeChange": this.brushSizeChange,
 
+				"check":this.check,
+
+				"showMainPage":this.showMainPage,
+
+				"hiddenMainPage":this.hiddenMainPage
+
 			});
 
 			frontCanvas.onmousedown = this.drawStart;
 			frontCanvas.onmouseup = this.drawStop;
 			frontCanvas.onmouseout = this.drawStop;
 			frontCanvas.onmousemove = this.drawing;
+
+			if(sb.touchable()) {
+				frontCanvas.addEventListener("touchstart", this.drawStart);
+				frontCanvas.addEventListener("touchmove", this.drawing);
+				frontCanvas.addEventListener("touchend", this.drawStop);
+			}
+
+
 			sb.notify({
 
-				type:"changeDrawMagicType",
+				type:"showMainPage",
 
-				data:"triangle"
+				data:null
 
 			});
 
@@ -290,6 +330,17 @@ Core.registerModule("kaleidoscope", function(sb) {
 				
 			if(magicType==type) return;
 
+			if(magicType=="main"){
+
+				sb.notify({
+
+					type:"hiddenMainPage",
+
+					data:null
+				});
+			}
+
+			pathes.length = 0;	
 			showCtx.clearRect(0,0,panelW,panelH);
 			show2Ctx.clearRect(0,0,panelW,panelH);
 
@@ -312,7 +363,9 @@ Core.registerModule("kaleidoscope", function(sb) {
 				paintT = (panelH-paintelemH)/2;
 				paintL = (panelW-paintelemW)/2;
 
-			}else{
+			}else if(type=="main"){
+
+
 			}
 
 			fn.attr(backCanvas,{
@@ -323,44 +376,54 @@ Core.registerModule("kaleidoscope", function(sb) {
 				height:paintelemH+"px",
 				width:paintelemW+"px"
 			});
+			fn.attr(shapeModel,{
+				height:paintelemH+"px",
+				width:paintelemW+"px"
+			});
 			fn.css(backCanvas,{
 				top:paintT+"px",
 				left:paintL+"px"
 			});
-
+			fn.css(shapeModel,{
+				top:paintT+"px",
+				left:paintL+"px"
+			});
 			fn.css(frontCanvas,{
 				top:paintT+"px",
 				left:paintL+"px"
 			});
+			smCtx.clearRect(0,0,paintelemW,paintelemH);
 			frontCtx.clearRect(0,0,paintelemW,paintelemH);
 			backCtx.clearRect(0,0,paintelemW,paintelemH);
 
+			var ctx = smCtx;
+			ctx.save();
+			ctx.strokeStyle = "#CCC";
 			if(type=="triangle"){
 
-				backCtx.strokeStyle = "black";
-				backCtx.beginPath();
-				backCtx.moveTo(0,0);
-				backCtx.lineTo(paintelemW,paintelemH);
-				backCtx.lineTo(paintelemW,0);
-				backCtx.lineTo(0,paintelemH);
-				backCtx.lineTo(0,0);
-				backCtx.lineTo(paintelemW,0);
-				backCtx.lineTo(paintelemW,paintelemH);
-				backCtx.lineTo(0,paintelemH);
-				backCtx.closePath();
-				backCtx.stroke();
+				ctx.beginPath();
+				ctx.moveTo(0,0);
+				ctx.lineTo(paintelemW,paintelemH);
+				ctx.lineTo(paintelemW,0);
+				ctx.lineTo(0,paintelemH);
+				ctx.lineTo(0,0);
+				ctx.lineTo(paintelemW,0);
+				ctx.lineTo(paintelemW,paintelemH);
+				ctx.lineTo(0,paintelemH);
+				ctx.closePath();
+				ctx.stroke();
 
 			}else if(type=="rectangle"){
 
-				backCtx.strokeStyle = "black";
-				backCtx.beginPath();
-				backCtx.moveTo(0,0);
-				backCtx.lineTo(0,paintelemH);
-				backCtx.lineTo(paintelemW,paintelemH);
-				backCtx.lineTo(paintelemW,0);
-				backCtx.lineTo(0,0);
-				backCtx.closePath();
-				backCtx.stroke();
+				
+				ctx.beginPath();
+				ctx.moveTo(0,0);
+				ctx.lineTo(0,paintelemH);
+				ctx.lineTo(paintelemW,paintelemH);
+				ctx.lineTo(paintelemW,0);
+				ctx.lineTo(0,0);
+				ctx.closePath();
+				ctx.stroke();
 
 
 			}else if(type=="circle"){
@@ -372,44 +435,30 @@ Core.registerModule("kaleidoscope", function(sb) {
 					point2 = {x:radius-distance,y:radius-radius/2},
 					point3 = {x:radius+distance,y:radius+radius/2},
 					point4 = {x:radius+distance,y:radius-radius/2};
-				backCtx.save();
-				backCtx.beginPath();
-				backCtx.arc(radius+1,radius+1,radius,0,Math.PI*2,true);
-				backCtx.moveTo(radius,radius);
-				backCtx.lineTo(point1.x,point1.y);
-				backCtx.moveTo(radius,radius);
-				backCtx.lineTo(point2.x,point2.y);
-				backCtx.moveTo(radius,radius);
-				backCtx.lineTo(point3.x,point3.y);
-				backCtx.moveTo(radius,radius);
-				backCtx.lineTo(point4.x,point4.y);
-				backCtx.moveTo(paintelemW/2,0);
-				backCtx.lineTo(paintelemW/2,paintelemH);
-				backCtx.closePath();
-				backCtx.stroke();
-				backCtx.restore();
+				ctx.save();
+				ctx.beginPath();
+				ctx.arc(radius+1,radius+1,radius,0,Math.PI*2,true);
+				ctx.moveTo(radius,radius);
+				ctx.lineTo(point1.x,point1.y);
+				ctx.moveTo(radius,radius);
+				ctx.lineTo(point2.x,point2.y);
+				ctx.moveTo(radius,radius);
+				ctx.lineTo(point3.x,point3.y);
+				ctx.moveTo(radius,radius);
+				ctx.lineTo(point4.x,point4.y);
+				ctx.moveTo(paintelemW/2,0);
+				ctx.lineTo(paintelemW/2,paintelemH);
+				ctx.closePath();
+				ctx.stroke();
+				ctx.restore();
 			}
 			else{
 				return;
 			}
+
+			ctx.restore();
 			magicType = type;
 		},
-		drawAPath:function(ctx, path) {
-
-			var points = path.points;
-			ctx.beginPath();
-			ctx.strokeStyle = "#" + path.color;
-			ctx.lineWidth = path.size;
-			ctx.lineJoin = "round";
-			ctx.lineCap = "round";
-			for(var i = 0; i < points.length; i++) {
-       			 ctx.lineTo(points[i].X, points[i].Y);
-   			}
-    		ctx.stroke();
-    		ctx.closePath();
-		},
-
-
 		paintTriangleMagic:function(angle,tx,ty,ctx,path){
 
 			ctx.save();
@@ -437,7 +486,7 @@ Core.registerModule("kaleidoscope", function(sb) {
 
 		drawStart:function(evt){
 			
-			isDrawing = true;
+			if(magicType=="main") return;
 			if(magicType=="rectangle"||magicType=="triangle"){
 
 				// fn.css(backCanvas,{
@@ -447,7 +496,9 @@ Core.registerModule("kaleidoscope", function(sb) {
 				// fn.css(frontCanvas,{
 				// 	opacity:"0"
 				// });
-				}
+			}
+
+			isDrawing = true;
 			currentPath = {
 				color: currentColor,
 				size: currentSize,
@@ -458,7 +509,21 @@ Core.registerModule("kaleidoscope", function(sb) {
 			};
 		},
 
+		showMainPage:function(){
+
+			mainPage.style["display"] = "block";
+
+		},
+
+		hiddenMainPage:function(){
+			
+		 	mainPage.style["display"]="none";
+
+
+		},
+
 		drawStop:function(evt) {
+			if(magicType=="main") return;
 			if(isDrawing == true) {
 				isDrawing = false;
 				pathes.push(currentPath);
@@ -468,7 +533,7 @@ Core.registerModule("kaleidoscope", function(sb) {
 		},
 
 		drawing:function(evt) {
-			
+			if(magicType=="main") return;
 			if(evt.preventDefault) {
 				evt.preventDefault();
 			}
@@ -518,15 +583,26 @@ Core.registerModule("kaleidoscope", function(sb) {
 		},
 
 		undo: function() {
+
+			
 			pathes.pop();
+			repaintFront();
 			repaintBack();
-			// repaintMagic();
+			repaintMagic();
+		},
+
+		check: function() {
+			if(hasCheck === false) {
+				sandBox.notify({"type": "finishOnePic"});
+				hasCheck = true;
+			}
 		},
 
 		reset: function() {
 			pathes.length = 0;
+			repaintFront();
 			repaintBack();
-			// repaintMagic();
+			repaintMagic();
 		},
 		destroy: function() {
 			sb.hide(container);
