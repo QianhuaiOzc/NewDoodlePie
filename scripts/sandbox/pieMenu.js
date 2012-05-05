@@ -38,12 +38,10 @@ Core.registerModule("pieMenu", function(sandBox) {
 			guessDiv.onclick = this.notifyGuess;	
 			pieDiv.onclick = this.toggleMenu;
 			soloDiv.onclick = this.notifySolo;
-			magicDiv.onclick = this.notifyMagic;
 			if(sandBox.touchable()) {
 	           	soloDiv.addEventListener("touchstart", this.notifySolo);
 	           	pieDiv.addEventListener("touchstart", this.toggleMenu);
 	           	guessDiv.addEventListener("touchstart", this.notifyGuess);
-	           	magicDiv.addEventListener("touchstart", this.notifyMagic);
 	        }
 
 	       	sandBox.listen({"currentLevel": this.updateMenu()});
@@ -65,6 +63,8 @@ Core.registerModule("pieMenu", function(sandBox) {
 				}
 				if(level >= 4) {
 					sandBox.removeClass(magicDiv, "disable");
+					magicDiv.onclick = parent.notifyMagic;
+					magicDiv.addEventListener("touchstart", parent.notifyMagic);
 				}
 			};
 		},
