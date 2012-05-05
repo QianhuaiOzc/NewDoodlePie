@@ -32,7 +32,7 @@ Core.registerModule("pieMenu", function(sandBox) {
 			hideAll();
 
 			sandBox.addClass(blackboardDiv, "disable");
-			// sandBox.addClass(magicDiv, "disable");
+			sandBox.addClass(magicDiv, "disable");
 			sandBox.addClass(fillDiv, "disable");
 			
 			guessDiv.onclick = this.notifyGuess;	
