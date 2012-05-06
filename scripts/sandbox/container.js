@@ -121,7 +121,9 @@ Core.registerModule("container", function(sandBox) {
 		},
 
 		home: function() {
-			moduleSwitch("drawShape", currentModule);
+			if(currentModule !== "start") {
+				moduleSwitch("drawShape", currentModule);
+			}
 		}, 
 
 		openBlackboard: function() {
