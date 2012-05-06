@@ -1,18 +1,19 @@
 Core.registerModule("container", function(sandBox) {
 	var container = null;
 	var moduleMap = {
-		"start": ["drawShape", "crayon", "brushSize", "home", "pieMenu", "info"],
+		"start": ["info", "drawShape", "crayon", "brushSize", "home", "pieMenu"],
 		"drawShape": ["drawShape", "crayon", "brushSize", "pieMenu"],
 		"drawPicture": ["drawPicture", "crayon", "brushSize", "undo", "pieMenu", "stamp"],
 		"painting": ["painting", "crayon", "brushSize", "undo", "pieMenu"],
 		"blackboard": ["blackboardCanvas", "chalk", "brushSize", "undo", "pieMenu"],
 		"solo": ["solo", "crayon", "brushSize", "undo", "pieMenu", "stamp"],
-		"magic": ["kaleidoscope", "crayon", "brushSize", "pieMenu","magicType","undo"],
+		"magic": ["kaleidoscope", "crayon", "brushSize", "pieMenu","magicType"],
 		"game": ["game", "pieMenu"]
 	};
 	var currentModule = null;
 	var stateInfo = {
 		level: 1, drawFinished: 0, picFinished: 0, fillFinished: false, guessFinished: false, bboardFinished: false,
+		firstDate: null
 	};
 
 	var moduleSwitch = function(newModule, oldModule, data) {
@@ -44,7 +45,7 @@ Core.registerModule("container", function(sandBox) {
 		if(si.drawFinished >= 3 && si.picFinished >= 5 && si.fillFinished == true) {
 			si.level = 3;
 		}
-		if(si.level == 3 && si.drawFinished >= 4 && si.bboardFinished == true) {
+		if(si.level == 3 && si.drawFinished >= 7 && si.bboardFinished == true) {
 			si.level = 4;
 		}
 		// console.log("save");
@@ -61,7 +62,7 @@ Core.registerModule("container", function(sandBox) {
 			for(var i = 0; i < startModules.length; i++) {
 				Core.start(startModules[i]);
 			}
-			currentModule = "start";
+			currentModule = "drawShape";
 
 			var oldLevel = localStorage.getItem("state");
 			if(oldLevel != null) {
