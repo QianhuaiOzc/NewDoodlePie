@@ -123,4 +123,4 @@ Core.registerModule("pieMenu", function(sandBox) {
 
 		}
 	};
-});
+};

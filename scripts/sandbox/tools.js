@@ -196,7 +196,7 @@ Core.registerModule("magicType", function(sandBox) {
 
                 sandBox.addClass(typeDiv, "stamp");
                 sandBox.addClass(typeDiv, "unselected");
-                sandBox.css(typeDiv, "left", (65 + i * 116));
+                sandBox.css(typeDiv, "left", (100 + i * 200));
                 sandBox.css(typeDiv, "background", "url(images/magic/"+type+".png) no-repeat");
                 typeDiv.setAttribute("magicType", type);
                 container.appendChild(typeDiv);
@@ -465,9 +465,9 @@ Core.registerModule("crayon", function(sandBox) {
 
 Core.registerModule("info", function(sandBox) {
 	var container = null;
-	var stateBtn = null, checkBtn = null, shadowDiv = null, stateCloBtn = null, checkCloBtn = null;
+	var stateBtn = null, checkBtn = null, shadowDiv = null;
 	var stateDiv = null, checkDiv = null;
-	var taskUL = null;
+
 	var mask = function(content) {
 		container.appendChild(shadowDiv);
 		sandBox.addClass(shadowDiv, "sd");
@@ -478,14 +478,8 @@ Core.registerModule("info", function(sandBox) {
 		var state = JSON.parse(localStorage.getItem("state"));
 		var level = state.level;
 
-		var levelDiv = sandBox.find("#level", stateDiv);
-		levelDiv.innerText = "Level " + level + " Challenge"
-
-		var tasks = createTaskDivList(state);
-		var i = 0, length = tasks.length;
-		for(; i < length; i++) {
-			taskUL.appendChild(tasks[i]);
-		}
+		var levelDiv = sandBox.find("#level");
+		level.innerText = "Level " + level + " Challenge"
 
 		stateDiv.style.display = "block";
 	};
@@ -497,69 +491,8 @@ Core.registerModule("info", function(sandBox) {
 	var disappear = function() {
 		sandBox.removeClass(shadowDiv, "sd");
 		stateDiv.style.display = "none";
-		var children = taskUL.childNodes, i = children.length - 1;
-		for(; i > 0; i--) {
-			taskUL.removeChild(children[i]);
-		}
 		checkDiv.style.display = "none";
 	};
-
-	var hideCheckBtn = function() {
-		sandBox.hide(checkBtn);
-	};
-
-	var showCheckBtn = function() {
-		sandBox.show(checkBtn);
-	};
-
-	var createTaskDivList = function(state) {
-		var taskList = [];
-		var drawShape = sandBox.createElement("li");
-		var drawPict = sandBox.createElement("li");
-		switch (state.level) {
-			case 1: 
-				drawShape.innerText = "You have finished " + state.drawFinished + " of 2 shapes!";
-				drawPict.innerText = "You have finished " + state.picFinished + " of 3 pictures!";
-				var guess = sandBox.createElement("li");
-				if(state.guessFinished === true) {
-					guess.innerText = "You have finished the guess!";
-				} else {
-					guess.innerText = "You have not finish the guess!";
-				}
-				taskList.push(drawShape);
-				taskList.push(drawPict);
-				taskList.push(guess);
-				break;
-			case 2: 
-				drawShape.innerText = "You have finished " + state.drawFinished + " of 3 shapes!";
-				drawPict.innerText = "You have finished " + state.picFinished + " of 5 pictures!";
-				var fill = sandBox.createElement("li");
-				if(state.fillFinished === true) {
-					fill.innerText = "You have finished the fill!";
-				} else {
-					fill.innerText = "You have not finished the fill!";
-				}
-				taskList.push(drawShape);
-				taskList.push(drawPict);
-				taskList.push(fill);
-				break;
-			case 3: 
-				drawShape.innerText = "You have finished " + state.drawFinished + " of 4 shapes!";
-				drawPict.innerText = "You have finished " + state.picFinished + " of 7 pictures!";
-				var blackboard = sandBox.createElement("li");
-				if(state.bboardFinished === true) {
-					blackboard.innerText = "You have finished the blackboard!";
-				} else {
-					blackboard.innerText = "You have not finished the blackboard!";
-				}
-				taskList.push(drawShape);
-				taskList.push(drawPict);
-				taskList.push(blackboard);
-				break;
-			default :
-		}
-		return taskList;
-	}
 
 	return {
 		init: function() {
@@ -574,14 +507,6 @@ Core.registerModule("info", function(sandBox) {
 			checkDiv = sandBox.find("#check");
 			checkDiv.style.display = "none";
 
-			stateCloBtn = sandBox.find(".closeBtn", stateDiv);
-			stateCloBtn.onclick = disappear;
-
-			checkCloBtn = sandBox.find(".closeBtn", checkDiv);
-			checkCloBtn.onclick = disappear;
-
-			taskUL = sandBox.find("#tasks", stateDiv);
-
 			stateBtn.onclick = showState;
 			stateBtn.addEventListener("touchstart", showState);
 
@@ -590,17 +515,10 @@ Core.registerModule("info", function(sandBox) {
 
 			shadowDiv.onclick = disappear;
 			shadowDiv.addEventListener("touchstart", disappear);
-
-			sandBox.listen({"hideCheckBtn": hideCheckBtn, "showCheckBtn": showCheckBtn});
 		},
-
-
 
 		destroy: function() {
 			sandBox.hide(container);
-			stateBtn.removeEventListener("touchstart", showState);
-			checkBtn.removeEventListener("touchstart", showCheck);
-			shadowDiv.removeEventListener("touchstart", disappear);
 		}
 	};
 });
