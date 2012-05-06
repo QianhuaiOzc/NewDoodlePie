@@ -105,6 +105,9 @@ Core.registerModule("container", function(sandBox) {
 		},
 
 		openMagic: function(evtObj) {
+			if(currentModule === "start" || currentModule === "drawShape") {
+				sandBox.notify({"type": "showCheckBtn"});
+			}
 			moduleSwitch("magic", currentModule);
 		},
 
@@ -117,6 +120,9 @@ Core.registerModule("container", function(sandBox) {
 		},
 
 		openPainting: function() {
+			if(currentModule === "start" || currentModule === "drawShape") {
+				sandBox.notify({"type": "showCheckBtn"});
+			}
 			moduleSwitch("painting", currentModule);
 		},
 
@@ -127,6 +133,9 @@ Core.registerModule("container", function(sandBox) {
 		}, 
 
 		openBlackboard: function() {
+			if(currentModule === "start" || currentModule === "drawShape") {
+				sandBox.notify({"type": "showCheckBtn"});
+			}
 			moduleSwitch("blackboard", currentModule);
 			sandBox.removeClass(container, "normal");
 			sandBox.addClass(container, "blackboard");
@@ -141,6 +150,9 @@ Core.registerModule("container", function(sandBox) {
 		},
 
 		openSolo: function() {
+			if(currentModule === "start" || currentModule === "drawShape") {
+				sandBox.notify({"type": "showCheckBtn"});
+			}
 			moduleSwitch("solo", currentModule);
 		},
 
