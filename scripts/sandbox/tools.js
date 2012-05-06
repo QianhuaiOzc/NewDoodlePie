@@ -196,7 +196,8 @@ Core.registerModule("magicType", function(sandBox) {
 
                 sandBox.addClass(typeDiv, "stamp");
                 sandBox.addClass(typeDiv, "unselected");
-                sandBox.css(typeDiv, "left", (65 + i * 116));
+                // sandBox.css(typeDiv, "left", (65 + i * 116));
+                sandBox.css(typeDiv, "left", (100 + i * 200));
                 sandBox.css(typeDiv, "background", "url(images/magic/"+type+".png) no-repeat");
                 typeDiv.setAttribute("magicType", type);
                 container.appendChild(typeDiv);
@@ -465,9 +466,11 @@ Core.registerModule("crayon", function(sandBox) {
 
 Core.registerModule("info", function(sandBox) {
 	var container = null;
+
 	var stateBtn = null, checkBtn = null, shadowDiv = null, stateCloBtn = null, checkCloBtn = null;
 	var stateDiv = null, checkDiv = null;
 	var taskUL = null;
+
 	var mask = function(content) {
 		container.appendChild(shadowDiv);
 		sandBox.addClass(shadowDiv, "sd");
@@ -497,6 +500,7 @@ Core.registerModule("info", function(sandBox) {
 	var disappear = function() {
 		sandBox.removeClass(shadowDiv, "sd");
 		stateDiv.style.display = "none";
+
 		var children = taskUL.childNodes, i = children.length - 1;
 		for(; i > 0; i--) {
 			taskUL.removeChild(children[i]);
@@ -560,6 +564,9 @@ Core.registerModule("info", function(sandBox) {
 		}
 		return taskList;
 	}
+
+		// checkDiv.style.display = "none";
+	// };
 
 	return {
 		init: function() {

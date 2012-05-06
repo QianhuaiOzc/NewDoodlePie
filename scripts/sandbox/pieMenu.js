@@ -32,13 +32,12 @@ Core.registerModule("pieMenu", function(sandBox) {
 			hideAll();
 
 			sandBox.addClass(blackboardDiv, "disable");
-			// sandBox.addClass(magicDiv, "disable");
+			sandBox.addClass(magicDiv, "disable");
 			sandBox.addClass(fillDiv, "disable");
 			
 			guessDiv.onclick = this.notifyGuess;	
 			pieDiv.onclick = this.toggleMenu;
 			soloDiv.onclick = this.notifySolo;
-			magicDiv.onclick = this.notifyMagic;
 			if(sandBox.touchable()) {
 	           	soloDiv.addEventListener("touchstart", this.notifySolo);
 	           	pieDiv.addEventListener("touchstart", this.toggleMenu);
@@ -64,6 +63,8 @@ Core.registerModule("pieMenu", function(sandBox) {
 				}
 				if(level >= 4) {
 					sandBox.removeClass(magicDiv, "disable");
+					magicDiv.onclick = parent.notifyMagic;
+					magicDiv.addEventListener("touchstart", parent.notifyMagic);
 				}
 			};
 		},
