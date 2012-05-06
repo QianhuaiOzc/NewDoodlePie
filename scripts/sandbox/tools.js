@@ -479,10 +479,15 @@ Core.registerModule("info", function(sandBox) {
 	var showState = function() {
 		mask();
 		var state = JSON.parse(localStorage.getItem("state"));
-		var level = state.level;
+		var level = state.level;	
 
 		var levelDiv = sandBox.find("#level", stateDiv);
-		levelDiv.innerText = "Level " + level + " Challenge"
+		if (level != 4) {
+			levelDiv.innerText = "Level " + level + " Challenge"	
+		} else {
+			levelDiv.innerText = "Congratulation! You have finished All!"
+		}
+		
 
 		var tasks = createTaskDivList(state);
 		var i = 0, length = tasks.length;
@@ -522,7 +527,7 @@ Core.registerModule("info", function(sandBox) {
 		var drawPict = sandBox.createElement("li");
 		switch (state.level) {
 			case 1: 
-				drawShape.innerText = "You have finished " + state.drawFinished + " of 2 shapes!";
+				drawShape.innerText = "You have finished " + (state.drawFinished > 2 ? 2 : state.drawFinished) + " of 2 shapes!";
 				drawPict.innerText = "You have finished " + state.picFinished + " of 3 pictures!";
 				var guess = sandBox.createElement("li");
 				if(state.guessFinished === true) {
@@ -535,7 +540,7 @@ Core.registerModule("info", function(sandBox) {
 				taskList.push(guess);
 				break;
 			case 2: 
-				drawShape.innerText = "You have finished " + state.drawFinished + " of 3 shapes!";
+				drawShape.innerText = "You have finished " + (state.drawFinished > 3 ? 3 : state.drawFinished) + " of 3 shapes!";
 				drawPict.innerText = "You have finished " + state.picFinished + " of 5 pictures!";
 				var fill = sandBox.createElement("li");
 				if(state.fillFinished === true) {
@@ -548,7 +553,7 @@ Core.registerModule("info", function(sandBox) {
 				taskList.push(fill);
 				break;
 			case 3: 
-				drawShape.innerText = "You have finished " + state.drawFinished + " of 4 shapes!";
+				drawShape.innerText = "You have finished " + (state.drawFinished > 4 ? 4 : state.drawFinished) + " of 4 shapes!";
 				drawPict.innerText = "You have finished " + state.picFinished + " of 7 pictures!";
 				var blackboard = sandBox.createElement("li");
 				if(state.bboardFinished === true) {

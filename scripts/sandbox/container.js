@@ -12,8 +12,7 @@ Core.registerModule("container", function(sandBox) {
 	};
 	var currentModule = null;
 	var stateInfo = {
-		level: 1, drawFinished: 0, picFinished: 0, fillFinished: false, guessFinished: false, bboardFinished: false,
-		firstDate: null
+		level: 1, drawFinished: 0, picFinished: 0, fillFinished: false, guessFinished: false, bboardFinished: false
 	};
 
 	var moduleSwitch = function(newModule, oldModule, data) {
@@ -62,13 +61,15 @@ Core.registerModule("container", function(sandBox) {
 			for(var i = 0; i < startModules.length; i++) {
 				Core.start(startModules[i]);
 			}
-			// currentModule = "drawShape";
+			currentModule = "drawShape";
 
-			currentModule = "start";
+			// currentModule = "start";
 
 			var oldLevel = localStorage.getItem("state");
 			if(oldLevel != null) {
 				stateInfo = JSON.parse(oldLevel);
+			} else {
+				localStorage.setItem("state", JSON.stringify(stateInfo));
 			}
 			sandBox.notify({"type": "currentLevel", "data": stateInfo.level});
 			sandBox.listen({"drawShapeFinish": this.drawShapeFinish,
