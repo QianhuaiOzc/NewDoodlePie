@@ -610,6 +610,8 @@ Core.registerModule("kaleidoscope", function(sb) {
 			container.removeChild(backCanvas);
 			container.removeChild(showMagic);
 			container.removeChild(showMagic2);
+			container.removeChild(shapeModel);
+			container.removeChild(mainPage);
 			sb.ignore("save");
 		}
 	};
