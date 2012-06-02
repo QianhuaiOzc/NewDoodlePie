@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style type="text/css">
+			ul {
+				list-style: none;
+			}
+			.bg {
+				height: 49px;
+				width: 238px;
+				background: url(pen-bg.png) repeat-x;
+				float: left;
+			}
+			.head {
+				background: url(pen-head.png);
+				height: 49px;
+				width: 68px;
+				margin-left: 238px;
+			}
+		</style>
+	</head>
+	<body>
+		<ul id="list">
+			<li><div class="bg"></div><div class="head"></div></li>
+			<li><div class="bg"></div><div class="head"></div></li>
+			<li><div class="bg"></div><div class="head"></div></li>
+		</ul>
+		<script type="text/javascript">
+			var list = document.getElementById("list");
+			list.onclick = function(evt) {
+				console.log(evt.target.parentNode);
+			}
+		</script>
+	</body>
+</html>
