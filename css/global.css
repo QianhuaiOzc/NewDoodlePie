@@ -1,3 +1,7 @@
+ul {
+    list-style: none;
+}
+
 #title {
     background-image: url(../images/title.png);    
     width: 650px;
@@ -133,6 +137,18 @@
     left: 132px;
     top: 118px;
     /*border: #000 solid 1px;*/
+    -webkit-box-shadow: -10px -10px 10px gray;
+    -moz-box-shadow: -10px -10px 10px gray;
+    background-color: #FFF;
+    z-index: 1;
+}
+#blackboardCanvas .backCanvas {
+    position: absolute;
+    left: 132px;
+    top: 118px;
+    /*border: #000 solid 1px;*/
+    -webkit-box-shadow: none;
+    background: none;
     z-index: 1;
 }
 
@@ -239,7 +255,8 @@
 }
 
 .normal {
-    background-image: url(../images/bg.jpg);
+    /*background-image: url(../images/bg.jpg);*/
+    background: url(../images/bg-repeat-x.png) repeat-x;
 }
 
 #help {
