@@ -391,7 +391,7 @@
     position: absolute;
     top: 170px;
     right: 80px;
-    background-image: url(../images/sina.png);
+    background-image: url(../images/email.png);
     width: 64px;
     height: 64px;
     display: block;
@@ -423,4 +423,8 @@
 
 #check #tips {
     font-size: 25px;
+}
+
+.WB_publishBox {
+    z-index: 10;
 }

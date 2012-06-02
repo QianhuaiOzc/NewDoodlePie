@@ -99,7 +99,8 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 				"stampChange": this.stampChange,
 				"colorChange": this.colorChange,
 				"brushSizeChange": this.brushSizeChange,
-				"check": this.check} );
+				"check": this.check,
+				"share": this.share} );
 
 			setInterval(repaintBack, 100);
 			setInterval(repaintFront, 50);
@@ -178,6 +179,12 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 				sandBox.notify({"type": "finishOnePic"});
 				hasCheck = true;
 			}
+		},
+
+		share: function() {
+			var url = backCanvas.toDataURL();
+			sandBox.sina(url);
+			// console.log(url);
 		},
 
 		destroy: function() {

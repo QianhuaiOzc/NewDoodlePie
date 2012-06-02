@@ -469,7 +469,7 @@ Core.registerModule("info", function(sandBox) {
 
 	var stateBtn = null, checkBtn = null, shadowDiv = null, stateCloBtn = null, checkCloBtn = null;
 	var stateDiv = null, checkDiv = null;
-	var taskUL = null;
+	var taskUL = null, sina = null, email = null;
 
 	var mask = function(content) {
 		container.appendChild(shadowDiv);
@@ -570,9 +570,6 @@ Core.registerModule("info", function(sandBox) {
 		return taskList;
 	}
 
-		// checkDiv.style.display = "none";
-	// };
-
 	return {
 		init: function() {
 			container = sandBox.container;
@@ -585,6 +582,12 @@ Core.registerModule("info", function(sandBox) {
 			stateDiv.style.display = "none";
 			checkDiv = sandBox.find("#check");
 			checkDiv.style.display = "none";
+
+			sina = sandBox.find("#sina");
+			sina.onclick = function(evt) {
+				disappear();
+				sandBox.notify({"type": "share"});
+			}
 
 			stateCloBtn = sandBox.find(".closeBtn", stateDiv);
 			stateCloBtn.onclick = disappear;
