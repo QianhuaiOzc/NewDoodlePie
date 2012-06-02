@@ -152,20 +152,6 @@ ul {
     z-index: 1;
 }
 
-.crayonPen {
-    position: absolute;
-    height: 49px;
-    width: 238px;
-}
-
-    .crayonPen.unselected{
-        left: -138px;
-    }
-
-    .crayonPen.selected {
-        left: -100px;
-    }
-
 .brushSize {
     position: absolute;
     width: 222px;

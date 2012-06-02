@@ -80,103 +80,6 @@ Core.registerModule("home", function(sandBox) {
 	};
 });
 
-Core.registerModule("stamp", function(sandBox) {
-	var container = null;
-	var stampsList = [ "ball", "flower", "heart", "music", "star" ];
-	var stampDivList = [], selectedStamp = null;
-
-	return {
-		init: function() {
-			container = sandBox.container;
-			sandBox.show(container);
-			sandBox.addClass(container, "stampList");
-
-			for (var i = 0; i < stampsList.length; i++) {
-                var stamp = stampsList[i];
-
-                var stampDiv = sandBox.createElement("div");
-                sandBox.addClass(stampDiv, "stamp");
-                sandBox.addClass(stampDiv, "unselected");
-                sandBox.css(stampDiv, "left", (65 + i * 116));
-                sandBox.css(stampDiv, "background", "url(images/stamps/"+stamp+".png) no-repeat");
-                stampDiv.setAttribute("stamp", stamp);
-                container.appendChild(stampDiv);
-    				
-                stampDivList.push(stampDiv);
-                stampDiv.onclick = this.onclick();
-                if(sandBox.touchable()) {
-	            	stampDiv.addEventListener("touchstart", this.touchStart());
-	        	}
-            }
-
-            sandBox.listen( { "colorChange" : this.clearStamp } );
-		},
-
-		onclick: function() {
-			var parent = this;
-			return function(evt) {
-				var targetStamp = evt.target;
-
-				if(selectedStamp) {
-					sandBox.removeClass(selectedStamp, "selected");
-					sandBox.addClass(selectedStamp, "unselected");
-				}
-
-				selectedStamp = targetStamp;
-
-				sandBox.removeClass(selectedStamp, "unselected");
-				sandBox.addClass(selectedStamp, "selected");
-
-				sandBox.notify({
-					"type": "stampChange",
-					"data": targetStamp.getAttribute("stamp")
-				});
-			};
-		},
-
-		touchStart: function() {
-			var parent = this;
-			return function(evt) {
-				var targetStamp = evt.target;
-
-				if(selectedStamp) {
-					sandBox.removeClass(selectedStamp, "selected");
-					sandBox.addClass(selectedStamp, "unselected");
-				}
-
-				selectedStamp = targetStamp;
-
-				sandBox.removeClass(selectedStamp, "unselected");
-				sandBox.addClass(selectedStamp, "selected");
-
-				sandBox.notify({
-					"type": "stampChange",
-					"data": targetStamp.getAttribute("stamp")
-				});
-			};
-		},
-		clearStamp: function() {
-			// console.log("clear stamp");
-
-			if(selectedStamp) {
-				sandBox.removeClass(selectedStamp, "selected");
-				sandBox.addClass(selectedStamp, "unselected");
-			}
-
-			sandBox.notify({
-				"type": "stampChange",
-				"data": null
-			});
-		},
-
-		destroy: function() {
-			sandBox.hide(container);
-			for(var i = 0; i < stampDivList.length; i++) {
-				container.removeChild(stampDivList[i]);
-			}
-		}
-	};
-});
 Core.registerModule("magicType", function(sandBox) {
 	var container = null;
 	var typeList = [ "triangle", "rectangle", "circle"];
@@ -542,11 +445,21 @@ Core.registerModule("crayons", function(sandBox) {
 		click: function(evt) {
 			var target = evt.target.parentNode;
 			if(target.nodeName === "LI") {
-				selectedNode.className = "";
+				if(selectedNode != null) {
+					selectedNode.className = "";
+				}
 				selectedNode = target;
 				target.className = "selected";
 				var color = target.getAttribute("id").substring(1);
 				sandBox.notify({"type": "colorChange", "data": color});
+			}
+		},
+
+		clearColor: function() {
+			if(selectedNode != null) {
+				selectedNode.className = "";
+				selectedNode = null;
+				sandBox.notify({"type": "colorChange", "data": null});
 			}
 		}
 	};
@@ -569,8 +482,59 @@ Core.registerModule("crayons", function(sandBox) {
 
 			container.addEventListener("click", Events.click, false);
 			container.addEventListener("touchstart", Events.click, false);
+			sandBox.listen( { "stampChange" : Events.clearColor } );
 		},
 
+		destroy: function() {
+			sandBox.hide(container);
+			container.removeEventListener("click", Events.click);
+			container.removeEventListener("touchstart", Events.click);
+		}
+	};
+});
+
+Core.registerModule("stamps", function(sandBox) {
+
+	var container = null, selectedNode = null;
+
+	var Events = {
+		click: function(evt) {
+			var target = evt.target;
+			if(target.nodeName === "LI") {
+				if(selectedNode != null) {
+					selectedNode.className = "";
+				}
+				selectedNode = target;
+				selectedNode.className = "selected";
+				var stamp = selectedNode.getAttribute("id");
+				sandBox.notify({
+					"type": "stampChange",
+					"data": stamp
+				});
+			}
+		},
+
+		clearStamp: function() {
+			if(selectedNode != null) {
+				selectedNode.className = "";
+				selectedNode = null;
+				sandBox.notify({
+					"type": "stampChange",
+					"data": null
+				});
+			}
+		}
+	}
+
+	return {
+		init: function() {
+			container = sandBox.container;
+			sandBox.show(container);
+
+			container.addEventListener("click", Events.click, false);
+			container.addEventListener("touchstart", Events.click, false);
+			sandBox.listen( { "colorChange" : Events.clearStamp } );
+		},
 		destroy: function() {
 			sandBox.hide(container);
 			container.removeEventListener("click", Events.click);

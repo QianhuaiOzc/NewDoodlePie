@@ -1,3 +1,5 @@
+/* @group crayon module style 
+---------------------------------------------------------------------------------*/
 #crayons {
     position: absolute;
     top: 5px;
@@ -16,7 +18,6 @@
     width: 68px;
     margin-left: 238px;
 }
-
 #cffcd9a .pen-bg { background: url(../images/crayon-pens/ffcd9a.png) repeat-x; }
 #cffcd9a .pen-head { background: url(../images/crayon-pens/ffcd9a-head.png); }
 #cfc0400 .pen-bg { background: url(../images/crayon-pens/fc0400.png) repeat-x; }
@@ -43,7 +44,33 @@
 #c000000 .pen-head { background: url(../images/crayon-pens/000000-head.png); }
 #cffffff .pen-bg { background: url(../images/crayon-pens/ffffff.png) repeat-x; }
 #cffffff .pen-head { background: url(../images/crayon-pens/ffffff-head.png); }
-
-.selected {
+#crayons .selected {
     margin-left: 30px;
+}
+
+/* @group stamp module style
+---------------------------------------------------------------------------------*/
+#stamps {
+    position: absolute;
+    background: url(../images/stamps/background.png) no-repeat;
+    top: -50px;
+    left: 180px;
+    height: 188px;
+    width: 736px;
+}
+#stamps li {
+    display: block;
+    height: 106px;
+    width: 109px;
+    float: left;
+    position: absolute;
+    top: 35px;
+}
+#ball { background: url(../images/stamps/ball.png) no-repeat; left: 65px; }
+#flower { background: url(../images/stamps/flower.png) no-repeat; left: 181px; }
+#heart { background: url(../images/stamps/heart.png) no-repeat; left: 297px; }
+#music { background: url(../images/stamps/music.png) no-repeat; left: 413px; }
+#star { background: url(../images/stamps/star.png) no-repeat; left: 529px; }
+#stamps .selected {
+    top: 55px;
 }

@@ -149,7 +149,6 @@ Core.registerModule("drawShape", function(sandBox) {
 		},
 
 		colorChange: function(color) {
-			console.log("color:" + color);
 			currentColor = color;
 		},
 
