@@ -182,8 +182,35 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 		},
 
 		share: function() {
-			var url = backCanvas.toDataURL();
-			sandBox.sina(url);
+			backCtx.globalAlpha = 0.5;
+			backCtx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
+			var url = backCanvas.toDataURL("image/png");
+			var xhr = new XMLHttpRequest();
+			var imageURL = null;
+			xhr.open("post", "process.php", false);
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == 4) {
+					if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
+						imageURL = xhr.responseText;
+					}
+				}
+			};
+			xhr.setRequestHeader("Content-type", "application/upload");
+			xhr.send(url);
+			WB2.anyWhere(function(W){
+				W.parseCMD("/statuses/update.json", function(sResult, bStatus) {
+					if(bStatus == true) {
+						console.log(sResult);
+					} else {
+
+					}
+				},{
+					"status":"#DoodlePie Test#",
+					// "pic": "http://doodlepie.sinaapp.com/"+imageURL,
+					"annotations": "DoodlePie" 
+				});
+			});
+			// sandBox.sina(url);
 			// console.log(url);
 		},
 

@@ -255,13 +255,7 @@
 	};
 
 	SandBox.prototype.sina = function(imgUrl) {
-		WB2.anyWhere(function(W){
-			W.widget.publish({
-				"id" : 'standardSelector',
-				"default_text": "#DoodlePie#",
-				"default_image": imgUrl
-			});
-		});
+		
 	};
 
 	this.SandBox = SandBox;
