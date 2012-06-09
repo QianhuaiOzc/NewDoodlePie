@@ -29,6 +29,11 @@ ul {
     cursor: crosshair;
 }
 
+
+.disable {
+    -webkit-filter: grayscale(100%);
+}
+
 #pie {
     z-index: 10;
     position: absolute;
@@ -50,10 +55,6 @@ ul {
     height: 86px;
 }
 
-#soloBtn.disable {
-    background-image: url(../images/menu/solo_disable.png);
-}
-
 #guess {
     z-index: 1000;
     position: absolute;
@@ -63,10 +64,6 @@ ul {
     top: 577px;
     width: 110px;
     height: 99px;
-}
-
-#guess.disable {
-    background-image: url(../images/menu/guess_disable.png);
 }
 
 #fill {
@@ -80,10 +77,6 @@ ul {
     height: 105px;
 }
 
-#fill.disable {
-    background-image: url(../images/menu/fill_disable.png);
-}
-
 #blackboard {
     z-index: 1000;
     position: absolute;
@@ -95,10 +88,6 @@ ul {
     height: 118px;
 }
 
-#blackboard.disable {
-    background-image: url(../images/menu/blackboard_disable.png);
-}
-
 #magic {
     z-index: 1000;
     position: absolute;
@@ -108,10 +97,6 @@ ul {
     top: 503px;
     width: 101px;
     height: 100px;
-}
-
-#magic.disable {
-    background-image: url(../images/menu/magic_disable.png);
 }
 
 #home {
