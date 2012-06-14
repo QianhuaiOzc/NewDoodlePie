@@ -210,6 +210,8 @@ Core.registerModule("kaleidoscope", function(sb) {
 				height:panelH+"px",
 				width:panelW+"px"
 
+
+
 			});
 
 			fn.css(mainPage,{
@@ -220,8 +222,8 @@ Core.registerModule("kaleidoscope", function(sb) {
 				backgroundPosition:"center",
 				backgroundColor:"white",
 				display:"none",
-				height:(panelH+2)+"px",
-				width:(panelW+2)+"px"
+				height:(panelH-2)+"px",
+				width:(panelW-2)+"px"
 
 			});
 
@@ -234,8 +236,8 @@ Core.registerModule("kaleidoscope", function(sb) {
 
 			fn.attr(showMagic2,{
 
-				height:panelH+"px",
-				width:panelW+"px"
+				height:(panelH-2)+"px",
+				width:(panelW-2)+"px"
 
 			});
 
@@ -245,7 +247,7 @@ Core.registerModule("kaleidoscope", function(sb) {
 				position:"absolute",
 				left:"0px",
 				top:"0px"
-				// border:"1px solid #CCC"
+				
 
 			});
 
@@ -254,7 +256,7 @@ Core.registerModule("kaleidoscope", function(sb) {
 				position:"absolute",
 				left:"0px",
 				top:"0px",
-				border:"1px dashed #CCC"
+				outline:"1px dashed #CCC"
 
 			});
 
