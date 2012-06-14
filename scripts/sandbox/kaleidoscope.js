@@ -503,10 +503,11 @@ Core.registerModule("kaleidoscope", function(sb) {
 				color: currentColor,
 				size: currentSize,
 				points: [ {
-					X: evt.changedTouches ? evt.changedTouches[0].pageX - frontCanvas.offsetLeft : evt.offsetX,
-					Y: evt.changedTouches ? evt.changedTouches[0].pageY - frontCanvas.offsetTop : evt.offsetY
+					X: evt.changedTouches ? evt.changedTouches[0].pageX - frontCanvas.offsetLeft-magic.offsetLeft: evt.offsetX,
+					Y: evt.changedTouches ? evt.changedTouches[0].pageY - frontCanvas.offsetTop-magic.offsetTop: evt.offsetY
 				} ],
 			};
+
 		},
 
 		showMainPage:function(){
@@ -538,8 +539,8 @@ Core.registerModule("kaleidoscope", function(sb) {
 				evt.preventDefault();
 			}
 			if(isDrawing == true) {
-				var x = evt.changedTouches ? evt.changedTouches[0].pageX - frontCanvas.offsetLeft : evt.offsetX;
-				var y = evt.changedTouches ? evt.changedTouches[0].pageY - frontCanvas.offsetTop : evt.offsetY;
+				var x = evt.changedTouches ? evt.changedTouches[0].pageX - frontCanvas.offsetLeft-magic.offsetLeft: evt.offsetX;
+				var y = evt.changedTouches ? evt.changedTouches[0].pageY - frontCanvas.offsetTop-magic.offsetTop: evt.offsetY;
 				if(magicType=="triangle"){
 
 					// if(x<paintelemW*y/paintelemH||(x/paintelemW+y/paintelemH)>1){
@@ -563,8 +564,8 @@ Core.registerModule("kaleidoscope", function(sb) {
 
 				}
 				currentPath.points.push( {
-					X: evt.changedTouches ? evt.changedTouches[0].pageX - frontCanvas.offsetLeft : evt.offsetX,
-					Y: evt.changedTouches ? evt.changedTouches[0].pageY - frontCanvas.offsetTop : evt.offsetY
+					X: evt.changedTouches ? evt.changedTouches[0].pageX - frontCanvas.offsetLeft -magic.offsetLeft : evt.offsetX,
+					Y: evt.changedTouches ? evt.changedTouches[0].pageY - frontCanvas.offsetTop -magic.offsetTop: evt.offsetY
 				} );
 				repaintFront();
 			}
