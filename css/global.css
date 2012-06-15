@@ -1,3 +1,7 @@
+ul {
+    list-style: none;
+}
+
 #title {
     background-image: url(../images/title.png);    
     width: 650px;
@@ -25,6 +29,11 @@
     cursor: crosshair;
 }
 
+
+.disable {
+    -webkit-filter: grayscale(100%);
+}
+
 #pie {
     z-index: 10;
     position: absolute;
@@ -38,7 +47,6 @@
 #soloBtn {
     z-index: 1000;
     position: absolute;
-    /* border: 1px solid red; */
     background-image: url(../images/menu/solo.png);
     left: 573px;
     top: 682px;
@@ -46,14 +54,9 @@
     height: 86px;
 }
 
-#soloBtn.disable {
-    background-image: url(../images/menu/solo_disable.png);
-}
-
 #guess {
     z-index: 1000;
     position: absolute;
-    /* border: 1px solid red; */
     background-image: url(../images/menu/guess.png);
     left: 600px;
     top: 577px;
@@ -61,14 +64,9 @@
     height: 99px;
 }
 
-#guess.disable {
-    background-image: url(../images/menu/guess_disable.png);
-}
-
 #fill {
     z-index: 1000;
     position: absolute;
-    /* border: 1px solid red; */
     background-image: url(../images/menu/fill.png);
     left: 704px;
     top: 518px;
@@ -76,14 +74,9 @@
     height: 105px;
 }
 
-#fill.disable {
-    background-image: url(../images/menu/fill_disable.png);
-}
-
 #blackboard {
     z-index: 1000;
     position: absolute;
-    /* border: 1px solid red; */
     background-image: url(../images/menu/blackboard.png);
     left: 803px;
     top: 481px;
@@ -91,14 +84,9 @@
     height: 118px;
 }
 
-#blackboard.disable {
-    background-image: url(../images/menu/blackboard_disable.png);
-}
-
 #magic {
     z-index: 1000;
     position: absolute;
-    /* border: 1px solid red; */
     background-image: url(../images/menu/magic.png);
     left: 922px;
     top: 503px;
@@ -106,12 +94,7 @@
     height: 100px;
 }
 
-#magic.disable {
-    background-image: url(../images/menu/magic_disable.png);
-}
-
 #home {
-    /* border: 1px solid red; */
     position: absolute;
     width: 114px;
     height: 106px;
@@ -124,7 +107,6 @@
     position: absolute;
     left: 132px;
     top: 118px;
-    /*border: #000 solid 1px;*/
     z-index: 2;
 }
 
@@ -132,23 +114,22 @@
     position: absolute;
     left: 132px;
     top: 118px;
-    /*border: #000 solid 1px;*/
+    -webkit-box-shadow: -10px -10px 10px gray;
+    -moz-box-shadow: -10px -10px 10px gray;
+    -ms-box-shadow: -10px -10px 10px gray;
+    background-color: #FFF;
+    border-bottom: 1px solid #dfdfdf;
+    border-right: 1px solid #dfdfdf;
     z-index: 1;
 }
-
-.crayonPen {
+#blackboardCanvas .backCanvas {
     position: absolute;
-    height: 49px;
-    width: 238px;
+    left: 132px;
+    top: 118px;
+    -webkit-box-shadow: none;
+    background: none;
+    z-index: 1;
 }
-
-    .crayonPen.unselected{
-        left: -138px;
-    }
-
-    .crayonPen.selected {
-        left: -100px;
-    }
 
 .brushSize {
     position: absolute;
@@ -165,29 +146,6 @@
         height: 30px;
         top: 15px;
     }
-
-.stampList {
-    position: absolute;
-    background: url(../images/stamps/background.png) no-repeat;
-    top: -50px;
-    left: 180px;
-    height: 188px;
-    width: 736px;
-}
-
-    .stampList .stamp {
-        position: absolute;
-        height: 109px;
-        width: 106px;
-    }
-
-        .stampList .stamp.selected {
-            top: 55px;
-        }
-
-        .stampList .stamp.unselected {
-            top: 35px;
-        }
 
 .undoContainer {
     z-index: 3;
@@ -219,27 +177,12 @@
     z-index: 3;
 }
 
-.chalkPen {
-    position: absolute;
-    height: 54px;
-    width: 218px;
-    /*border: solid 1px red;*/
-}
-
-    .chalkPen.unselected {
-        left: -138px;
-    }
-
-    .chalkPen.selected {
-        left: -100px;
-    }
-
 .blackboard {
     background-image: url(../images/blackboard/blackboard-bg.jpg);
 }
 
 .normal {
-    background-image: url(../images/bg.jpg);
+    background: url(../images/bg-repeat-x.png) repeat-x;
 }
 
 #help {
@@ -378,24 +321,35 @@
 #checkContent #main {
     text-align: center;
 }
-#sina {
+
+#share ul {
     position: absolute;
-    top: 170px;
-    left: 80px;
-    background-image: url(../images/sina.png);
-    width: 64px;
-    height: 64px;
-    display: block;
+    top: 220px;
+    left: 170px;
 }
-#email {
-    position: absolute;
-    top: 170px;
-    right: 80px;
-    background-image: url(../images/email.png);
-    width: 64px;
-    height: 64px;
-    display: block;
-}
+    #share ul li {
+        float: left;
+        margin-left: 20px;
+    }
+
+        #sina {
+            background-image: url(../images/sina.png);
+            width: 32px;
+            height: 32px;
+            display: block;
+        }
+        #email {
+            background-image: url(../images/email.png);
+            width: 32px;
+            height: 32px;
+            display: block;
+        }
+        #tencent {
+            background-image: url(../images/t.png);
+            width: 32px;
+            height: 32px;
+            display: block;
+        }
 
 @font-face {
     font-family: WebFont;

@@ -1,0 +1,8 @@
+把一张图片转换为灰度图的算法：
+可以通过canvas.getImageData(x,y,w,h)的函数得到一个canvas中的图像的像素数组，这个数组是一个以RGBA的方式存放每一个像素点的值。
+pixel[0] --- red
+pixel[1] --- green
+pixel[2] --- blue
+pixel[3] --- alpha
+在这里只需要用到rgb的值。根据一个比较广泛使用的彩色图转灰度图的公式我们可以计算：
+average = (red * 3 + green * 6 + blue) / 10
