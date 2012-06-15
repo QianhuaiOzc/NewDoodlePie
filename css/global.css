@@ -198,20 +198,6 @@ ul {
     z-index: 3;
 }
 
-.chalkPen {
-    position: absolute;
-    height: 54px;
-    width: 218px;
-}
-
-    .chalkPen.unselected {
-        left: -138px;
-    }
-
-    .chalkPen.selected {
-        left: -100px;
-    }
-
 .blackboard {
     background-image: url(../images/blackboard/blackboard-bg.jpg);
 }
