@@ -352,7 +352,7 @@ Core.registerModule("info", function(sandBox) {
 			tencent = sandBox.find("#tencent");
 			tencent.onclick = function(evt) {
 				evt.preventDefault();
-				sandBox.notify({"type": "share"});
+				sandBox.notify({"type": "share", "data": {"where": "tencent", "content": "#DoodlePie#"}});
 			}
 
 			stateCloBtn = sandBox.find(".closeBtn", stateDiv);

@@ -182,47 +182,12 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 			}
 		},
 
-		share: function() {
+		share: function(opts) {
 			backCtx.globalAlpha = 0.5;
 			backCtx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
 			var url = backCanvas.toDataURL("image/png");
-			var xhr = new XMLHttpRequest();
-			var imageURL = null;
-			xhr.open("post", "process.php", false);
-			xhr.onreadystatechange = function() {
-				if (xhr.readyState == 4) {
-					if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
-						imageURL = xhr.responseText;
-						/*
-						console.log(imageURL);
-
-						var status = T.loginStatus();
-						if(status === undefined) {
-							T.login(function(loginStatus) {
-								console.log(loginStatus);
-							}, function(loginError) {
-								console.log(loginError);
-							});
-						} else {
-							T.api("/t/add_pic_url", {
-								content: "Test #DoodlePie#",
-								pic_url: "http://mat1.gtimg.com/app/opent/images/wiki/resource/p9.gif"
-							}, "json", "post")
-							.success(function(response) {
-								console.log(response);
-							})
-							.error(function(code, message) {
-								console.log("code: " + code + ", message: " + message);
-							});
-						}
-						*/
-					}
-				}
-			};
-			xhr.setRequestHeader("Content-type", "application/upload");
-			xhr.send(url);
-			// sandBox.sina(url);
-			// console.log(url);
+			console.log(opts);
+			// sandBox.saveImageFile(url, function(imageUrl) {});
 		},
 
 		destroy: function() {

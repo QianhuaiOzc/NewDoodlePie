@@ -254,9 +254,21 @@
         ctx.closePath();
 	};
 
-	SandBox.prototype.sina = function(imgUrl) {
-		
-	};
+	SandBox.prototype.saveImageFile = function(imgData, callback) {
+		var xhr = new XMLHttpRequest();
+		var imageURL = null;
+		xhr.open("post", "process.php", false);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4) {
+				if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
+					imageURL = xhr.responseText;
+					callback(imageURL);
+				}
+			}
+		};
+		xhr.setRequestHeader("Content-type", "application/upload");
+		xhr.send(url);
+	}
 
 	this.SandBox = SandBox;
 	
