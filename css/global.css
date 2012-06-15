@@ -124,6 +124,7 @@ ul {
     /*border: #000 solid 1px;*/
     -webkit-box-shadow: -10px -10px 10px gray;
     -moz-box-shadow: -10px -10px 10px gray;
+    -ms-box-shadow: -10px -10px 10px gray;
     background-color: #FFF;
     z-index: 1;
 }
@@ -226,7 +227,6 @@ ul {
 }
 
 .normal {
-    /*background-image: url(../images/bg.jpg);*/
     background: url(../images/bg-repeat-x.png) repeat-x;
 }
 
