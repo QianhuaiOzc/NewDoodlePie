@@ -47,7 +47,6 @@ ul {
 #soloBtn {
     z-index: 1000;
     position: absolute;
-    /* border: 1px solid red; */
     background-image: url(../images/menu/solo.png);
     left: 573px;
     top: 682px;
@@ -58,7 +57,6 @@ ul {
 #guess {
     z-index: 1000;
     position: absolute;
-    /* border: 1px solid red; */
     background-image: url(../images/menu/guess.png);
     left: 600px;
     top: 577px;
@@ -69,7 +67,6 @@ ul {
 #fill {
     z-index: 1000;
     position: absolute;
-    /* border: 1px solid red; */
     background-image: url(../images/menu/fill.png);
     left: 704px;
     top: 518px;
@@ -80,7 +77,6 @@ ul {
 #blackboard {
     z-index: 1000;
     position: absolute;
-    /* border: 1px solid red; */
     background-image: url(../images/menu/blackboard.png);
     left: 803px;
     top: 481px;
@@ -91,7 +87,6 @@ ul {
 #magic {
     z-index: 1000;
     position: absolute;
-    /* border: 1px solid red; */
     background-image: url(../images/menu/magic.png);
     left: 922px;
     top: 503px;
@@ -100,7 +95,6 @@ ul {
 }
 
 #home {
-    /* border: 1px solid red; */
     position: absolute;
     width: 114px;
     height: 106px;
@@ -113,7 +107,6 @@ ul {
     position: absolute;
     left: 132px;
     top: 118px;
-    /*border: #000 solid 1px;*/
     z-index: 2;
 }
 
@@ -121,7 +114,6 @@ ul {
     position: absolute;
     left: 132px;
     top: 118px;
-    /*border: #000 solid 1px;*/
     -webkit-box-shadow: -10px -10px 10px gray;
     -moz-box-shadow: -10px -10px 10px gray;
     -ms-box-shadow: -10px -10px 10px gray;
@@ -132,7 +124,6 @@ ul {
     position: absolute;
     left: 132px;
     top: 118px;
-    /*border: #000 solid 1px;*/
     -webkit-box-shadow: none;
     background: none;
     z-index: 1;
@@ -211,7 +202,6 @@ ul {
     position: absolute;
     height: 54px;
     width: 218px;
-    /*border: solid 1px red;*/
 }
 
     .chalkPen.unselected {
