@@ -26,9 +26,6 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 	var repaintBack = function() {
 		var ctx = backCtx, localPathes = pathes;
 		ctx.clearRect(0, 0, backCanvas.width, backCanvas.height);
-		ctx.globalAlpha = 0.4;
-		ctx.drawImage(backgroundImg, 0, 0, backgroundImg.width, backgroundImg.height);
-		ctx.globalAlpha = 1;
 		for(var i = 0; i < pathes.length; i++) {
 			var path = localPathes[i];
 
@@ -39,6 +36,9 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 	            sandBox.drawAPath(ctx, path);
             }
 		}
+		ctx.globalAlpha = 0.4;
+		ctx.drawImage(backgroundImg, 0, 0, backgroundImg.width, backgroundImg.height);
+		ctx.globalAlpha = 1;
 	};
 
 	var paintBackIncr = function() {
@@ -101,8 +101,9 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 				"brushSizeChange": this.brushSizeChange,
 				"check": this.check,
 				"share": this.share} );
-
-			setInterval(repaintBack, 100);
+			backgroundImg.onload = function() {
+				repaintBack();	
+			}
 			setInterval(repaintFront, 50);
 		},
 
@@ -181,10 +182,12 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 			}
 		},
 
-		share: function() {
-			var url = backCanvas.toDataURL();
-			sandBox.sina(url);
-			// console.log(url);
+		share: function(opts) {
+			backCtx.globalAlpha = 0.5;
+			backCtx.drawImage(textureImage, 0, 0, textureImage.width, textureImage.height);
+			var url = backCanvas.toDataURL("image/png");
+			console.log(opts);
+			// sandBox.saveImageFile(url, function(imageUrl) {});
 		},
 
 		destroy: function() {

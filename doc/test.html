@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style type="text/css">
+			ul {
+				list-style: none;
+				position: absolute;
+			    background: url(background.png) no-repeat;
+			    top: -50px;
+			    left: 180px;
+			    height: 188px;
+			    width: 736px;
+			}
+			ul li {
+				display: block;
+				height: 106px;
+				width: 109px;
+				float: left;
+			}
+			#ball { background: url(ball.png) no-repeat; }
+			#flower { background: url(flower.png) no-repeat; }
+			#heart { background: url(heart.png) no-repeat; }
+			#music { background: url(music.png) no-repeat; }
+			#star { background: url(star.png) no-repeat; }
+		</style>
+	</head>
+	<body>
+		<ul id="stamps">
+            <li id="ball"></li>
+            <li id="flower"></li>
+            <li id="heart"></li>
+            <li id="music"></li>
+            <li id="star"></li>
+        </ul>
+		<script type="text/javascript">
+			var list = document.getElementById("stamps");
+			list.onclick = function(evt) {
+				console.log(evt.target.getAttribute("id"));
+			}
+		</script>
+	</body>
+</html>
