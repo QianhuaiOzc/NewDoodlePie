@@ -403,11 +403,10 @@ Core.registerModule("crayons", function(sandBox) {
 			}
 		},
 
-		clearColor: function() {
-			if(selectedNode != null) {
+		clearColor: function(data) {
+			if(selectedNode != null && data !== null) {
 				selectedNode.className = "";
 				selectedNode = null;
-				sandBox.notify({"type": "colorChange", "data": null});
 			}
 		}
 	};
@@ -462,14 +461,11 @@ Core.registerModule("stamps", function(sandBox) {
 			}
 		},
 
-		clearStamp: function() {
+		clearStamp: function(data) {
 			if(selectedNode != null) {
 				selectedNode.className = "";
 				selectedNode = null;
-				sandBox.notify({
-					"type": "stampChange",
-					"data": null
-				});
+				sandBox.notify({ "type": "stampChange", "data": null });
 			}
 		}
 	}
@@ -528,7 +524,6 @@ Core.registerModule("chalk", function(sandBox) {
 
 			container.addEventListener("click", Events.click, false);
 			container.addEventListener("touchstart", Events.click, false);
-			sandBox.listen( { "stampChange" : Events.clearColor } );
 		},
 
 		destroy: function() {

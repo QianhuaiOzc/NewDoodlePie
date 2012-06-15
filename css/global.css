@@ -118,6 +118,8 @@ ul {
     -moz-box-shadow: -10px -10px 10px gray;
     -ms-box-shadow: -10px -10px 10px gray;
     background-color: #FFF;
+    border-bottom: 1px solid #dfdfdf;
+    border-right: 1px solid #dfdfdf;
     z-index: 1;
 }
 #blackboardCanvas .backCanvas {
@@ -144,29 +146,6 @@ ul {
         height: 30px;
         top: 15px;
     }
-
-.stampList {
-    position: absolute;
-    background: url(../images/stamps/background.png) no-repeat;
-    top: -50px;
-    left: 180px;
-    height: 188px;
-    width: 736px;
-}
-
-    .stampList .stamp {
-        position: absolute;
-        height: 109px;
-        width: 106px;
-    }
-
-        .stampList .stamp.selected {
-            top: 55px;
-        }
-
-        .stampList .stamp.unselected {
-            top: 35px;
-        }
 
 .undoContainer {
     z-index: 3;
