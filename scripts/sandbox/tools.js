@@ -287,7 +287,7 @@ Core.registerModule("info", function(sandBox) {
 
 	var stateBtn = null, checkBtn = null, shadowDiv = null, stateCloBtn = null, checkCloBtn = null;
 	var stateDiv = null, checkDiv = null;
-	var taskUL = null, sina = null, email = null;
+	var taskUL = null, sina = null, email = null, tencent = null;
 
 	var mask = function(content) {
 		container.appendChild(shadowDiv);
@@ -403,7 +403,14 @@ Core.registerModule("info", function(sandBox) {
 
 			sina = sandBox.find("#sina");
 			sina.onclick = function(evt) {
+				evt.preventDefault();
 				disappear();
+				sandBox.notify({"type": "share"});
+			}
+
+			tencent = sandBox.find("#tencent");
+			tencent.onclick = function(evt) {
+				evt.preventDefault();
 				sandBox.notify({"type": "share"});
 			}
 

@@ -366,24 +366,35 @@ ul {
 #checkContent #main {
     text-align: center;
 }
-#sina {
+
+#share ul {
     position: absolute;
-    top: 170px;
-    left: 80px;
-    background-image: url(../images/sina.png);
-    width: 64px;
-    height: 64px;
-    display: block;
+    top: 220px;
+    left: 170px;
 }
-#email {
-    position: absolute;
-    top: 170px;
-    right: 80px;
-    background-image: url(../images/email.png);
-    width: 64px;
-    height: 64px;
-    display: block;
-}
+    #share ul li {
+        float: left;
+        margin-left: 20px;
+    }
+
+        #sina {
+            background-image: url(../images/sina.png);
+            width: 32px;
+            height: 32px;
+            display: block;
+        }
+        #email {
+            background-image: url(../images/email.png);
+            width: 32px;
+            height: 32px;
+            display: block;
+        }
+        #tencent {
+            background-image: url(../images/t.png);
+            width: 32px;
+            height: 32px;
+            display: block;
+        }
 
 @font-face {
     font-family: WebFont;

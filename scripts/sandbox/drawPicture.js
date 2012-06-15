@@ -101,12 +101,9 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 				"brushSizeChange": this.brushSizeChange,
 				"check": this.check,
 				"share": this.share} );
-
-			// setInterval(repaintBack, 100);
 			backgroundImg.onload = function() {
 				repaintBack();	
 			}
-
 			setInterval(repaintFront, 50);
 		},
 
@@ -196,24 +193,34 @@ Core.registerModule("drawPicture", function(sandBox, backgroundImgSrc) {
 				if (xhr.readyState == 4) {
 					if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
 						imageURL = xhr.responseText;
+						/*
+						console.log(imageURL);
+
+						var status = T.loginStatus();
+						if(status === undefined) {
+							T.login(function(loginStatus) {
+								console.log(loginStatus);
+							}, function(loginError) {
+								console.log(loginError);
+							});
+						} else {
+							T.api("/t/add_pic_url", {
+								content: "Test #DoodlePie#",
+								pic_url: "http://mat1.gtimg.com/app/opent/images/wiki/resource/p9.gif"
+							}, "json", "post")
+							.success(function(response) {
+								console.log(response);
+							})
+							.error(function(code, message) {
+								console.log("code: " + code + ", message: " + message);
+							});
+						}
+						*/
 					}
 				}
 			};
 			xhr.setRequestHeader("Content-type", "application/upload");
 			xhr.send(url);
-			WB2.anyWhere(function(W){
-				W.parseCMD("/statuses/update.json", function(sResult, bStatus) {
-					if(bStatus == true) {
-						console.log(sResult);
-					} else {
-
-					}
-				},{
-					"status":"#DoodlePie Test#",
-					// "pic": "http://doodlepie.sinaapp.com/"+imageURL,
-					"annotations": "DoodlePie" 
-				});
-			});
 			// sandBox.sina(url);
 			// console.log(url);
 		},
