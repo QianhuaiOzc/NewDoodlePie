@@ -9,5 +9,5 @@ $(document).ready(function () {
         }, false);   
     }
     Core.start("container");
-	T.init({appkey:801156747});   
+	// T.init({appkey:801156747});   
 });

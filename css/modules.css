@@ -116,3 +116,22 @@
         background: -webkit-gradient(linear, left top, left bottom, from(#ff7f70), color-stop(0.5, #ff9a92), to(#fd5848));
         border: solid 1px #ff9a92;
     }
+
+/* @group canvas related style
+---------------------------------------------------------------------------------*/
+.canvas {
+    position: absolute;
+    left: 132px;
+    top: 118px;
+}
+    #bCanvas {
+        -webkit-box-shadow: -10px -10px 10px gray;
+        -moz-box-shadow: -10px -10px 10px gray;
+        -ms-box-shadow: -10px -10px 10px gray;
+        background-color: #FFF;
+    }
+
+    #fCanvas {
+        border-bottom: 1px solid #dfdfdf;
+        border-right: 1px solid #dfdfdf;
+    }
