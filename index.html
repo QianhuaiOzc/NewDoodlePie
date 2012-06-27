@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:wb="http://open.weibo.com/wb">
 <head>
 
 <title>Doodle Pie</title>
@@ -92,8 +92,10 @@
                     </div>
                     <div id="share">
                         <ul>
-                            <li><a id="sina" href="#"></a></li>
-                            <li><a id="tencent" href="#"></a></li>
+                            <li id="sinaLi"></li>
+                            <li>
+                                <div id="qqwb_share__" data-appkey="801179439" data-icon="0" data-counter="0" data-counter_pos="top" data-content="替换此处为要转播的内容" data-pic="替换为图片列表，多个以|隔开"></div>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -103,6 +105,7 @@
     </div>
     <script type="text/javascript" src="scripts/jquery/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="scripts/dollar.js"></script>
+    <script type="text/javascript" src="scripts/PieCanvas.js"></script>
     <script type="text/javascript" src="scripts/sandbox/core.js"></script>
     <script type="text/javascript" src="scripts/sandbox/sandbox.js"></script>
     <script type="text/javascript" src="scripts/sandbox/container.js"></script>
@@ -115,8 +118,7 @@
     <script type="text/javascript" src="scripts/sandbox/blackboard.js"></script>
     <script type="text/javascript" src="scripts/sandbox/game.js"></script>
     <script type="text/javascript" src="scripts/sandbox/kaleidoscope.js"></script>
-    <script type="text/javascript" src="scripts/t.js"></script>
+    <script type="text/javascript" src="scripts/sandbox/info.js"></script>
     <script type="text/javascript" src="scripts/index.js"></script>
-
 </body>
 </html>

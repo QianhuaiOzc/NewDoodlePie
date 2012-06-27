@@ -123,15 +123,28 @@
     position: absolute;
     left: 132px;
     top: 118px;
+    z-index: 2;
 }
     #bCanvas {
         -webkit-box-shadow: -10px -10px 10px gray;
         -moz-box-shadow: -10px -10px 10px gray;
         -ms-box-shadow: -10px -10px 10px gray;
         background-color: #FFF;
+        z-index: 1;
     }
 
     #fCanvas {
         border-bottom: 1px solid #dfdfdf;
         border-right: 1px solid #dfdfdf;
+        z-index: 3;
     }
+
+#blackboardCanvas #bCanvas {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -ms-box-shadow: none;
+}
+#blackboardCanvas #fCanvas {
+    border-bottom: none;
+    border-right: none;
+}

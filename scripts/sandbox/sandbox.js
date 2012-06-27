@@ -1,11 +1,5 @@
 (function($) {
 	var globalData = {
-		shapeFinished: 0,
-		pictureFinished: 0,
-		fillFinished: false,
-		guessFinished: true,
-		blackboardFinished: false,
-		level: 1
 	};
 
 	var SandBox = function(core, moduleName) {
@@ -267,7 +261,7 @@
 			}
 		};
 		xhr.setRequestHeader("Content-type", "application/upload");
-		xhr.send(url);
+		xhr.send(imgData);
 	}
 
 	this.SandBox = SandBox;
