@@ -147,36 +147,6 @@ ul {
         top: 15px;
     }
 
-.undoContainer {
-    z-index: 3;
-    position: absolute;
-    height: 62px;
-    top: 700px;
-    left: 210px;
-}
-
-.undo {
-    position: absolute;
-    width: 83px;                
-    height: 62px;
-    border: "1px solid red";
-    background-image: url(../images/undo.png);
-    top: 0px;
-    left: 0px;
-    z-index: 3;
-}
-
-.reset {
-    position: absolute;
-    width: 83px;
-    height: 62px;
-    border: "1px solid red";
-    background-image: url(../images/reset.png);
-    top: 0px;
-    left: 98px;
-    z-index: 3;
-}
-
 .blackboard {
     background-image: url(../images/blackboard/blackboard-bg.jpg);
 }

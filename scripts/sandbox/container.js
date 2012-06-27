@@ -3,11 +3,11 @@ Core.registerModule("container", function(sandBox) {
 	var moduleMap = {
 		"start": ["info", "drawShape", "crayons", "brushSize", "home", "pieMenu"],
 		"drawShape": ["drawShape", "crayons", "brushSize", "pieMenu"],
-		"drawPicture": ["drawPicture", "crayons", "brushSize", "undo", "pieMenu", "stamps"],
-		"painting": ["painting", "crayons", "brushSize", "undo", "pieMenu"],
-		"blackboard": ["blackboardCanvas", "chalk", "brushSize", "undo", "pieMenu"],
-		"solo": ["solo", "crayons", "brushSize", "undo", "pieMenu", "stamps"],
-		"magic": ["kaleidoscope", "crayons", "brushSize", "pieMenu","magicType","undo"],
+		"drawPicture": ["drawPicture", "crayons", "brushSize", "undoModule", "pieMenu", "stamps"],
+		"painting": ["painting", "crayons", "brushSize", "undoModule", "pieMenu"],
+		"blackboard": ["blackboardCanvas", "chalk", "brushSize", "undoModule", "pieMenu"],
+		"solo": ["solo", "crayons", "brushSize", "undoModule", "pieMenu", "stamps"],
+		"magic": ["kaleidoscope", "crayons", "brushSize", "pieMenu","magicType","undoModule"],
 		"game": ["game", "pieMenu"]
 	};
 	var currentModule = null;

@@ -138,7 +138,8 @@
         border-right: 1px solid #dfdfdf;
         z-index: 3;
     }
-
+/* @group blackboard canvas 
+---------------------------------------------------------------------------------*/
 #blackboardCanvas #bCanvas {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
@@ -148,3 +149,35 @@
     border-bottom: none;
     border-right: none;
 }
+
+/* @group undo module
+---------------------------------------------------------------------------------*/
+#undoModule {
+    z-index: 3;
+    position: absolute;
+    height: 62px;
+    top: 700px;
+    left: 210px;
+}
+
+    #undo {
+        position: absolute;
+        width: 83px;                
+        height: 62px;
+        border: "1px solid red";
+        background-image: url(../images/undo.png);
+        top: 0px;
+        left: 0px;
+        z-index: 3;
+    }
+
+    #reset {
+        position: absolute;
+        width: 83px;
+        height: 62px;
+        border: "1px solid red";
+        background-image: url(../images/reset.png);
+        top: 0px;
+        left: 98px;
+        z-index: 3;
+    }

@@ -1,82 +1,191 @@
-Core.registerModule("undo", function(sandBox) {
+Core.registerModule("undoModule", function(sandBox) {
 	
-	var container = null;
-	var undoDiv = null, resetDiv = null;
+	var container = sandBox.container, undoDiv = sandBox.find("#undo"), resetDiv = sandBox.find("#reset");
 
 	return {
 		init: function() {
-			container = sandBox.container;
 			sandBox.show(container);
-			sandBox.addClass(container, "undoContainer");
+			container.addEventListener("click", this.notify, false);
+			container.addEventListener("touchstart", this.notify, false);
+		},
 
-			undoDiv = sandBox.createElement("div");
-			sandBox.addClass(undoDiv, "undo");
-
-			resetDiv = sandBox.createElement("div");
-			sandBox.addClass(resetDiv, "reset");
-
-			container.appendChild(undoDiv);
-			container.appendChild(resetDiv);
-
-			undoDiv.onclick = function(e) {
-				sandBox.notify({
-					"type": "undo"
-				});
-			};
-
-			resetDiv.onclick = function(e) {
-				sandBox.notify({
-					"type": "reset"		
-				});
-			};
-
-			if(sandBox.touchable()) {
-	           	undoDiv.addEventListener("touchstart", function(evt) {
-	           		sandBox.notify({
-						"type": "undo"
-					});
-	           	});
-	           	resetDiv.addEventListener("touchstart", function(evt) {
-	           		sandBox.notify({
-						"type": "reset"		
-					});
-	           	});
-	        }
+		notify: function(evt) {
+			if(evt.target.id === "undo") {
+				sandBox.notify({ "type": "undo" });
+			} else if(evt.target.id === "reset") {
+				sandBox.notify({ "type": "reset" });
+			}
 		},
 
 		destroy: function() {
 			sandBox.hide(container);
-			container.removeChild(undoDiv);
-			container.removeChild(resetDiv);
+			container.removeEventListener("click", this.notify);
+			container.removeEventListener("touchstart", this.notify);
 		}
 	};
 });
 
 Core.registerModule("home", function(sandBox) {
-	
-	var container = null;
-	var title = null;
+	var container = sandBox.container;
+	return {
+		init: function() {
+			sandBox.show(container);
+
+			container.addEventListener("click", this.notify, false);
+			container.addEventListener("touchstart", this.notify, false);
+		},
+		notify: function() {
+			sandBox.notify({ "type": "home" });
+		},
+		destroy: function() {
+			sandBox.hide(container);
+			container.removeEventListener("click", this.notify);
+			container.removeEventListener("touchstart", this.notify);
+		}
+	};
+});
+
+Core.registerModule("crayons", function(sandBox) {
+	var container = sandBox.container, selectedNode = null;
+
+	var Events = {
+		click: function(evt) {
+			var target = evt.target.parentNode;
+			if(target.nodeName === "LI") {
+				if(selectedNode != null) {
+					selectedNode.className = "";
+				}
+				selectedNode = target;
+				target.className = "selected";
+				var color = target.getAttribute("id").substring(1);
+				sandBox.notify({"type": "colorChange", "data": color});
+			}
+		},
+
+		clearColor: function(data) {
+			if(selectedNode != null && data !== null) {
+				selectedNode.className = "";
+				selectedNode = null;
+			}
+		}
+	};
 
 	return {
 		init: function() {
-			container = sandBox.container;
 			sandBox.show(container);
 
-			container.onclick = function() {
-				sandBox.notify({
-					"type": "home"
-				});
+			var childNodes = container.childNodes;
+			var i = 0, length = childNodes.length;
+			for(; i < length; i++) {
+				if(sandBox.hasClass(childNodes[i], "selected")) {
+					selectedNode = childNodes[i];
+					var color = selectedNode.getAttribute("id").substring(1);
+					sandBox.notify({"type": "colorChange", "data": color});
+					break;
+				}
 			}
 
-			if(sandBox.touchable()) {
-				container.addEventListener("touchstart", function(evt) {
-					sandBox.notify({
-						"type": "home"
-					});
+			container.addEventListener("click", Events.click, false);
+			container.addEventListener("touchstart", Events.click, false);
+			sandBox.listen( { "stampChange" : Events.clearColor } );
+		},
+
+		destroy: function() {
+			sandBox.hide(container);
+			container.removeEventListener("click", Events.click);
+			container.removeEventListener("touchstart", Events.click);
+		}
+	};
+});
+
+Core.registerModule("stamps", function(sandBox) {
+
+	var container = sandBox.container, selectedNode = null;
+
+	var Events = {
+		click: function(evt) {
+			var target = evt.target;
+			if(target.nodeName === "LI") {
+				if(selectedNode != null) {
+					selectedNode.className = "";
+				}
+				selectedNode = target;
+				selectedNode.className = "selected";
+				var stamp = selectedNode.getAttribute("id");
+				sandBox.notify({
+					"type": "stampChange",
+					"data": stamp
 				});
 			}
 		},
-		destroy: function() {}
+
+		clearStamp: function(data) {
+			if(selectedNode != null) {
+				selectedNode.className = "";
+				selectedNode = null;
+				sandBox.notify({ "type": "stampChange", "data": null });
+			}
+		}
+	}
+
+	return {
+		init: function() {
+			sandBox.show(container);
+
+			container.addEventListener("click", Events.click, false);
+			container.addEventListener("touchstart", Events.click, false);
+			sandBox.listen( { "colorChange" : Events.clearStamp } );
+		},
+		destroy: function() {
+			sandBox.hide(container);
+			container.removeEventListener("click", Events.click);
+			container.removeEventListener("touchstart", Events.click);
+		}
+	};
+});
+
+Core.registerModule("chalk", function(sandBox) {
+	var container = sandBox.container, selectedNode = null;
+
+	var Events = {
+		click: function(evt) {
+			var target = evt.target;
+			if(target.nodeName === "LI") {
+				if(selectedNode != null) {
+					selectedNode.className = "";
+				}
+				selectedNode = target;
+				target.className = "selected";
+				var color = target.getAttribute("id").substring(1);
+				sandBox.notify({"type": "chalkChange", "data": color});
+			}
+		}
+	};
+
+	return {
+		init: function() {
+			sandBox.show(container);
+
+			var childNodes = container.childNodes;
+			var i = 0, length = childNodes.length;
+			for(; i < length; i++) {
+				if(sandBox.hasClass(childNodes[i], "selected")) {
+					selectedNode = childNodes[i];
+					var color = selectedNode.getAttribute("id").substring(1);
+					sandBox.notify({"type": "chalkChange", "data": color});
+					break;
+				}
+			}
+
+			container.addEventListener("click", Events.click, false);
+			container.addEventListener("touchstart", Events.click, false);
+		},
+
+		destroy: function() {
+			sandBox.hide(container);
+			container.removeEventListener("click", Events.click);
+			container.removeEventListener("touchstart", Events.click);
+		}
 	};
 });
 
@@ -207,150 +316,3 @@ Core.registerModule("brushSize", function(sandBox) {
 	};
 });
 
-Core.registerModule("crayons", function(sandBox) {
-	var container = null, selectedNode = null;
-
-	var Events = {
-		click: function(evt) {
-			var target = evt.target.parentNode;
-			if(target.nodeName === "LI") {
-				if(selectedNode != null) {
-					selectedNode.className = "";
-				}
-				selectedNode = target;
-				target.className = "selected";
-				var color = target.getAttribute("id").substring(1);
-				sandBox.notify({"type": "colorChange", "data": color});
-			}
-		},
-
-		clearColor: function(data) {
-			if(selectedNode != null && data !== null) {
-				selectedNode.className = "";
-				selectedNode = null;
-			}
-		}
-	};
-
-	return {
-		init: function() {
-			container = sandBox.container;
-			sandBox.show(container);
-
-			var childNodes = container.childNodes;
-			var i = 0, length = childNodes.length;
-			for(; i < length; i++) {
-				if(sandBox.hasClass(childNodes[i], "selected")) {
-					selectedNode = childNodes[i];
-					var color = selectedNode.getAttribute("id").substring(1);
-					sandBox.notify({"type": "colorChange", "data": color});
-					break;
-				}
-			}
-
-			container.addEventListener("click", Events.click, false);
-			container.addEventListener("touchstart", Events.click, false);
-			sandBox.listen( { "stampChange" : Events.clearColor } );
-		},
-
-		destroy: function() {
-			sandBox.hide(container);
-			container.removeEventListener("click", Events.click);
-			container.removeEventListener("touchstart", Events.click);
-		}
-	};
-});
-
-Core.registerModule("stamps", function(sandBox) {
-
-	var container = null, selectedNode = null;
-
-	var Events = {
-		click: function(evt) {
-			var target = evt.target;
-			if(target.nodeName === "LI") {
-				if(selectedNode != null) {
-					selectedNode.className = "";
-				}
-				selectedNode = target;
-				selectedNode.className = "selected";
-				var stamp = selectedNode.getAttribute("id");
-				sandBox.notify({
-					"type": "stampChange",
-					"data": stamp
-				});
-			}
-		},
-
-		clearStamp: function(data) {
-			if(selectedNode != null) {
-				selectedNode.className = "";
-				selectedNode = null;
-				sandBox.notify({ "type": "stampChange", "data": null });
-			}
-		}
-	}
-
-	return {
-		init: function() {
-			container = sandBox.container;
-			sandBox.show(container);
-
-			container.addEventListener("click", Events.click, false);
-			container.addEventListener("touchstart", Events.click, false);
-			sandBox.listen( { "colorChange" : Events.clearStamp } );
-		},
-		destroy: function() {
-			sandBox.hide(container);
-			container.removeEventListener("click", Events.click);
-			container.removeEventListener("touchstart", Events.click);
-		}
-	};
-});
-
-Core.registerModule("chalk", function(sandBox) {
-	var container = null, selectedNode = null;
-
-	var Events = {
-		click: function(evt) {
-			var target = evt.target;
-			if(target.nodeName === "LI") {
-				if(selectedNode != null) {
-					selectedNode.className = "";
-				}
-				selectedNode = target;
-				target.className = "selected";
-				var color = target.getAttribute("id").substring(1);
-				sandBox.notify({"type": "chalkChange", "data": color});
-			}
-		}
-	};
-
-	return {
-		init: function() {
-			container = sandBox.container;
-			sandBox.show(container);
-
-
-			var childNodes = container.childNodes;
-			var i = 0, length = childNodes.length;
-			for(; i < length; i++) {
-				if(sandBox.hasClass(childNodes[i], "selected")) {
-					selectedNode = childNodes[i];
-					var color = selectedNode.getAttribute("id").substring(1);
-					sandBox.notify({"type": "chalkChange", "data": color});
-					break;
-				}
-			}
-
-			container.addEventListener("click", Events.click, false);
-			container.addEventListener("touchstart", Events.click, false);
-		},
-
-		destroy: function() {
-			sandBox.hide(container);
-			container.removeEventListener("click", Events.click);
-			container.removeEventListener("touchstart", Events.click);
-		}
-	};
-});

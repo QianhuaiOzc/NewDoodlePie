@@ -144,7 +144,7 @@ Core.registerModule("info", function(sandBox) {
 
 			sandBox.listen({"imageSave": function(imageUrl) {
 				tencent.setAttribute("data-pic", imageUrl);
-				tencent.setAttribute("data-content", "jsalfkjslfkj");
+				tencent.setAttribute("data-content", "#DoodlePie#");
 				tencentScript.setAttribute("src", "http://mat1.gtimg.com/app/openjs/openjs.js#autoboot=no&debug=no");
 				document.body.appendChild(tencentScript);
 (function(){

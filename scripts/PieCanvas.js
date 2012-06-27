@@ -212,7 +212,6 @@ function PieCanvas(container, options) {
 		return imageUrl;
 	};
 	obj.changeColor = function(newColor) {
-		console.log(newColor);
 		status.currentColor = newColor;
 	};
 	obj.changeSize = function(newSize) {
